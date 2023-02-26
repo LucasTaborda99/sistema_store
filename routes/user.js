@@ -4,6 +4,8 @@ const router = express.Router()
 const jwt = require('jsonwebtoken')
 const nodemailer = require('nodemailer')
 require('dotenv').config()
+let auth = require('../services/authentication')
+let checkRole = require('../services/checkRole')
 
 router.post('/signup', (req, res) => {
     const user = req.body
@@ -84,7 +86,65 @@ router.post('/forgotPassword', (req, res) => {
                 return res.status(200).json({message: "Senha enviada com sucesso para o seu email"})
             }
         } else {
-            return res.status.json(err)
+            return res.status(500).json(err)
+        }
+    })
+})
+
+router.get('/get', auth.authToken, checkRole.checkingRole, (req, res) => {
+    const user = req.body
+    query = "SELECT id, nome, numero_contato, email, status FROM user WHERE role = 'user'"
+    connection.query(query, (err, results) => {
+        if(!err){
+            return res.status(200).json(results)
+        } else {
+            return res.status(500).json(err)
+        }
+    })
+})
+
+router.patch('/update', auth.authToken, checkRole.checkingRole, (req, res) => {
+    const user = req.body
+    let query = "UPDATE user set status = ? WHERE id = ?"
+    connection.query(query, [user.status, user.id], (err, results) => {
+        if(!err){
+            if(results.affectedRows == 0) {
+                return res.status(404).json({message: "ID não existente"})
+            }
+            return res.status(200).json({message: "Usuário atualizado com sucesso"})
+        } else {
+            return res.status(500).json(err)
+        }
+    })
+})
+
+router.get('/checkToken', auth.authToken, (req, res) => {
+    return res.status(200).json({message: "true"})
+})
+
+router.post('/changePassword', auth.authToken, (req, res) => {
+    const user = req.body
+    const email = res.locals.email
+    let query = "SELECT * FROM user WHERE email = ? and senha = ?"
+    connection.query(query, [email, user.senhaAntiga], (err, results) => {
+        if(!err){
+            if(results <= 0) {
+                return res.status(400).json({message: "Senha antiga incorreta"})
+            } 
+            else if(results[0].senha == user.senhaAntiga){
+                query = "UPDATE user set senha = ? WHERE email = ?"
+                connection.query(query, [user.senhaNova, email], (err, results) => {
+                    if(!err) {
+                        return res.status(200).json({message: "Senha alterada com sucesso"})
+                    } else {
+                        return res.status(500).json(err)
+                    }
+                })
+            } else {
+                return res.status(500).json({message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde"})
+            }
+        } else {
+            return res.status(500).json(err)
         }
     })
 })
