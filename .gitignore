@@ -1,3 +1,4 @@
+# Arquivo para ignorar os arquivos selecionados ao subir no git
 # node_modules
 node_modules/
 

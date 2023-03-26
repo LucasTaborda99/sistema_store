@@ -1,3 +1,4 @@
+// Realizando a conexão com o database mysql, a partir do arquivo .env
 const mysql = require('mysql')
 require('dotenv').config()
 
@@ -11,7 +12,7 @@ let connection = mysql.createConnection({
 
 connection.connect(err => {
     if(!err){
-        console.log("Connected")
+        console.log("Conectado")
     } else{
         console.log(err)
     }

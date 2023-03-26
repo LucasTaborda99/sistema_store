@@ -1,3 +1,4 @@
+// Criando tabela "user"
 CREATE TABLE user (
     id INT PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(250),
@@ -9,8 +10,10 @@ CREATE TABLE user (
     UNIQUE (email)
 );
 
+// Inserindo registros na tabela "user"
 INSERT INTO user (nome, numero_contato, email, senha, status, role) VALUES ('Admin', 123456789, 'admin123@gmail.com', 'admin', 'true', 'admin');
 
+// Criando tabela "user"
 CREATE TABLE categoria(
     id INT NOT NULL AUTO_INCREMENT,
     nome VARCHAR(250) NOT NULL,

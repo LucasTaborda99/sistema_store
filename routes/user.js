@@ -1,13 +1,18 @@
 const express = require('express')
 const connection = require('../connection')
 const router = express.Router()
-const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
-require('dotenv').config()
-let auth = require('../services/authentication')
-let checkRole = require('../services/checkRole')
 
-router.post('/signup', (req, res) => {
+// Importando a biblioteca - JSON Web Token(JWT), para gerar Token aos usuários ao acessar o sistema
+const jwt = require('jsonwebtoken')
+
+// Importando a biblioteca - Nodemailer, para mandar email através do objeto "transportador"
+const nodemailer = require('nodemailer')
+
+require('dotenv').config()
+let aut = require('../services/autenticacao')
+let verRole = require('../services/verificaRole')
+
+router.post('/cadastrar', (req, res) => {
     const user = req.body
     query = "SELECT email, senha, role, status FROM user WHERE email = ?"
     connection.query(query, [user.email], (err, results) => {
@@ -42,7 +47,10 @@ router.post('/login', (req, res) => {
                     return res.status(401).json({message: "Espere pela aprovação do administrador"})
                 } else if(results[0].senha === user.senha) {
                     const response = {email: results[0].email, role: results[0].role}
-                    const acessoToken = jwt.sign(response, process.env.ACCESS_TOKEN, {expiresIn: "8h"})
+
+                    // Criando um novo Token
+                    const acessoToken = jwt.sign(response, process.env.ACCESS_TOKEN, {expiresIn: "24h"})
+
                     res.status(200).json({token: acessoToken})
                 } else {
                     return res.status(400).json({message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde"})
@@ -54,7 +62,9 @@ router.post('/login', (req, res) => {
     })
 })
 
-let transporter = nodemailer.createTransport({
+// Criando o objeto "transportador" de email, usando a biblioteca Nodemailer,
+// para conectar à conta do Gmail do usuário e enviar email
+let transportador = nodemailer.createTransport({
     service: "gmail",
     auth: {
         user: process.env.EMAIL,
@@ -62,7 +72,16 @@ let transporter = nodemailer.createTransport({
     }
 })
 
-router.post('/forgotPassword', (req, res) => {
+// verificando configuração de conexão para mandar mensagem
+transportador.verify(function (error) {
+    if (!error) {
+        console.log("O servidor está pronto para receber nossas mensagens");
+    } else {
+        console.log(error);
+    }
+})
+
+router.post('/esqueciSenha', (req, res) => {
     const user = req.body
     query = "SELECT email, senha FROM user WHERE email = ?"
     connection.query(query, [user.email], (err, results) => {
@@ -70,17 +89,19 @@ router.post('/forgotPassword', (req, res) => {
             if(results.length <= 0) {
                 return res.status(200).json({message: "Sua pesquisa não retornou nenhum resultado. Por favor tente novamente com outra informação"})
             } else {
+                // Corpo do email que será enviado ao usuário para recuperação de senha
                 let emailCorpo = {
                     from: process.env.EMAIL,
                     to: results[0].email,
                     subject: 'Recuperação de senha do sistemaStore',
                     html: '<p><b>Seus detalhes de login ao sistemaStore</b><br><b>Email: </b>'+results[0].email+'<br><b>Senha: </b>'+results[0].senha+'<br><a href="http://localhost:4200/">Clique aqui para fazer login</a></p>'
-                };
-                transporter.sendMail(emailCorpo, function(error, informação){
-                    if(error) {
-                        console.log(error)
+                }
+
+                transportador.sendMail(emailCorpo, function(error, informação){
+                    if(!error) {
+                        console.log('Email enviado: ' + informação.response)
                     } else {
-                        console.log('Email enviado: ' +informação.response)
+                        console.log(error)
                     }
                 })
                 return res.status(200).json({message: "Senha enviada com sucesso para o seu email"})
@@ -91,7 +112,7 @@ router.post('/forgotPassword', (req, res) => {
     })
 })
 
-router.get('/get', auth.authToken, checkRole.checkingRole, (req, res) => {
+router.get('/get', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     const user = req.body
     query = "SELECT id, nome, numero_contato, email, status FROM user WHERE role = 'user'"
     connection.query(query, (err, results) => {
@@ -103,7 +124,7 @@ router.get('/get', auth.authToken, checkRole.checkingRole, (req, res) => {
     })
 })
 
-router.patch('/update', auth.authToken, checkRole.checkingRole, (req, res) => {
+router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     const user = req.body
     let query = "UPDATE user set status = ? WHERE id = ?"
     connection.query(query, [user.status, user.id], (err, results) => {
@@ -118,11 +139,11 @@ router.patch('/update', auth.authToken, checkRole.checkingRole, (req, res) => {
     })
 })
 
-router.get('/checkToken', auth.authToken, (req, res) => {
+router.get('/checarToken', aut.autenticacaoToken, (req, res) => {
     return res.status(200).json({message: "true"})
 })
 
-router.post('/changePassword', auth.authToken, (req, res) => {
+router.post('/alterarSenha', aut.autenticacaoToken, (req, res) => {
     const user = req.body
     const email = res.locals.email
     let query = "SELECT * FROM user WHERE email = ? and senha = ?"

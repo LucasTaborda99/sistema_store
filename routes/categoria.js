@@ -1,11 +1,10 @@
 const express = require('express')
 const connection = require('../connection')
-const { authToken } = require('../services/authentication')
 const router = express.Router()
-let auth = require('../services/authentication')
-let checkRole = require('../services/checkRole')
+let aut = require('../services/autenticacao')
+let verRole = require('../services/verificaRole')
 
-router.post('/add', auth.authToken, checkRole.checkingRole, (req, res, next) => {
+router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
     const categoria = req.body
     query = "INSERT INTO categoria (nome) VALUES (?)"
     connection.query(query, [categoria.nome], (err, results) => {
@@ -17,8 +16,8 @@ router.post('/add', auth.authToken, checkRole.checkingRole, (req, res, next) => 
     })
 })
 
-router.get('/get', auth.authToken, (req, res, next) => {
-    let query = "SELECT * FROM categoria ORDER BY nome"
+router.get('/get', aut.autenticacaoToken, (req, res, next) => {
+    let query = "SELECT * FROM categoria ORDER BY id"
     connection.query(query, (err, results) => {
         if(!err){
             return res.status(200).json(results)
@@ -28,7 +27,7 @@ router.get('/get', auth.authToken, (req, res, next) => {
     })
 })
 
-router.patch('/update', auth.authToken, checkRole.checkingRole, (req, res, next) => {
+router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
     let produto = req.body
     query = "UPDATE categoria SET nome = ? WHERE id = ?"
     connection.query(query, [produto.nome, produto.id], (err, results) => {
