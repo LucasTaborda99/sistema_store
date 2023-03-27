@@ -143,7 +143,7 @@ router.get('/checarToken', aut.autenticacaoToken, (req, res) => {
     return res.status(200).json({message: "true"})
 })
 
-router.post('/alterarSenha', aut.autenticacaoToken, (req, res) => {
+router.post('/alterarSenha', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     const user = req.body
     const email = res.locals.email
     let query = "SELECT * FROM user WHERE email = ? and senha = ?"
@@ -166,6 +166,21 @@ router.post('/alterarSenha', aut.autenticacaoToken, (req, res) => {
             }
         } else {
             return res.status(500).json(err)
+        }
+    })
+})
+
+router.delete('/deleteUser', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
+    const user = req.body
+    let query = 'DELETE FROM user WHERE email = ?'
+    connection.query(query, [user.email], (err, results) => {
+        if(!err) {
+            if(results.affectedRows == 0) {
+                return res.status(404).json({message: 'Email não encontrado'})
+            }
+            return res.status(200).json({message: 'Usuário deletado com sucesso'})
+        } else {
+            return res.status(500).json({message: 'Ops! Algo deu errado. Por favor, tente novamente mais tarde'})
         }
     })
 })
