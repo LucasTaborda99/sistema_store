@@ -143,7 +143,7 @@ router.get('/checarToken', aut.autenticacaoToken, (req, res) => {
     return res.status(200).json({message: "true"})
 })
 
-router.post('/alterarSenha', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
+router.post('/alterarSenha', aut.autenticacaoToken, (req, res) => {
     const user = req.body
     const email = res.locals.email
     let query = "SELECT * FROM user WHERE email = ? and senha = ?"
