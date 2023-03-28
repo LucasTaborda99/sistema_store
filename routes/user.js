@@ -2,6 +2,9 @@ const express = require('express')
 const connection = require('../connection')
 const router = express.Router()
 
+// Importando a biblioteca bcryptjs, para armazenar senhas como um hash no banco de dados
+const bcrypt = require('bcryptjs');
+
 // Importando a biblioteca - JSON Web Token(JWT), para gerar Token aos usuários ao acessar o sistema
 const jwt = require('jsonwebtoken')
 
@@ -174,23 +177,31 @@ router.get('/checarToken', aut.autenticacaoToken, (req, res) => {
 router.post('/alterarSenha', aut.autenticacaoToken, (req, res) => {
     const user = req.body
     const email = res.locals.email
-    let query = "SELECT * FROM user WHERE email = ? and senha = ?"
-    connection.query(query, [email, user.senhaAntiga], (err, results) => {
+    const senhaNova = user.senhaNova
+
+    let query = "SELECT * FROM user WHERE email = ?"
+    connection.query(query, [email], (err, results) => {
         if(!err){
             if(results <= 0) {
-                return res.status(400).json({message: "Senha antiga incorreta"})
-            } 
-            else if(results[0].senha == user.senhaAntiga){
-                query = "UPDATE user set senha = ? WHERE email = ?"
-                connection.query(query, [user.senhaNova, email], (err, results) => {
-                    if(!err) {
-                        return res.status(200).json({message: "Senha alterada com sucesso"})
-                    } else {
-                        return res.status(500).json(err)
-                    }
-                })
+                return res.status(400).json({message: "Usuário não encontrado"})
             } else {
-                return res.status(500).json({message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde"})
+                const senhaAtual = results[0].senha;
+                const senhaAntiga = user.senhaAntiga;
+                const senhaAtualCorreta = bcrypt.compareSync(senhaAntiga, senhaAtual)
+
+                if(!senhaAtualCorreta) {
+                    return res.status(400).json({message: 'Senha antiga incorreta'})
+                } else {
+                    const senhaNovaHash = bcrypt.hashSync(senhaNova, 10)
+                    query = "UPDATE user set senha = ? WHERE email = ?"
+                    connection.query(query, [senhaNovaHash, email], (err, results) => {
+                        if(!err) {
+                            return res.status(200).json({message: "Senha alterada com sucesso"})
+                        } else {
+                            return res.status(500).json(err)
+                        }
+                    })
+                }
             }
         } else {
             return res.status(500).json(err)
