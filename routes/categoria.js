@@ -6,13 +6,25 @@ let verRole = require('../services/verificaRole')
 
 router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
     const categoria = req.body
-    query = "INSERT INTO categoria (nome) VALUES (?)"
-    connection.query(query, [categoria.nome], (err, results) => {
-        if(!err){
-            return res.status(200).json({message: "Categoria adicionada com sucesso"})
-        } else {
+    const querySelect = "SELECT COUNT(*) as 'Total de Registros' FROM categoria WHERE nome = ?"
+    const queryInsert = "INSERT INTO categoria (nome) VALUES (?)"
+
+    connection.query(querySelect, [categoria.nome], (err, results) => {
+        if(err) {
             return res.status(500).json(err)
         }
+        
+        const totalDeRegistros = results[0]['Total de Registros']
+        if (totalDeRegistros > 0) {
+          return res.status(400).json({ message: 'Categoria com esse nome já existente' })
+        }
+        
+        connection.query(queryInsert, [categoria.nome], (err, results) => {
+            if(err){
+                return res.status(500).json(err)
+            }
+            return res.status(200).json({message: "Categoria adicionada com sucesso"})
+        })
     })
 })
 
