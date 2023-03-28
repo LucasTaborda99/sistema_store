@@ -13,10 +13,10 @@ router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, 
         if(err) {
             return res.status(500).json(err)
         }
-        
+
         const totalDeRegistros = results[0]['Total de Registros']
         if (totalDeRegistros > 0) {
-          return res.status(400).json({ message: 'Categoria com esse nome já existente' })
+          return res.status(400).json({ message: 'Já existe uma categoria com esse nome' })
         }
         
         connection.query(queryInsert, [categoria.nome], (err, results) => {
@@ -44,17 +44,31 @@ router.get('/get', aut.autenticacaoToken, (req, res, next) => {
 })
 
 router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
-    let produto = req.body
-    query = "UPDATE categoria SET nome = ? WHERE id = ?"
-    connection.query(query, [produto.nome, produto.id], (err, results) => {
-        if(!err) {
-            if(results.affectedRows == 0) {
-                return res.status(404).json({message: "Categoria com esse ID não encontrado"})
-            }
-            return res.status(200).json({message: "Categoria atualizada com sucesso"})
-        } else {
+
+    const categoria = req.body
+    const querySelect = "SELECT COUNT(*) as 'Total de Registros' FROM categoria WHERE nome = ? AND id <> ?"
+    const queryUpdate = "UPDATE categoria SET nome = ? WHERE id = ?"
+
+    connection.query(querySelect, [categoria.nome, categoria.id], (err, results) => {
+        if(err) {
             return res.status(500).json(err)
         }
+        
+        const totalDeRegistros = results[0]['Total de Registros']
+        if (totalDeRegistros > 0) {
+          return res.status(400).json({ message: 'Já existe uma categoria com esse nome' })
+        }
+        
+        connection.query(queryUpdate, [categoria.nome, categoria.id], (err, results) => {
+            if(err){
+                return res.status(500).json(err)
+            } else {
+                if(results.affectedRows == 0) {
+                     return res.status(404).json({message: "Categoria com esse ID não encontrado"})
+                }
+                return res.status(200).json({message: "Categoria atualizada com sucesso"})
+            }
+        })
     })
 })
 
