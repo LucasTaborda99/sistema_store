@@ -124,7 +124,7 @@ router.get('/get', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     })
 })
 
-router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
+router.patch('/updateStatus', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     const user = req.body
     let query = "UPDATE user set status = ? WHERE id = ?"
     connection.query(query, [user.status, user.id], (err, results) => {
@@ -135,6 +135,34 @@ router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res) 
             return res.status(200).json({message: "Usuário atualizado com sucesso"})
         } else {
             return res.status(500).json(err)
+        }
+    })
+})
+
+router.patch('/updateUser', aut.autenticacaoToken, (req, res) => {
+    const user = req.body
+
+    const querySelect = 'SELECT email FROM user WHERE email = ?'
+    const queryUpdate = 'UPDATE user set nome = ?, numero_contato = ?, email = ?, senha = ? WHERE email = ? AND id = ?'
+
+    connection.query(querySelect, [user.email], (err, results) => {
+        if(err) {
+            return res.status(500).json(err)
+        } else {
+            if(results <= 0) {
+                return res.status(404).json({message: 'Usuário não encontrado'})
+            }
+            
+            connection.query(queryUpdate, [user.nome, user.numero_contato, user.email, user.senha, user.email, user.id], (err, results) => {
+                if(err) {
+                    return res.status(500).json(err)
+                } else {
+                    if(results.affectedRows == 0) {
+                        return res.status(404).json({message: 'Email ou ID não encontrado'})
+                    }
+                    return res.status(200).json({message: 'Usuário atualizado com sucesso'})
+                }
+            })
         }
     })
 })
