@@ -17,21 +17,28 @@ let verRole = require('../services/verificaRole')
 
 router.post('/cadastrar', (req, res) => {
     const user = req.body
+    const saltRounds = 10; // número de rounds para o salt
+
     query = "SELECT email, senha, role, status FROM user WHERE email = ?"
     connection.query(query, [user.email], (err, results) => {
         if(!err){
             if(results.length <= 0) {
                 query = "INSERT INTO user (nome, numero_contato, email, senha, status, role) VALUES (?, ?, ?, ?, 'false', 'user')"
-                connection.query(query, [user.nome, user.numero_contato, user.email, user.senha], (err, results) => {
-                    if(!err){
-                        return res.status(200).json({message: "Usuário registrado com sucesso"})
-                    } else {
-                        return res.status(500).json(err)
+                bcrypt.hash(user.senha, saltRounds, (err, hash) => {
+                    if (err) {
+                        return res.status(500).json(err);
                     }
+                    connection.query(query, [user.nome, user.numero_contato, user.email, hash], (err, results) => {
+                        if(!err){
+                            return res.status(200).json({message: "Usuário registrado com sucesso"})
+                        } else {
+                            return res.status(500).json(err)
+                        }
+                    })
                 })
-            } else {
-                return res.status(400).json({message: "Email já existente"})
-            }
+        } else {
+            return res.status(400).json({message: "Email já existente"})
+        }
         }
         else {
             return res.status(500).json(err)
@@ -40,30 +47,31 @@ router.post('/cadastrar', (req, res) => {
 })
 
 router.post('/login', (req, res) => {
-        const user = req.body
-        query = 'SELECT email, senha, role, status FROM user WHERE email = ?'
-        connection.query(query, [user.email], (err, results) => {
-            if(!err){
-                if(results.length <= 0 || results[0].senha != user.senha) {
-                    return res.status(401).json({message: "Email ou senha incorretos"})
-                } else if(results[0].status != 'true') {
-                    return res.status(401).json({message: "Espere pela aprovação do administrador"})
-                } else if(results[0].senha === user.senha) {
-                    const response = {email: results[0].email, role: results[0].role}
-
-                    // Criando um novo Token
-                    const acessoToken = jwt.sign(response, process.env.ACCESS_TOKEN, {expiresIn: "24h"})
-
-                    res.status(200).json({token: acessoToken})
-                } else {
-                    return res.status(400).json({message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde"})
-                }
+    const { email, senha } = req.body;
+    const query = 'SELECT email, senha, role, status FROM user WHERE email = ?';
+    connection.query(query, [email], (err, results) => {
+      if (err) {
+        return res.status(500).json(err);
+      }
+      if (results.length === 0) {
+        return res.status(401).json({message: "Email ou senha incorretos"});
+      } else {
+        bcrypt.compare(senha, results[0].senha, (err, result) => {
+          if (result) {
+            if (results[0].status !== 'true') {
+              return res.status(401).json({message: "Espere pela aprovação do administrador"});
+            } else {
+              const response = {email: results[0].email, role: results[0].role};
+              const acessoToken = jwt.sign(response, process.env.ACCESS_TOKEN, {expiresIn: "24h"});
+              return res.status(200).json({token: acessoToken});
             }
-        else {
-            return res.status(500).json(err)
-        }
+          } else {
+            return res.status(401).json({message: "Email ou senha incorretos"});
+          }
+        })
+      }
     })
-})
+  })
 
 // Criando o objeto "transportador" de email, usando a biblioteca Nodemailer,
 // para conectar à conta do Gmail do usuário e enviar email
@@ -144,27 +152,31 @@ router.patch('/updateStatus', aut.autenticacaoToken, verRole.verificaRole, (req,
 
 router.patch('/updateUser', aut.autenticacaoToken, (req, res) => {
     const user = req.body
-
+    const saltRounds = 10; // número de rounds para o salt
     const querySelect = 'SELECT email FROM user WHERE email = ?'
-    const queryUpdate = 'UPDATE user set nome = ?, numero_contato = ?, email = ?, senha = ? WHERE email = ? AND id = ?'
+    const queryUpdate = 'UPDATE user set nome = ?, numero_contato = ?, senha = ? WHERE email = ?'
 
     connection.query(querySelect, [user.email], (err, results) => {
         if(err) {
             return res.status(500).json(err)
         } else {
-            if(results <= 0) {
+            if(results.length === 0) {
                 return res.status(404).json({message: 'Usuário não encontrado'})
             }
-            
-            connection.query(queryUpdate, [user.nome, user.numero_contato, user.email, user.senha, user.email, user.id], (err, results) => {
-                if(err) {
-                    return res.status(500).json(err)
-                } else {
-                    if(results.affectedRows == 0) {
-                        return res.status(404).json({message: 'Email ou ID não encontrado'})
-                    }
-                    return res.status(200).json({message: 'Usuário atualizado com sucesso'})
+            bcrypt.hash(user.senha, saltRounds, (err, hash) => {
+                if (err) {
+                    return res.status(500).json(err);
                 }
+                connection.query(queryUpdate, [user.nome, user.numero_contato, hash, user.email], (err, results) => {
+                    if(err) {
+                        return res.status(500).json(err)
+                    } else {
+                        if(results.affectedRows === 0) {
+                            return res.status(404).json({message: 'Email ou ID não encontrado'})
+                        }
+                        return res.status(200).json({message: 'Usuário atualizado com sucesso'})
+                    }
+                })
             })
         }
     })
