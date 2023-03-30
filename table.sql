@@ -7,6 +7,7 @@ CREATE TABLE user (
     senha VARCHAR(250),
     status VARCHAR(20),
     role VARCHAR(20),
+    deleted_at DATETIME,
     UNIQUE (email)
 );
 

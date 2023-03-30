@@ -125,7 +125,7 @@ router.post('/esqueciSenha', (req, res) => {
 
 router.get('/get', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     const user = req.body
-    query = "SELECT id, nome, numero_contato, email, status FROM user WHERE role = 'user'"
+    query = "SELECT id, nome, numero_contato, email, status FROM user WHERE role = 'user' AND deleted_at IS NULL"
     connection.query(query, (err, results) => {
         if(!err){
             return res.status(200).json(results)
@@ -223,13 +223,14 @@ router.post('/alterarSenha', aut.autenticacaoToken, (req, res) => {
 
 router.delete('/deleteUser', aut.autenticacaoToken, verRole.verificaRole, (req, res) => {
     const user = req.body
-    let query = 'DELETE FROM user WHERE email = ?'
+    let query = 'UPDATE user SET deleted_at = NOW() WHERE email = ?'
+    // let query = 'DELETE FROM user WHERE email = ?'
     connection.query(query, [user.email], (err, results) => {
         if(!err) {
             if(results.affectedRows == 0) {
                 return res.status(404).json({message: 'Email não encontrado'})
             }
-            return res.status(200).json({message: 'Usuário deletado com sucesso'})
+            return res.status(200).json({message: 'Usuário marcado como excluído com sucesso'})
         } else {
             return res.status(500).json({message: 'Ops! Algo deu errado. Por favor, tente novamente mais tarde'})
         }
