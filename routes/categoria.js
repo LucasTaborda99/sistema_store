@@ -4,6 +4,7 @@ const router = express.Router()
 let aut = require('../services/autenticacao')
 let verRole = require('../services/verificaRole')
 
+// Cria categoria dos produtos, funcionalidade disponível apenas aos roles = 'admin'
 router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
     const categoria = req.body
     const querySelect = "SELECT COUNT(*) as 'Total de Registros' FROM categoria WHERE nome = ?"
@@ -28,6 +29,7 @@ router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, 
     })
 })
 
+// Visualiza categoria, ordenando pelo ID
 router.get('/get', aut.autenticacaoToken, (req, res, next) => {
     let query = "SELECT * FROM categoria ORDER BY id"
     connection.query(query, (err, results) => {
@@ -43,6 +45,7 @@ router.get('/get', aut.autenticacaoToken, (req, res, next) => {
     })
 })
 
+// Atualiza categoria pelo ID, funcionalidade disponível apenas aos roles = 'admin'
 router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
 
     const categoria = req.body
@@ -72,6 +75,7 @@ router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, (req, res, 
     })
 })
 
+// Deleta categoria pelo ID, funcionalidade disponível apenas aos roles = 'admin'
 router.delete('/delete', aut.autenticacaoToken, verRole.verificaRole, (req, res, next) => {
     let produto = req.body
     query = "DELETE FROM categoria WHERE id = ?"

@@ -16,9 +16,10 @@ const autenticacaoToken = (req, res, next) => {
 
     // Verificando se o token é válido e se não expirou
     jwt.verify(token, process.env.ACCESS_TOKEN, (err, response) => {
-        if(err)
+        if(err) {
             // Forbidden
             return res.sendStatus(403)
+        }
             res.locals = response
             next()
     })
