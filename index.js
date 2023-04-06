@@ -1,7 +1,6 @@
 // Criando o index.js, aqui será chamado todas as rotas do sistema
 const express = require('express')
 let cors = require('cors')
-const connection = require('./connection')
 const userRoute = require('./routes/user')
 const categoriaRoute = require('./routes/categoria')
 const app = express()

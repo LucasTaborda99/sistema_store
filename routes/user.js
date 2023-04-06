@@ -8,7 +8,7 @@ require('dotenv').config()
 let aut = require('../services/autenticacao')
 let verRole = require('../services/verificaRole')
 
-router.post('/cadastrar', userController.cadastrarUsuario)
+router.post('/cadastrarUsuarios', userController.cadastrarUsuarios)
 router.post('/login', userController.login)
 router.post('/esqueciSenha', userController.esqueciSenha)
 router.get('/get', aut.autenticacaoToken, verRole.verificaRole, userController.get)
