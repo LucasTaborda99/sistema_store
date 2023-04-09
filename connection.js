@@ -1,4 +1,4 @@
-// // Realizando a conexão com o database mysql2, a partir do arquivo .env
+// Realizando a conexão com o database mysql2, a partir do arquivo .env
 
 const mysql = require('mysql2/promise');
 
@@ -11,6 +11,12 @@ const pool = mysql.createPool({
   connectionLimit: 10,
   queueLimit: 0
 });
+
+(async () => {
+  const connection = await pool.getConnection();
+  await connection.execute("SET time_zone = '-03:00'");
+  connection.release();
+})();
 
 async function getConnection() {
   const connection = await pool.getConnection();

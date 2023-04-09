@@ -11,55 +11,50 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nome: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       numero_contato: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING,
         unique: true
       },
       senha: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       status: {
         type: Sequelize.STRING
       },
       role: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       created_at: {
-        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       created_by: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
+        type: Sequelize.DATE
       },
       updated_by: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       deleted_at: {
-        allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       deleted_by: {
-        allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       }
     });
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
-  }
-};
+    await queryInterface.dropTable('usuarios');
+  },
+}

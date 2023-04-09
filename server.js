@@ -1,5 +1,7 @@
 // Criando Servidor
 require('dotenv').config()
+process.env.TZ = 'America/Sao_Paulo';
+
 const http = require('http')
 const app = require('./index')
 

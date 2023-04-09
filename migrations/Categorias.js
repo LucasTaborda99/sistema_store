@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.createTable('categorias', {
+    await queryInterface.createTable('categoria', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,39 +12,31 @@ module.exports = {
       },
       nome: {
         allowNull: false,
+        unique: true,
         type: Sequelize.STRING
       },
       created_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE
       },
       created_by: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       updated_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE
       },
       updated_by: {
-        allowNull: false,
         type: Sequelize.STRING
       },
       deleted_at: {
-        allowNull: false,
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
+        type: Sequelize.DATE
       },
       deleted_by: {
-        allowNull: false,
         type: Sequelize.STRING
       }
   });
 },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable('categorias');
+    await queryInterface.dropTable('categoria');
   }
 };

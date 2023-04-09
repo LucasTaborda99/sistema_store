@@ -1,117 +1,109 @@
 // Categoria - Controller 
 
-const { Categoria } = require('../models/index');
+// const { Categoria } = require('../models/index');
+const Categoria = require('../models').Categoria;
 
-// Cria categoria dos produtos, funcionalidade dispon�vel apenas aos roles = 'admin'
-adicionarCategoria = async (req, res) => {
+const getConnection = require('../connection');
+
+// Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
+const moment = require('moment-timezone');
+const { NOW } = require('sequelize');
+
+require('dotenv').config()
+
+// Cria categoria dos produtos, funcionalidade disponível apenas aos roles = 'admin'
+async function adicionarCategoria (req, res){
   try {
-    const categoria = await Categoria.create({
-      nome: req.body.nome
+    const categoria = req.body;
+    const nome = categoria.nome;
+    const createdBy = res.locals.email;
+    const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+
+
+    const foundCategoria = await Categoria.findOne({ where: { nome } });
+    
+    if (foundCategoria) {
+        return res.status(400).json({ message: "Categoria já existente" });
+    }
+
+    const newCategoria = await Categoria.create({
+      nome: categoria.nome,
+      created_by: createdBy,
+      created_at: createdAt
     });
+
     res.status(201).json({ message: 'Categoria adicionada com sucesso' });
   } catch (error) {
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      res.status(400).json({ message: 'J� existe uma categoria com esse nome' });
-    } else {
+    console.error(error);
       res.status(500).json({ message: 'Ocorreu um erro ao criar a categoria' });
     }
+}
+
+// Visualiza categoria, ordenando pelo ID
+async function getCategoria(req, res) {
+  try {
+    const categorias = await Categoria.findAll({
+      order: ['id'],
+      where: { deleted_at: null}
+    });
+    return res.status(200).json(categorias);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+}
+
+// Atualiza categoria pelo ID, funcionalidade disponível apenas aos roles = 'admin'
+const updateCategoria = async (req, res) => {
+  
+  const { id, nome } = req.body;
+  const updatedBy = res.locals.email;
+  const updatedAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+
+  try {
+    // busca a categoria pelo ID
+    const categoria = await Categoria.findByPk(id);
+    if (!categoria) {
+      return res.status(404).json({ message: 'Categoria com esse ID não encontrado' });
+    }
+    // verifica se já existe uma categoria com esse nome
+    const categoriaExistente = await Categoria.findOne({ where: { nome } });
+    if (categoriaExistente && categoriaExistente.id !== categoria.id) {
+      return res.status(400).json({ message: 'Já existe uma categoria com esse nome' });
+    }
+    // atualiza a categoria
+    await categoria.update({ nome, updated_by: updatedBy, updated_at: updatedAt});
+    return res.status(200).json({ message: 'Categoria atualizada com sucesso' });
+  } catch (error) {
+    res.status(500).json({ message: 'Ocorreu um erro ao atualizar a categoria' });
   }
 };
 
-module.exports = { adicionarCategoria };
+// 'Deleta' categoria ('softdelete', atualiza a coluna 'deleted_at' com a data e horário que a categoria foi deletado
+// e atualiza a coluna deleted_by com o email do usuário que deletou), funcionalidade disponível apenas aos roles = 'admin'
+async function deleteCategoria(req, res) {
+  try {
+      const categoria = req.body;
+      const deletedBy = res.locals.email;
 
-// const connection = require('../connection')
+      const query = "UPDATE categoria SET deleted_at = NOW(), deleted_by = ? WHERE id = ?";
+      const connection = await getConnection();
+      const [results] = await connection.query(query, [deletedBy, categoria.id]);
+      connection.release();
 
-// // Cria categoria dos produtos, funcionalidade disponível apenas aos roles = 'admin'
-// function adicionarCategoria(req, res) {
-//     const categoria = req.body
-//     const querySelect = "SELECT COUNT(*) as 'Total de Registros' FROM categorias WHERE nome = ?"
-//     const queryInsert = "INSERT INTO categorias (nome) VALUES (?)"
+      if (results.affectedRows == 0) {
+          return res.status(404).json({ message: "ID não encontrado" });
+      }
 
-//     connection.query(querySelect, [categoria.nome], (err, results) => {
-//         if(err) {
-//             return res.status(500).json(err)
-//         }
+      return res.status(200).json({ message: "Categoria marcada como excluído com sucesso" });
+  } catch (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde" });
+  }
+}
 
-//         const totalDeRegistros = results[0]['Total de Registros']
-//         if (totalDeRegistros > 0) {
-//           return res.status(400).json({ message: 'Já existe uma categoria com esse nome' })
-//         }
-        
-//         connection.query(queryInsert, [categoria.nome], (err, results) => {
-//             if(err){
-//                 return res.status(500).json(err)
-//             }
-//             return res.status(200).json({message: "Categoria adicionada com sucesso"})
-//         })
-//     })
-// }
-
-// // Visualiza categoria, ordenando pelo ID
-// function get(req, res) {
-//     let query = "SELECT * FROM categorias ORDER BY id"
-//     connection.query(query, (err, results) => {
-//         if(err){
-//             return res.status(500).json(err)
-//         } else {
-//             if(results.length <= 0) {
-//                 return res.status(404).json({message: 'Nenhuma categoria encontrada'})
-//             } else {
-//                 return res.status(200).json(results)
-//             }
-//         }
-//     })
-// }
-
-// // Atualiza categoria pelo ID, funcionalidade disponível apenas aos roles = 'admin'
-// function update(req, res) {
-//     const categoria = req.body
-//     const querySelect = "SELECT COUNT(*) as 'Total de Registros' FROM categorias WHERE nome = ? AND id <> ?"
-//     const queryUpdate = "UPDATE categoria SET nome = ? WHERE id = ?"
-
-//     connection.query(querySelect, [categoria.nome, categoria.id], (err, results) => {
-//         if(err) {
-//             return res.status(500).json(err)
-//         }
-        
-//         const totalDeRegistros = results[0]['Total de Registros']
-//         if (totalDeRegistros > 0) {
-//           return res.status(400).json({ message: 'Já existe uma categoria com esse nome' })
-//         }
-        
-//         connection.query(queryUpdate, [categoria.nome, categoria.id], (err, results) => {
-//             if(err){
-//                 return res.status(500).json(err)
-//             } else {
-//                 if(results.affectedRows == 0) {
-//                      return res.status(404).json({message: "Categoria com esse ID não encontrado"})
-//                 }
-//                 return res.status(200).json({message: "Categoria atualizada com sucesso"})
-//             }
-//         })
-//     })
-// }
-
-// // Deleta categoria pelo ID, funcionalidade disponível apenas aos roles = 'admin'
-// function deleteCategoria(req, res) {
-//     let produto = req.body
-//     query = "DELETE FROM categorias WHERE id = ?"
-//     connection.query(query, [produto.id], (err, results) => {
-//         if(err) {
-//             return res.status(500).json(err)
-//         } else {
-//             if(results.affectedRows == 0) {
-//                 return res.status(404).json({message: "Categoria com esse ID não encontrado"})
-//             } else {
-//                 return res.status(200).json({message: "Categoria deletada com sucesso"})
-//             }
-//         }
-//     })
-// }
-
-// module.exports = {
-//     adicionarCategoria,
-//     get,
-//     update,
-//     deleteCategoria,
-// }
+module.exports = {
+    adicionarCategoria,
+    getCategoria,
+    updateCategoria,
+    deleteCategoria
+}

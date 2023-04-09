@@ -1,23 +1,21 @@
 'use strict';
 const {
-  Model, Sequelize
+  Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Categoria extends Model {
     static associate(models) {
     }
   }
+
   Categoria.init({
     nome: {
       allowNull: false,
       type: DataTypes.STRING
     },
-    descricao: {
-      type: DataTypes.STRING
-    },
     created_at: {
       allowNull: false,
-      type: Sequelize.DATE,
+      type: DataTypes.DATE,
       defaultValue: sequelize.fn('NOW')
     },
     created_by: {
@@ -25,27 +23,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     updated_at: {
-      allowNull: false,
-      type: Sequelize.DATE,
-      defaultValue: sequelize.fn('NOW')
+      type: DataTypes.DATE
     },
     updated_by: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     deleted_at: {
-      allowNull: false,
-      type: Sequelize.DATE,
-      defaultValue: sequelize.fn('NOW')
+      type: DataTypes.DATE
     },
     deleted_by: {
-      allowNull: false,
       type: DataTypes.STRING
     }
   }, {
     sequelize,
     modelName: 'Categoria',
-    underscored: true,
+    timestamps: false, // desabilita a criação das colunas created_at e updated_at
+    underscored: true
   });
 
   return Categoria;

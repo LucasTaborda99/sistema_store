@@ -9,8 +9,8 @@ let aut = require('../services/autenticacao')
 let verRole = require('../services/verificaRole')
 
 router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.adicionarCategoria)
-router.get('/get', aut.autenticacaoToken, categoriaController.get)
-router.patch('/update', aut.autenticacaoToken, verRole.verificaRole, categoriaController.update)
+router.get('/getCategoria', aut.autenticacaoToken, categoriaController.getCategoria)
+router.patch('/updateCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.updateCategoria)
 router.delete('/deleteCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.deleteCategoria)
 
 module.exports = router

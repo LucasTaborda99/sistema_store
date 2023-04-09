@@ -38,25 +38,21 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     updated_at: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: sequelize.fn('NOW')
+      type: DataTypes.DATE
     },
     updated_by: {
-      allowNull: false,
       type: DataTypes.STRING
     },
     deleted_at: {
-      type: DataTypes.DATE,
-      defaultValue: sequelize.fn('NOW')
+      type: DataTypes.DATE
     },
     deleted_by: {
       type: DataTypes.STRING,
-      defaultValue: null
     }
   }, {
     sequelize,
     modelName: 'Usuario',
+    timestamps: false, // desabilita a criação das colunas created_at e updated_at
     underscored: true
   });
 

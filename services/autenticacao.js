@@ -20,7 +20,11 @@ const autenticacaoToken = (req, res, next) => {
             // Forbidden
             return res.sendStatus(403)
         }
-            res.locals = response
+            res.locals = {
+                ...response,
+                email: response.email ? response.email : null,
+                role: response.role ? response.role : null
+            }
             next()
     })
 }

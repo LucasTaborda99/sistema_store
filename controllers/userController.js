@@ -2,28 +2,23 @@
 
 const getConnection = require('../connection');
 
-const  { Usuario }  = require('../models/index');
-
-
-async function buscarUsuario() {
-    const usuarioEncontrado = await Usuario.findOne({ where: { id: 1 } });
-    console.log(usuarioEncontrado);
-  }
-  
-  buscarUsuario();
+const { Usuario } = require('../models/index');
 
 // Importando a biblioteca bcryptjs, para armazenar senhas como um hash no banco de dados
 const bcrypt = require('bcryptjs');
 
-// Importando a biblioteca - JSON Web Token(JWT), para gerar Token aos usu·rios ao acessar o sistema
+// Importando a biblioteca - JSON Web Token(JWT), para gerar Token aos usu√°rios ao acessar o sistema
 const jwt = require('jsonwebtoken')
 
-// Importando a biblioteca - Nodemailer, para mandar email atravÈs do objeto "transportador"
+// Importando a biblioteca - Nodemailer, para mandar email atrav√©s do objeto "transportador"
 const nodemailer = require('nodemailer');
+
+// Importando a biblioteca - Moment.js, que permite trabalhar com datas e hor√°rios.
+const moment = require('moment-timezone');
 
 require('dotenv').config()
 
-// Cadastra um usu·rio, com status default 'false' e role 'user', a senha È salva em formato de hash no banco de dados
+// Cadastra um usu√°rio, com status default 'false' e role 'user', a senha √© salva em formato de hash no banco de dados
 async function cadastrarUsuarios(req, res) {
     try {
         const user = req.body;
@@ -32,30 +27,30 @@ async function cadastrarUsuarios(req, res) {
 
         const foundUser = await Usuario.findOne({ where: { email } });
         if (foundUser) {
-            return res.status(400).json({ message: "Email j· existente" });
+            return res.status(400).json({ message: "Email j√° existente" });
         }
 
         const hash = await bcrypt.hash(user.senha, saltRounds);
+
+        const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
         const newUser = await Usuario.create({
             nome: user.nome,
             numero_contato: user.numero_contato,
             email: user.email,
             senha: hash,
-            status: 'false',
             role: 'user',
-            created_by: 'admin',
-            updated_by: 'admin',
-            deleted_by: 'admin',
+            status: 'false',
+            created_by: 'user',
+            created_at: createdAt
         });
-        return res.status(200).json({ message: "Usu·rio registrado com sucesso" });
+        return res.status(200).json({ message: "Usu√°rio registrado com sucesso" });
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Erro ao cadastrar usu·rio" });
+        return res.status(500).json({ message: "Erro ao cadastrar usu√°rio" });
     }
 }
   
-// Realiza o login de um usu·rio, por email e senha, apÛs aprovaÁ„o do role = 'admin', mudando o status do usu·rio para 'true',
-// ser· permitido o login desse usu·rio ao sistema, gerando um token jwt ao usu·rio, v·lido por 24 horas
+// Realiza o login de um usu√°rio, por email e senha, ap√≥s aprova√ß√£o do role = 'admin', mudando o status do usu√°rio para 'true',
+// ser√° permitido o login desse usu√°rio ao sistema, gerando um token jwt ao usu√°rio, v√°lido por 24 horas
 async function login(req, res) {
     try {
         const { email, senha } = req.body;
@@ -71,7 +66,7 @@ async function login(req, res) {
         }
 
         if (foundUser.status !== 'true') {
-            return res.status(401).json({ message: "Espere pela aprovaÁ„o do administrador" });
+            return res.status(401).json({ message: "Espere pela aprova√ß√£o do administrador" });
         }
 
         const accessToken = jwt.sign({ email: foundUser.email, role: foundUser.role }, process.env.ACCESS_TOKEN, { expiresIn: "24h" });
@@ -83,7 +78,7 @@ async function login(req, res) {
 }
 
 // Criando o objeto "transportador" de email, usando a biblioteca Nodemailer,
-// para conectar ‡ conta do Gmail do usu·rio e enviar email
+// para conectar √† conta do Gmail do usu√°rio e enviar email
 let transportador = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -92,27 +87,27 @@ let transportador = nodemailer.createTransport({
     }
 })
 
-// verificando configuraÁ„o de conex„o para mandar mensagem
+// verificando configura√ß√£o de conex√£o para mandar mensagem
 transportador.verify(function (error) {
     if (!error) {
-        console.log("O servidor est· pronto para receber nossas mensagens");
+        console.log("O servidor est√° pronto para receber nossas mensagens");
     } else {
         console.log(error);
     }
 })
 
-// Envia email ao usu·rio com a senha dele, caso ele tenha esquecido
+// Envia email ao usu√°rio com a senha dele, caso ele tenha esquecido
 async function esqueciSenha(req, res) {
     try {
         const user = req.body;
         const foundUser = await Usuario.findOne({ where: { email: user.email } });
         if (!foundUser) {
-            return res.status(200).json({ message: "Sua pesquisa n„o retornou nenhum resultado. Por favor tente novamente com outra informaÁ„o" });
+            return res.status(200).json({ message: "Sua pesquisa n√£o retornou nenhum resultado. Por favor tente novamente com outra informa√ß√£o" });
         } else {
             let emailCorpo = {
                 from: process.env.EMAIL,
                 to: foundUser.email,
-                subject: 'RecuperaÁ„o de senha do sistemaStore',
+                subject: 'Recupera√ß√£o de senha do sistemaStore',
                 html: '<p><b>Seus detalhes de login ao sistemaStore</b><br><b>Email: </b>' + foundUser.email + '<br><b>Senha: </b>' + foundUser.senha + '<br><a href="http://localhost:4200/">Clique aqui para fazer login</a></p>'
             };
             await transportador.sendMail(emailCorpo);
@@ -124,66 +119,90 @@ async function esqueciSenha(req, res) {
     }
 }
 
-// Visualiza todos os usu·rios que possuem role 'user' e que n„o foram deletados, essa funÁ„o sÛ est· disponÌvel aos roles = 'admin'
+// Visualiza todos os usu√°rios que possuem role 'user' e que n√£o foram deletados, essa fun√ß√£o s√≥ est√° dispon√≠vel aos roles = 'admin'
 async function get(req, res) {
     try {
       const users = await Usuario.findAll({
         attributes: ['id', 'nome', 'numero_contato', 'email', 'status'],
-        where: { role: 'user', deleted_at: null }
+        where: { role: 'user', deleted_at: null}
       });
       return res.status(200).json(users);
     } catch (err) {
       console.error(err);
       return res.status(500).json(err);
     }
-  }
-
-// Atualiza o status dos usu·rios, de 'false' para 'true', podendo assim o usu·rio realizar o login no sistema, funcionalidade disponÌvel apenas aos roles = 'admin'
-async function updateStatus(req, res) {
-    try {
-        const user = req.body;
-        const query = "UPDATE users set status = ? WHERE id = ?";
-        const connection = await getConnection();
-        const [results] = await connection.query(query, [user.status, user.id]);
-        connection.release();
-        if (results.affectedRows == 0) {
-            return res.status(404).json({ message: "ID n„o existente" });
-        }
-        return res.status(200).json({ message: "Usu·rio atualizado com sucesso" });
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json(err);
-    }
 }
 
-// Atualiza os dados do usu·rio (nome, n˙mero de contato e senha) de acordo com o email, a senha È salva em hash no banco de dados
+// Atualiza o status dos usu√°rios, de 'false' para 'true', podendo assim o usu√°rio realizar o login no sistema, funcionalidade dispon√≠vel apenas aos roles = 'admin'
+
+async function updateStatusERole(req, res) {
+  try {
+    const { id, status, role } = req.body;
+    const updatedBy = res.locals.email;
+    const user = await Usuario.findOne({ where: { id } });
+    if (!user) {
+      return res.status(404).json({ message: "ID n√£o existente" });
+    }
+    if (res.locals.role !== 'admin') {
+      return res.status(401).json({ message: "Apenas administradores t√™m permiss√£o para atualizar o status de usu√°rios" });
+    }
+
+    console.log("updated_at before update:", user.updated_at); // adicionando um console.log para visualizar a data antes da atualiza√ß√£o
+
+    await Usuario.update(
+      {
+        status,
+        role,
+        updated_at: moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss'),
+        updated_by: updatedBy
+      },
+      { where: { id } },
+    );
+
+    return res.status(200).json({ message: "Usu√°rio atualizado com sucesso" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json(err);
+  }
+}
+
+// Atualiza os dados do usu√°rio (nome, n√∫mero de contato e senha) de acordo com o email, a senha √© salva em hash no banco de dados,
+// e √© salvo no banco de dados a data com hor√°rio que a atualiza√ß√£o foi feita e o email do usu√°rio que realizou a atualiza√ß√£o
 async function updateUser(req, res) {
     const user = req.body
     const saltRounds = 10;
-    const querySelect = 'SELECT email FROM users WHERE email = ?'
-    const queryUpdate = 'UPDATE users set nome = ?, numero_contato = ?, senha = ? WHERE email = ?'
+    const querySelect = 'SELECT email FROM usuarios WHERE email = ?'
+    const queryUpdate = 'UPDATE usuarios set nome = ?, numero_contato = ?, senha = ?, updated_at = NOW(), updated_by = ? WHERE email = ?'
+    let connection
 
     try {
         const connection = await getConnection();
         const [results] = await connection.query(querySelect, [user.email]);
-        connection.release();
+
         if (results.length === 0) {
-            return res.status(404).json({ message: 'Usu·rio n„o encontrado' })
+            connection.release();
+            return res.status(404).json({ message: 'Usu√°rio n√£o encontrado' })
         }
+
         const hash = await bcrypt.hash(user.senha, saltRounds);
-        const [updateResult] = await connection.query(queryUpdate, [user.nome, user.numero_contato, hash, user.email]);
-        connection.release();
+        const [updateResult] = await connection.query(queryUpdate, [user.nome, user.numero_contato, hash, res.locals.email, user.email]);
+
         if (updateResult.affectedRows === 0) {
-            return res.status(404).json({ message: 'Email ou ID n„o encontrado' })
+            connection.release();
+            return res.status(404).json({ message: 'Email ou ID n√£o encontrado' })
         }
-        return res.status(200).json({ message: 'Usu·rio atualizado com sucesso' })
+
+        return res.status(200).json({ message: 'Usu√°rio atualizado com sucesso' })
     } catch (err) {
         console.error(err);
         return res.status(500).json(err)
-    }    
+    } finally {
+        if(connection)
+        connection.release();
+    }
 }
 
-// Check se token do usu·rio È v·lido
+// Check se token do usu√°rio √© v√°lido
 async function checarToken(req, res) {
     try {
         return res.status(200).json({ message: "true" });
@@ -193,7 +212,7 @@ async function checarToken(req, res) {
     }
 }
 
-// Altera senha do usu·rio, a partir da senha antiga e a nova
+// Altera senha do usu√°rio, a partir da senha antiga e a nova
 async function alterarSenha(req, res) {
     const user = req.body
     const email = res.locals.email
@@ -201,11 +220,11 @@ async function alterarSenha(req, res) {
 
     try {
         const connection = await getConnection();
-        let query = "SELECT * FROM users WHERE email = ?"
+        let query = "SELECT * FROM usuarios WHERE email = ?"
         const [rows] = await connection.query(query, [email]);
         if (rows.length <= 0) {
             connection.release();
-            return res.status(400).json({ message: "Usu·rio n„o encontrado" })
+            return res.status(400).json({ message: "Usu√°rio n√£o encontrado" })
         } else {
             const senhaAtual = rows[0].senha;
             const senhaAntiga = user.senhaAntiga;
@@ -216,8 +235,8 @@ async function alterarSenha(req, res) {
                 return res.status(400).json({ message: 'Senha antiga incorreta' })
             } else {
                 const senhaNovaHash = bcrypt.hashSync(senhaNova, 10)
-                query = "UPDATE users set senha = ? WHERE email = ?"
-                const [results] = await connection.query(query, [senhaNovaHash, email]);
+                query = "UPDATE usuarios set senha = ?, updated_at = NOW(), updated_by = ? WHERE email = ?"
+                const [results] = await connection.query(query, [senhaNovaHash, res.locals.email, email]);
                 connection.release();
                 return res.status(200).json({ message: "Senha alterada com sucesso" })
             }
@@ -228,23 +247,23 @@ async function alterarSenha(req, res) {
     }
 }
 
-// 'Deleta' usu·rio ('softdelete', atualiza a coluna 'deleted_at' com a data e hor·rio que o usu·rio foi deletado
-// e atualiza a coluna deleted_by com o email do usu·rio que deletou), funcionalidade disponÌvel apenas aos roles = 'admin'
+// 'Deleta' usu√°rio ('softdelete', atualiza a coluna 'deleted_at' com a data e hor√°rio que o usu√°rio foi deletado
+// e atualiza a coluna deleted_by com o email do usu√°rio que deletou), funcionalidade dispon√≠vel apenas aos roles = 'admin'
 async function deleteUser(req, res) {
     try {
         const user = req.body;
         const deletedBy = res.locals.email;
 
-        const query = "UPDATE users SET deleted_at = NOW(), deleted_by = ? WHERE email = ?";
+        const query = "UPDATE usuarios SET deleted_at = NOW(), deleted_by = ? WHERE email = ?";
         const connection = await getConnection();
         const [results] = await connection.query(query, [deletedBy, user.email]);
         connection.release();
 
         if (results.affectedRows == 0) {
-            return res.status(404).json({ message: "Email n„o encontrado" });
+            return res.status(404).json({ message: "Email n√£o encontrado" });
         }
 
-        return res.status(200).json({ message: "Usu·rio marcado como excluÌdo com sucesso" });
+        return res.status(200).json({ message: "Usu√°rio marcado como exclu√≠do com sucesso" });
     } catch (err) {
         console.error(err);
         return res.status(500).json({ message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde" });
@@ -256,7 +275,7 @@ module.exports = {
     login,
     esqueciSenha,
     get,
-    updateStatus,
+    updateStatusERole,
     updateUser,
     checarToken,
     alterarSenha,
