@@ -25,6 +25,11 @@ async function cadastrarUsuarios(req, res) {
         const email = user.email;
         const saltRounds = 10;
 
+        const existingUsers = await Usuario.findAll();
+        const role = existingUsers.length === 0 ? 'admin' : 'user';
+        const status = existingUsers.length === 0 ? 'true' : 'false';
+        const createdBy = existingUsers.length === 0 ? 'admin' : 'user';
+
         const foundUser = await Usuario.findOne({ where: { email } });
         if (foundUser) {
             return res.status(400).json({ message: "Email já existente" });
@@ -38,9 +43,9 @@ async function cadastrarUsuarios(req, res) {
             numero_contato: user.numero_contato,
             email: user.email,
             senha: hash,
-            role: 'user',
-            status: 'false',
-            created_by: 'user',
+            role: role,
+            status: status,
+            created_by: createdBy,
             created_at: createdAt
         });
         return res.status(200).json({ message: "Usuário registrado com sucesso" });
