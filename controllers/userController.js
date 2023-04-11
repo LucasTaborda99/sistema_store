@@ -145,15 +145,16 @@ async function esqueciSenha(req, res) {
                 subject: 'Recuperação de senha do SistemaStore',
                 html: `
                     <p>Olá, <b>${foundUser.nome}</b></p>
+                    <p>Conforme solicitado, segue sua senha provisória para acesso ao SistemaStore:
                     <p>Seus detalhes de login ao <b>SistemaStore</b>:</p>
                     <ul>
                         <li><b>Usuário:</b> ${foundUser.nome}</li>
                         <li><b>Email:</b> ${foundUser.email}</li>
                         <li><b>Nova senha:</b> ${newPassword}</li>
                     </ul>
-                    <p><b>Observação:</b> A nova senha gerada é válida apenas por 30 minutos.</p>
+                    <p><b>Observação:</b> A nova senha gerada é válida apenas por 30 minutos. Acesse o SistemaStore e altere sua senha.</p>
                     <p>Clique <a href="http://localhost:4200/">aqui</a> para fazer login.</p>
-                    <p>Atenciosamente,</p>
+                    <p>Atenciosamente,
                     <p>Equipe do SistemaStore</p>
                 `,
                 // Estilos CSS embutidos para formatar o texto
