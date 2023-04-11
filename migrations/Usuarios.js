@@ -50,6 +50,10 @@ module.exports = {
       },
       deleted_by: {
         type: Sequelize.STRING,
+      },
+      data_expiracao: {
+        type: Sequelize.DATE,
+        allowNull: true, // pode ser nulo no momento da criação do usuário
       }
     });
   },

@@ -7,6 +7,9 @@ const { Usuario } = require('../models/index');
 // Importando a biblioteca bcryptjs, para armazenar senhas como um hash no banco de dados
 const bcrypt = require('bcryptjs');
 
+// Improtando a biblioteca crypto, para gerar uma sequência de caracteres aleatórios
+const crypto = require('crypto');
+
 // Importando a biblioteca - JSON Web Token(JWT), para gerar Token aos usuários ao acessar o sistema
 const jwt = require('jsonwebtoken')
 
@@ -29,6 +32,8 @@ async function cadastrarUsuarios(req, res) {
         const role = existingUsers.length === 0 ? 'admin' : 'user';
         const status = existingUsers.length === 0 ? 'true' : 'false';
         const createdBy = existingUsers.length === 0 ? 'admin' : 'user';
+        const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+        const dataExpiracao = moment.utc(createdAt).add(1, 'years').format('YYYY-MM-DD HH:mm:ss');
 
         const foundUser = await Usuario.findOne({ where: { email } });
         if (foundUser) {
@@ -37,7 +42,6 @@ async function cadastrarUsuarios(req, res) {
 
         const hash = await bcrypt.hash(user.senha, saltRounds);
 
-        const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
         const newUser = await Usuario.create({
             nome: user.nome,
             numero_contato: user.numero_contato,
@@ -46,7 +50,8 @@ async function cadastrarUsuarios(req, res) {
             role: role,
             status: status,
             created_by: createdBy,
-            created_at: createdAt
+            created_at: createdAt,
+            data_expiracao: dataExpiracao
         });
         return res.status(200).json({ message: "Usuário registrado com sucesso" });
     } catch (err) {
@@ -72,6 +77,14 @@ async function login(req, res) {
 
         if (foundUser.status !== 'true') {
             return res.status(401).json({ message: "Espere pela aprovação do administrador" });
+        }
+
+        // Verifica se a senha expirou, de acordo com a data atual
+        const currentDate = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+        const expirationDate = moment.utc(foundUser.data_expiracao).format('YYYY-MM-DD HH:mm:ss');
+        
+        if (moment(currentDate).isAfter(expirationDate)) {
+            return res.status(401).json({ message: "A senha expirou. Por favor, solicite uma nova senha." });
         }
 
         const accessToken = jwt.sign({ email: foundUser.email, role: foundUser.role }, process.env.ACCESS_TOKEN, { expiresIn: "24h" });
@@ -101,22 +114,71 @@ transportador.verify(function (error) {
     }
 })
 
-// Envia email ao usuário com a senha dele, caso ele tenha esquecido
+// Envia nova senha com 6 caracteres ao email do usuário de acordo com o usuário e email dele,
+// senha nova com validade de 30 min
 async function esqueciSenha(req, res) {
     try {
-        const user = req.body;
-        const foundUser = await Usuario.findOne({ where: { email: user.email } });
+        const { nome, email } = req.body;
+        const saltRounds = 10;
+        const foundUser = await Usuario.findOne({ where: { nome, email } });
+        const date = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+        const expirationDate = moment.utc(date).add(30, 'minutes').format('YYYY-MM-DD HH:mm:ss');
+
         if (!foundUser) {
             return res.status(200).json({ message: "Sua pesquisa não retornou nenhum resultado. Por favor tente novamente com outra informação" });
         } else {
+            // gera uma senha aleatória de 6 caracteres
+            const newPassword = crypto.randomInt(100000, 1000000).toString(16).padStart(6, '0');
+
+            // Criptografar a senha
+            const hash = await bcrypt.hash(newPassword, saltRounds);
+
+            // Atualiza a senha e a data de expiração do usuário no banco de dados
+            foundUser.senha = hash;
+            foundUser.data_expiracao = expirationDate;
+            await foundUser.save();
+
+            // Corpo do e-mail formatado com HTML e CSS embutidos
             let emailCorpo = {
                 from: process.env.EMAIL,
                 to: foundUser.email,
-                subject: 'Recuperação de senha do sistemaStore',
-                html: '<p><b>Seus detalhes de login ao sistemaStore</b><br><b>Email: </b>' + foundUser.email + '<br><b>Senha: </b>' + foundUser.senha + '<br><a href="http://localhost:4200/">Clique aqui para fazer login</a></p>'
+                subject: 'Recuperação de senha do SistemaStore',
+                html: `
+                    <p>Olá, <b>${foundUser.nome}</b></p>
+                    <p>Seus detalhes de login ao <b>SistemaStore</b>:</p>
+                    <ul>
+                        <li><b>Usuário:</b> ${foundUser.nome}</li>
+                        <li><b>Email:</b> ${foundUser.email}</li>
+                        <li><b>Nova senha:</b> ${newPassword}</li>
+                    </ul>
+                    <p><b>Observação:</b> A nova senha gerada é válida apenas por 30 minutos.</p>
+                    <p>Clique <a href="http://localhost:4200/">aqui</a> para fazer login.</p>
+                    <p>Atenciosamente,</p>
+                    <p>Equipe do SistemaStore</p>
+                `,
+                // Estilos CSS embutidos para formatar o texto
+                css: `
+                    p {
+                        font-size: 16px;
+                        color: #333;
+                        margin-bottom: 10px;
+                    }
+                    b {
+                        font-weight: bold;
+                    }
+                    ul {
+                        list-style-type: none;
+                        padding-left: 20px;
+                    }
+                    a {
+                        color: #007bff;
+                        text-decoration: none;
+                    }
+                `
             };
+
             await transportador.sendMail(emailCorpo);
-            return res.status(200).json({ message: "Senha enviada com sucesso para o seu email" });
+            return res.status(200).json({ message: "Nova senha enviada com sucesso para o seu email" });
         }
     } catch (err) {
         console.error(err);
@@ -223,6 +285,9 @@ async function alterarSenha(req, res) {
     const email = res.locals.email
     const senhaNova = user.senhaNova
 
+        const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+        const dataExpiracao = moment.utc(createdAt).add(1, 'years').format('YYYY-MM-DD HH:mm:ss');
+
     try {
         const connection = await getConnection();
         let query = "SELECT * FROM usuarios WHERE email = ?"
@@ -240,8 +305,8 @@ async function alterarSenha(req, res) {
                 return res.status(400).json({ message: 'Senha antiga incorreta' })
             } else {
                 const senhaNovaHash = bcrypt.hashSync(senhaNova, 10)
-                query = "UPDATE usuarios set senha = ?, updated_at = NOW(), updated_by = ? WHERE email = ?"
-                const [results] = await connection.query(query, [senhaNovaHash, res.locals.email, email]);
+                query = "UPDATE usuarios set senha = ?, updated_at = NOW(), updated_by = ?, data_expiracao = ? WHERE email = ?"
+                const [results] = await connection.query(query, [senhaNovaHash, res.locals.email, dataExpiracao, email]);
                 connection.release();
                 return res.status(200).json({ message: "Senha alterada com sucesso" })
             }

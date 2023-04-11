@@ -48,6 +48,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     deleted_by: {
       type: DataTypes.STRING,
+    },
+    data_expiracao: {
+      type: DataTypes.DATE,
+      allowNull: true, // pode ser nulo no momento da criação do usuário
     }
   }, {
     sequelize,
