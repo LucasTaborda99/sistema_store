@@ -8,13 +8,13 @@ const Categoria = require('../models').Categoria
 
 const getConnection = require('../connection');
 
-// Importando a biblioteca - Moment.js, que permite trabalhar com datas e hor·rios.
+// Importando a biblioteca - Moment.js, que permite trabalhar com datas e hor√°rios.
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
 
 require('dotenv').config()
 
-// Cria Produto, funcionalidade disponÌvel apenas aos roles = 'admin'
+// Cria Produto, funcionalidade dispon√≠vel apenas aos roles = 'admin'
 async function adicionarProduto (req, res){
   try {
     const produto = req.body;
@@ -26,13 +26,13 @@ async function adicionarProduto (req, res){
     const foundProduto = await Produto.findOne({ where: { nome } });
     
     if (foundProduto) {
-        return res.status(400).json({ message: "Produto j· existente" });
+        return res.status(400).json({ message: "Produto j√° existente" });
     }
 
     const foundCategoria = await Categoria.findOne({ where: { id: produto.id_categoria } });
 
-    if (foundCategoria) {
-        return res.status(400).json({ message: "Categoria inv·lida" })
+    if (!foundCategoria) {
+        return res.status(400).json({ message: "Categoria inv√°lida" })
     }
 
     const newProduto = await Produto.create({
@@ -65,7 +65,7 @@ async function getProduto(req, res) {
   }
 }
 
-// Atualiza Produto pelo ID, funcionalidade disponÌvel apenas aos roles = 'admin'
+// Atualiza Produto pelo ID, funcionalidade dispon√≠vel apenas aos roles = 'admin'
 const updateProduto = async (req, res) => {
   
   const { id, nome } = req.body;
@@ -76,12 +76,12 @@ const updateProduto = async (req, res) => {
     // busca o produto pelo ID
     const Produto = await Produto.findByPk(id);
     if (!Produto) {
-      return res.status(404).json({ message: 'Produto com esse ID n„o encontrado' });
+      return res.status(404).json({ message: 'Produto com esse ID n√£o encontrado' });
     }
-    // verifica se j· existe um produto com esse nome
+    // verifica se j√° existe um produto com esse nome
     const ProdutoExistente = await Produto.findOne({ where: { nome } });
     if (ProdutoExistente && ProdutoExistente.id !== Produto.id) {
-      return res.status(400).json({ message: 'J· existe um produto com esse nome' });
+      return res.status(400).json({ message: 'J√° existe um produto com esse nome' });
     }
     // atualiza o produto
     await Produto.update({ nome, updated_by: updatedBy, updated_at: updatedAt});
@@ -91,8 +91,8 @@ const updateProduto = async (req, res) => {
   }
 };
 
-// 'Deleta' produto ('softdelete', atualiza a coluna 'deleted_at' com a data e hor·rio que o produto foi deletado
-// e atualiza a coluna deleted_by com o email do usu·rio que deletou), funcionalidade disponÌvel apenas aos roles = 'admin'
+// 'Deleta' produto ('softdelete', atualiza a coluna 'deleted_at' com a data e hor√°rio que o produto foi deletado
+// e atualiza a coluna deleted_by com o email do usu√°rio que deletou), funcionalidade dispon√≠vel apenas aos roles = 'admin'
 async function deleteProduto(req, res) {
   try {
       const produto = req.body;
@@ -104,10 +104,10 @@ async function deleteProduto(req, res) {
       connection.release();
 
       if (results.affectedRows == 0) {
-          return res.status(404).json({ message: "ID n„o encontrado" });
+          return res.status(404).json({ message: "ID n√£o encontrado" });
       }
 
-      return res.status(200).json({ message: "Produto marcado como excluÌdo com sucesso" });
+      return res.status(200).json({ message: "Produto marcado como exclu√≠do com sucesso" });
   } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde" });

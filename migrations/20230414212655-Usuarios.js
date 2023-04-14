@@ -53,7 +53,7 @@ module.exports = {
       },
       data_expiracao: {
         type: Sequelize.DATE,
-        allowNull: true, // pode ser nulo no momento da criaÁ„o do usu·rio
+        allowNull: true, // pode ser nulo no momento da cria√ß√£o do usu√°rio
       }
     });
   },
