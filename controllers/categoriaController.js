@@ -1,6 +1,6 @@
 // Categoria - Controller 
 
-// const { Categoria } = require('../models/index');
+// Importando a model Categoria
 const Categoria = require('../models').Categoria;
 
 const getConnection = require('../connection');

@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false
       },
       created_at: {
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       created_by: {
         type: Sequelize.STRING

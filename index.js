@@ -3,6 +3,7 @@ const express = require('express')
 let cors = require('cors')
 const userRoute = require('./routes/user')
 const categoriaRoute = require('./routes/categoria')
+const produtoRoute = require('./routes/produtos')
 const app = express()
 const { sequelize } = require('./models');
 
@@ -12,6 +13,7 @@ app.use(express.json())
 
 app.use('/user', userRoute)
 app.use('/categoria', categoriaRoute)
+app.use('/produto', produtoRoute)
 
 // Inicialize a conexão com o banco de dados
 sequelize.authenticate()

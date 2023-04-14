@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Categoria.init({
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true
+    },
     nome: {
       allowNull: false,
       type: DataTypes.STRING

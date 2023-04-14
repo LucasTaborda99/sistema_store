@@ -38,11 +38,33 @@ module.exports = (sequelize, DataTypes) => {
         model: 'categorias',
         key: 'id'
       }
+    },
+    created_at: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: sequelize.fn('NOW')
+    },
+    created_by: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    updated_at: {
+      type: DataTypes.DATE
+    },
+    updated_by: {
+      type: DataTypes.STRING
+    },
+    deleted_at: {
+      type: DataTypes.DATE
+    },
+    deleted_by: {
+      type: DataTypes.STRING
     }
   }, {
     sequelize,
     modelName: 'Produto',
-    tableName: 'produtos'
+    timestamps: false, // desabilita a criação das colunas created_at e updated_at
+    underscored: true
   });
 
   return Produto;
