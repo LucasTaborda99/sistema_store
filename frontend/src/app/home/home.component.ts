@@ -1,3 +1,5 @@
+// Componente da página inicial
+
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';

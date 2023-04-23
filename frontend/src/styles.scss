@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+// Arquivo para styles global
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -23,8 +23,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     padding: 0px 8px 0px 15px !important;
   }
 
-  .black-snackbar {
-    background: black !important;
+  .red-snackbar {
+    background: rgb(255, 0, 0) !important;
     color: white !important;
   }
 

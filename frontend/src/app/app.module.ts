@@ -1,3 +1,5 @@
+// Arquivo contendo todos os módulos importados que são utilizados pela aplicação
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -15,25 +17,6 @@ import { AppHeaderComponent } from './layouts/full/header/header.component';
 import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SignupComponent } from './signup/signup.component';
-import {
-  NgxUiLoaderConfig,
-  NgxUiLoaderModule,
-  PB_DIRECTION,
-  SPINNER,
-} from 'ngx-ui-loader';
-
-const ngx_ui_loader_config: NgxUiLoaderConfig = {
-  text: 'Loading...',
-  textColor: '#FFFFFF',
-  textPosition: 'center-center',
-  pbColor: 'red',
-  bgsColor: 'red',
-  fgsColor: 'red',
-  fgsType: SPINNER.chasingDots,
-  fgsSize: 100,
-  pbDirection: PB_DIRECTION.leftToRight,
-  pbThickness: 5,
-};
 
 @NgModule({
   declarations: [	
@@ -54,8 +37,7 @@ const ngx_ui_loader_config: NgxUiLoaderConfig = {
     MaterialModule,
     FlexLayoutModule,
     SharedModule,
-    HttpClientModule,
-    NgxUiLoaderModule.forRoot(ngx_ui_loader_config),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

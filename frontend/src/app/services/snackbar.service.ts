@@ -1,3 +1,5 @@
+// Arquivo de criação do snackbar de sucesso ou erro
+
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -8,12 +10,12 @@ export class SnackbarService {
   constructor(private snackbar: MatSnackBar) {}
 
   openSnackBar(message: string, action: string) {
-    if (action === 'erro') {
+    if (action === 'error') {
       this.snackbar.open(message, '', {
         horizontalPosition: 'center',
         verticalPosition: 'top',
-        duration: 2000,
-        panelClass: ['black-snackbar'],
+        duration: 1500,
+        panelClass: ['red-snackbar'],
       });
     } else {
       this.snackbar.open(message, '', {

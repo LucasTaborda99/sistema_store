@@ -1,3 +1,5 @@
+// Arquivo de estilização da página inicial
+
 * {
   box-sizing: border-box;
 }
@@ -144,7 +146,7 @@ a {
 a::after {
   content:"";
   top: 80%;
-  border-bottom: 2px solid #F8E71C;
+  border-bottom: 2px solid #ffffff;
   transition: all 0.35s;
   position: absolute;
 }
