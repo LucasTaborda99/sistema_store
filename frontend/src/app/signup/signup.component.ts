@@ -2,7 +2,6 @@
 
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { SnackbarService } from '../services/snackbar.service';
 import { UserService } from '../services/user.service';
 import { GlobalConstants } from '../shared/global-constants';
@@ -20,7 +19,6 @@ export class SignupComponent implements OnInit {
     private fb: FormBuilder,
     private userService: UserService,
     private snackBar: SnackbarService,
-    private ngxService: NgxUiLoaderService
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +41,6 @@ export class SignupComponent implements OnInit {
   }
 
   handleSubmit() {
-    this.ngxService.start();
     let formData = this.signupForm.value;
     var data = {
       nome: formData.nome,
@@ -55,12 +52,10 @@ export class SignupComponent implements OnInit {
     this.userService.signup(data).subscribe(
       (resp: any) => {
         this.signupForm.reset();
-        this.ngxService.stop();
         this.responseMessage = resp?.message;
         this.snackBar.openSnackBar(this.responseMessage, '');
       },
       (error) => {
-        this.ngxService.stop();
         if (error.error?.message) {
           this.responseMessage = error.error?.message;
         } else {
