@@ -23,26 +23,16 @@ export class SignupComponent implements OnInit {
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
-      nome: [
-        null,
-        [Validators.required, Validators.pattern(GlobalConstants.nomeRegex)],
-      ],
-      email: [
-        null,
-        [Validators.required, Validators.pattern(GlobalConstants.emailRegex)],
-      ],
-      numero_contato: [
-        null,
-        [
-          Validators.required, Validators.pattern(GlobalConstants.numeroContatoRegex)],
-      ],
-      senha: [null, [Validators.required]],
+      nome: [null, [Validators.required, Validators.pattern(GlobalConstants.nomeRegex)]],
+      email: [null, [Validators.required, Validators.pattern(GlobalConstants.emailRegex)]],
+      numero_contato: [null, [Validators.required, Validators.pattern(GlobalConstants.numeroContatoRegex)]],
+      senha: [null, [Validators.required]]
     });
   }
 
   handleSubmit() {
     let formData = this.signupForm.value;
-    var data = {
+    let data = {
       nome: formData.nome,
       email: formData.email,
       numero_contato: formData.numero_contato,

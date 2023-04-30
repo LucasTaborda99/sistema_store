@@ -1,0 +1,38 @@
+<!-- Tela de Esqueci Senha -->
+
+<mat-toolbar>
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">Esqueci Senha</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content>
+    <form [formGroup]="esqueciSenhaForm">
+        <div fxFlex fxLayout="column">
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Nome</mat-label>
+                <input type="text" matInput formControlName="nome" required />
+                <mat-error *ngIf="esqueciSenhaForm.controls.nome.touched && esqueciSenhaForm.controls.nome.invalid">
+                    <span *ngIf="esqueciSenhaForm.controls.nome.errors.required">Esse campo é obrigatório</span>
+                    <span *ngIf="esqueciSenhaForm.controls.nome.errors.pattern">Esse campo é inválido</span>
+                </mat-error>
+            </mat-form-field>
+  
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" required />
+                <mat-error *ngIf="esqueciSenhaForm.controls.email.touched && esqueciSenhaForm.controls.email.invalid">
+                    <span *ngIf="esqueciSenhaForm.controls.email.errors.required">Esse campo é obrigatório</span>
+                    <span *ngIf="esqueciSenhaForm.controls.email.errors.pattern">Esse campo é inválido</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button class="btnEnviarSenha" mat-raised-button type="submit" (click)="handleSubmit()" [disabled]="!(esqueciSenhaForm.valid && esqueciSenhaForm.dirty)">
+      Enviar Senha
+    </button>
+    <button class="btnFechar" mat-raised-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>
