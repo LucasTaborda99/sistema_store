@@ -16,7 +16,7 @@ export class EsqueciSenhaComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
-    private snackbarService: SnackbarService  ) { }
+    private snackbarService: SnackbarService ) { }
 
   ngOnInit(): void {
     this.esqueciSenhaForm = this.formBuilder.group({

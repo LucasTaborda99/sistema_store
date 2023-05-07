@@ -18,6 +18,7 @@ import { AppSidebarComponent } from './layouts/full/sidebar/sidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { SignupComponent } from './signup/signup.component';
 import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [	
@@ -28,7 +29,8 @@ import { EsqueciSenhaComponent } from './esqueci-senha/esqueci-senha.component';
     AppHeaderComponent,
     AppSidebarComponent,
     SignupComponent,
-    EsqueciSenhaComponent
+    EsqueciSenhaComponent,
+    LoginComponent
    ],
   imports: [
     BrowserModule,

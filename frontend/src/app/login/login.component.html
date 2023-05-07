@@ -1,0 +1,38 @@
+<!-- Tela de Login -->
+
+<mat-toolbar>
+    <mat-toolbar-row fxLayout="row">
+        <span class="title-center">Login</span>
+    </mat-toolbar-row>
+</mat-toolbar>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="loginForm">
+        <div fxFlex fxLayout="column">
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Email</mat-label>
+                <input type="email" matInput formControlName="email" required />
+                <mat-error *ngIf="loginForm.controls.email.touched && loginForm.controls.email.invalid">
+                    <span *ngIf="loginForm.controls.email.errors.required">Esse campo é obrigatório</span>
+                    <span *ngIf="loginForm.controls.email.errors.pattern">Esse campo é inválido</span>
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" fxFlex>
+                <mat-label>Senha</mat-label>
+                <input type="password" matInput formControlName="senha" required />
+                <mat-error *ngIf="loginForm.controls.senha.touched && loginForm.controls.senha.invalid">
+                    <span *ngIf="loginForm.controls.senha.errors.required">Esse campo é obrigatório</span>
+                    <span *ngIf="loginForm.controls.senha.errors.pattern">Esse campo é inválido</span>
+                </mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button class="btnLogin" mat-raised-button type="submit" (click)="handleSubmit()" [disabled]="!(loginForm.valid && loginForm.dirty)">
+      Enviar Senha
+    </button>
+    <button class="btnFechar" mat-raised-button mat-dialog-close>Fechar</button>
+</mat-dialog-actions>
