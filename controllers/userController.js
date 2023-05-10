@@ -153,6 +153,7 @@ async function esqueciSenha(req, res) {
                         <li><b>Nova senha:</b> ${newPassword}</li>
                     </ul>
                     <p><b>Observação:</b> A nova senha gerada é válida apenas por 30 minutos. Acesse o SistemaStore e altere sua senha.</p>
+                    <p><b>Se você já recebeu esse código ou não precisa mais dele, desconsidere este e-mail.</b></p>
                     <p>Clique <a href="http://localhost:4200/">aqui</a> para fazer login.</p>
                     <p>Atenciosamente,
                     <p>Equipe do SistemaStore</p>
