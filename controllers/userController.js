@@ -1,7 +1,9 @@
 //  User Controller
 
+// Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
 const getConnection = require('../connection');
 
+// Importando da model usuarios a classe Usuario
 const { Usuario } = require('../models/index');
 
 // Importando a biblioteca bcryptjs, para armazenar senhas como um hash no banco de dados
@@ -10,16 +12,17 @@ const bcrypt = require('bcryptjs');
 // Improtando a biblioteca crypto, para gerar uma sequência de caracteres aleatórios
 const crypto = require('crypto');
 
-// Importando a biblioteca - JSON Web Token(JWT), para gerar Token aos usuários ao acessar o sistema
-const jwt = require('jsonwebtoken')
-
 // Importando a biblioteca - Nodemailer, para mandar email através do objeto "transportador"
 const nodemailer = require('nodemailer');
 
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
 const moment = require('moment-timezone');
 
-require('dotenv').config()
+// Carregando as variáveis de ambiente definidas no arquivo .env
+require('dotenv').config();
+
+// Importando o módulo jwtGenerator.js que está localizada na pasta services
+const JwtGenerator = require('../services/geradorJwt');
 
 // Cadastra um usuário, com status default 'false' e role 'user', a senha é salva em formato de hash no banco de dados
 async function cadastrarUsuarios(req, res) {
@@ -58,43 +61,50 @@ async function cadastrarUsuarios(req, res) {
         return res.status(500).json({ message: "Erro ao cadastrar usuário" });
     }
 }
-  
-// Realiza o login de um usuário, por email e senha, após aprovação do role = 'admin', mudando o status do usuário para 'true',
-// será permitido o login desse usuário ao sistema, gerando um token jwt ao usuário, válido por 24 horas
+
+/* Realiza o login de um usuário, por email e senha, após aprovação do role = 'admin',
+mudando o status do usuário para 'true', será permitido o login desse usuário ao sistema,
+gerando um token jwt ao usuário, válido por 24 horas */
 async function login(req, res) {
     try {
-        const { email, senha } = req.body;
+      const { email, senha } = req.body;
+  
+      const foundUser = await Usuario.findOne({ where: { email } });
+  
+      if (!foundUser) {
+        return res.status(401).json({ message: "Email ou senha incorretos" });
+      }
+  
+      const validPassword = await bcrypt.compare(senha, foundUser.senha);
+      if (!validPassword) {
+        return res.status(401).json({ message: "Email ou senha incorretos" });
+      }
+  
+      if (foundUser.status !== 'true') {
+        return res.status(401).json({ message: "Espere pela aprovação do administrador" });
+      }
 
-        const foundUser = await Usuario.findOne({ where: { email } });
-        if (!foundUser) {
-            return res.status(401).json({ message: "Email ou senha incorretos" });
-        }
+      // Verifica se a senha expirou, de acordo com a data atual
+      const currentDate = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+      const expirationDate = moment.utc(foundUser.data_expiracao).format('YYYY-MM-DD HH:mm:ss');
+      if (moment(currentDate).isAfter(expirationDate)) {
+        return res.status(401).json({ message: "A senha expirou. Por favor, solicite uma nova senha." });
+      }
+      
+      // Criando uma nova instância da classe JwtGenerator, passando como parâmetro o valor da variável de ambiente ACCESS_TOKEN, definida no arquivo .env
+      const jwtGenerator = new JwtGenerator(process.env.ACCESS_TOKEN);
 
-        const validPassword = await bcrypt.compare(senha, foundUser.senha);
-        if (!validPassword) {
-            return res.status(401).json({ message: "Email ou senha incorretos" });
-        }
+      // Chamando o método generateToken da instância de JwtGenerator, passando o email do usuário autenticado e o role
+      const accessToken = await jwtGenerator.generateToken(email, foundUser.role);
+  
+      return res.status(200).json({ token: accessToken });
 
-        if (foundUser.status !== 'true') {
-            return res.status(401).json({ message: "Espere pela aprovação do administrador" });
-        }
-
-        // Verifica se a senha expirou, de acordo com a data atual
-        const currentDate = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
-        const expirationDate = moment.utc(foundUser.data_expiracao).format('YYYY-MM-DD HH:mm:ss');
-        
-        if (moment(currentDate).isAfter(expirationDate)) {
-            return res.status(401).json({ message: "A senha expirou. Por favor, solicite uma nova senha." });
-        }
-
-        const accessToken = jwt.sign({ email: foundUser.email, role: foundUser.role }, process.env.ACCESS_TOKEN, { expiresIn: "24h" });
-        return res.status(200).json({ token: accessToken });
     } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Erro ao realizar login" });
+      console.error(err);
+      return res.status(500).json({ message: "Erro ao realizar login" });
     }
-}
-
+  }
+  
 // Criando o objeto "transportador" de email, usando a biblioteca Nodemailer,
 // para conectar à conta do Gmail do usuário e enviar email
 let transportador = nodemailer.createTransport({
@@ -203,7 +213,6 @@ async function get(req, res) {
 }
 
 // Atualiza o status dos usuários, de 'false' para 'true', podendo assim o usuário realizar o login no sistema, funcionalidade disponível apenas aos roles = 'admin'
-
 async function updateStatusERole(req, res) {
   try {
     const { id, status, role } = req.body;
@@ -216,7 +225,8 @@ async function updateStatusERole(req, res) {
       return res.status(401).json({ message: "Apenas administradores têm permissão para atualizar o status de usuários" });
     }
 
-    console.log("updated_at before update:", user.updated_at); // adicionando um console.log para visualizar a data antes da atualização
+    // Adicionando um console.log para visualizar a data antes da atualização
+    console.log("updated_at before update:", user.updated_at);
 
     await Usuario.update(
       {
