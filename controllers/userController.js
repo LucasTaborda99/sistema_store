@@ -24,42 +24,30 @@ require('dotenv').config();
 // Importando o módulo jwtGenerator.js que está localizada na pasta services
 const JwtGenerator = require('../services/geradorJwt');
 
-// Cadastra um usuário, com status default 'false' e role 'user', a senha é salva em formato de hash no banco de dados
+// Importando o módulo userService.js que está localizada na pasta services
+const UserService = require('../services/UserService');
+
+// Cadastra um usuário, com status default 'false' e role 'user' (caso não seja o primeiro usuário cadastrado no banco de dados) e salvando a senha em formato de hash no banco de dados
 async function cadastrarUsuarios(req, res) {
-    try {
-        const user = req.body;
-        const email = user.email;
-        const saltRounds = 10;
+  try {
+    const { nome, numero_contato, email, senha } = req.body;
 
-        const existingUsers = await Usuario.findAll();
-        const role = existingUsers.length === 0 ? 'admin' : 'user';
-        const status = existingUsers.length === 0 ? 'true' : 'false';
-        const createdBy = existingUsers.length === 0 ? 'admin' : 'user';
-        const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
-        const dataExpiracao = moment.utc(createdAt).add(1, 'years').format('YYYY-MM-DD HH:mm:ss');
+     // Criando uma nova instância da classe UserService
+    const userService = new UserService();
 
-        const foundUser = await Usuario.findOne({ where: { email } });
-        if (foundUser) {
-            return res.status(400).json({ message: "Email já existente" });
-        }
-
-        const hash = await bcrypt.hash(user.senha, saltRounds);
-
-        const newUser = await Usuario.create({
-            nome: user.nome,
-            numero_contato: user.numero_contato,
-            email: user.email,
-            senha: hash,
-            role: role,
-            status: status,
-            created_by: createdBy,
-            created_at: createdAt,
-            data_expiracao: dataExpiracao
-        });
-        return res.status(200).json({ message: "Usuário registrado com sucesso" });
-    } catch (err) {
-        return res.status(500).json({ message: "Erro ao cadastrar usuário" });
+    // Chamando o método verificarEmailExistente da instância de userService, passando o email do usuário como parâmetro
+    const emailExistente = await userService.verificarEmailExistente(email);
+    if (emailExistente) {
+      return res.status(400).json({ message: "Email já existente" });
     }
+
+    // Cadastrando o usuário utilizando o serviço UserService e o método cadastrarUser com seus devidos parâmetros
+    await userService.cadastrarUser(nome, numero_contato, email, senha);
+
+    return res.status(200).json({ message: "Usuário registrado com sucesso" });
+  } catch (err) {
+    return res.status(500).json({ message: "Erro ao cadastrar usuário" });
+  }
 }
 
 /* Realiza o login de um usuário, por email e senha, após aprovação do role = 'admin',
