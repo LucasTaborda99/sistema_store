@@ -1,7 +1,7 @@
 //  User Controller
 
 // Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
-const getConnection = require('../connection');
+const Database = require('../connection');
 
 // Importando da model usuarios a classe Usuario
 const { Usuario } = require('../models/index');
@@ -106,7 +106,7 @@ let transportador = nodemailer.createTransport({
 // verificando configuração de conexão para mandar mensagem
 transportador.verify(function (error) {
     if (!error) {
-        console.log("O servidor está pronto para receber nossas mensagens");
+        console.log("O servidor está pronto para receber nossas mensagens!");
     } else {
         console.log(error);
     }
@@ -243,7 +243,9 @@ async function updateUser(req, res) {
     let connection
 
     try {
-        const connection = await getConnection();
+        const db = Database.getInstance();
+        const connection = await db.getConnection();
+
         const [results] = await connection.query(querySelect, [user.email]);
 
         if (results.length === 0) {
@@ -289,7 +291,9 @@ async function alterarSenha(req, res) {
         const dataExpiracao = moment.utc(createdAt).add(1, 'years').format('YYYY-MM-DD HH:mm:ss');
 
     try {
-        const connection = await getConnection();
+        const db = Database.getInstance();
+        const connection = await db.getConnection();
+
         let query = "SELECT * FROM usuarios WHERE email = ?"
         const [rows] = await connection.query(query, [email]);
         if (rows.length <= 0) {
@@ -325,7 +329,10 @@ async function deleteUser(req, res) {
         const deletedBy = res.locals.email;
 
         const query = "UPDATE usuarios SET deleted_at = NOW(), deleted_by = ? WHERE email = ?";
-        const connection = await getConnection();
+
+        const db = Database.getInstance();
+        const connection = await db.getConnection();
+
         const [results] = await connection.query(query, [deletedBy, user.email]);
         connection.release();
 

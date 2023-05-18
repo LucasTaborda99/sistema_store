@@ -1,9 +1,10 @@
 // Categoria - Controller 
 
+// Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
+const Database = require('../connection');
+
 // Importando a model Categoria
 const Categoria = require('../models').Categoria;
-
-const getConnection = require('../connection');
 
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horÃ¡rios.
 const moment = require('moment-timezone');
@@ -86,7 +87,9 @@ async function deleteCategoria(req, res) {
       const deletedBy = res.locals.email;
 
       const query = "UPDATE categoria SET deleted_at = NOW(), deleted_by = ? WHERE id = ?";
-      const connection = await getConnection();
+      const db = Database.getInstance();
+      const connection = await db.getConnection();
+
       const [results] = await connection.query(query, [deletedBy, categoria.id]);
       connection.release();
 

@@ -1,5 +1,8 @@
 // Produtos - Controller 
 
+// Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
+const Database = require('../connection');
+
 // Importando a model Produto
 const Produto = require('../models').Produto;
 
@@ -8,8 +11,6 @@ const Categoria = require('../models').Categoria
 
 // Importando o módulo produtoService.js que está localizada na pasta services
 const { SequelizeProdutoRepository } = require('../services/ProdutoService');
-
-const getConnection = require('../connection');
 
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
 const moment = require('moment-timezone');
@@ -104,7 +105,10 @@ async function deleteProduto(req, res) {
       const deletedBy = res.locals.email;
 
       const query = "UPDATE produto SET deleted_at = NOW(), deleted_by = ? WHERE id = ?";
-      const connection = await getConnection();
+
+      const db = Database.getInstance();
+      const connection = await db.getConnection();
+
       const [results] = await connection.query(query, [deletedBy, produto.id]);
       connection.release();
 

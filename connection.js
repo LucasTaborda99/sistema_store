@@ -1,26 +1,38 @@
-// Realizando a conexão com o database mysql2, a partir do arquivo .env
+/* Realizando a conexão com o database mysql2, a partir do arquivo .env,
+utilizando o design pattern Singleton */
 
+// Importação do pacote mysql2/promise
 const mysql = require('mysql2/promise');
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-});
+/* Criando a classe Database, o método construtor que seria privado e o
+pool com as informações a partir do arquivo .env */
+class Database {
+  constructor() {
+    this.pool = mysql.createPool({
+      host: process.env.DB_HOST,
+      user: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0
+    });
+  }
 
-(async () => {
-  const connection = await pool.getConnection();
-  await connection.execute("SET time_zone = '-03:00'");
-  connection.release();
-})();
+  // Método estático para obter a instância única da classe Database
+  static getInstance() {
+    // Verificando se a propriedade instance já está definida
+    if (!Database.instance) {
+      Database.instance = new Database();
+    }
+    return Database.instance;
+  }
 
-async function getConnection() {
-  const connection = await pool.getConnection();
-  return connection;
+  // Método assíncrono para obter uma conexão do pool
+  async getConnection() {
+    const connection = await this.pool.getConnection();
+    return connection;
+  }
 }
 
-module.exports = getConnection;
+module.exports = Database;
