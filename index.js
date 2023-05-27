@@ -5,6 +5,7 @@ let cors = require('cors')
 const userRoute = require('./routes/user')
 const categoriaRoute = require('./routes/categoria')
 const produtoRoute = require('./routes/produtos')
+const dashboardRoute = require('./routes/dashboard')
 const app = express()
 const { sequelize } = require('./models');
 
@@ -15,6 +16,7 @@ app.use(express.json())
 app.use('/user', userRoute)
 app.use('/categoria', categoriaRoute)
 app.use('/produto', produtoRoute)
+app.use('/dashboard', dashboardRoute)
 
 // Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
 const Database = require('./connection');
