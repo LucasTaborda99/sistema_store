@@ -6,6 +6,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class UserService {
+  [x: string]: any;
   url = environment.apiUrl;
 
   constructor(private httpClient: HttpClient) {}
@@ -31,7 +32,15 @@ export class UserService {
     })
   }
 
+  // Método para checar Token
   checkToken() {
     return this.httpClient.get(this.url + '/user/checarToken')
+  }
+
+  // Método para mudar a senha
+  mudarSenha(data: any) {
+    return this.httpClient.post(this.url + 'user/alterarSenha/', data, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    })
   }
 }

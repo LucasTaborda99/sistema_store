@@ -1,0 +1,9 @@
+<mat-nav-list appAccordion>
+    <mat-list-item appAccordionLink *ngFor="let menuitem of itensMenu.getMenuItens()" routerLinkActive="selected" group={{menuitem.state}}>
+        <a appAccordionToggle [routerLink]="['/sistemastore', menuitem.state]" *ngIf="(menuitem.role === '' || menuitem.role === tokenPayLoad.role)">
+            <mat-icon>{{menuitem.icone}}</mat-icon>
+            <span>{{menuitem.nome}}</span>
+            <span fxFlex></span>
+        </a>
+    </mat-list-item>
+</mat-nav-list>
