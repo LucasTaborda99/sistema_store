@@ -8,7 +8,8 @@ export interface Menu{
 }
 
 const ITENSMENU = [
-    {state: 'dashboard', nome: 'Dashboard', icone: 'dashboard', role: ''}
+    {state: 'dashboard', nome: 'Dashboard', icone: 'dashboard', role: ''},
+    {state: 'categoria', nome: 'Gerenciar Categoria', icone: 'category', role: 'admin'}
 ]
 
 @Injectable()

@@ -1,6 +1,6 @@
 // Categoria - Controller 
 
-// Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
+// Importando o mï¿½dulo connection, responsï¿½vel por estabelecer conexï¿½o com o banco de dados
 const Database = require('../connection');
 
 // Importando a model Categoria
@@ -26,7 +26,7 @@ async function adicionarCategoria (req, res){
     if (foundCategoria) {
         return res.status(400).json({ message: "Categoria jÃ¡ existente" });
     }
-
+    console.log(createdBy)
     const newCategoria = await Categoria.create({
       nome: categoria.nome,
       created_by: createdBy,

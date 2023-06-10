@@ -8,9 +8,9 @@ require('dotenv').config()
 let aut = require('../services/autenticacao')
 let verRole = require('../services/verificaRole')
 
-router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.adicionarCategoria)
-router.get('/getCategoria', aut.autenticacaoToken, categoriaController.getCategoria)
-router.patch('/updateCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.updateCategoria)
-router.delete('/deleteCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.deleteCategoria)
+router.post('/adicionarCategoria', categoriaController.adicionarCategoria)
+router.get('/getCategoria', categoriaController.getCategoria)
+router.patch('/updateCategoria', categoriaController.updateCategoria)
+router.delete('/deleteCategoria', categoriaController.deleteCategoria)
 
 module.exports = router

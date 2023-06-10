@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: sequelize.fn('NOW')
     },
     created_by: {
-      allowNull: false,
+      allowNull: true,
       type: DataTypes.STRING
     },
     updated_at: {
