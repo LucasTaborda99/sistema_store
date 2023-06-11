@@ -1,7 +1,7 @@
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content>
     <h5>Você tem certeza que quer {{details.message}} ?</h5>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-raised-button color="primary" (click)="gerenciaAcaoMudanca()">Sim</button>
+    <button mat-raised-button class="btnSim" (click)="gerenciaAcaoMudanca()">Sim</button>
     <button mat-raised-button mat-dialog-close>Não</button>
 </mat-dialog-actions>
