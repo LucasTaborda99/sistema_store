@@ -9,8 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialRoutes } from './material.routing';
 import { MaterialModule } from '../shared/material-module';
-import { ViewBillProductsComponent } from './dialog/view-bill-products/view-bill-products.component';
-import { ConfirmationComponent } from './dialog/view-bill-products/confirmation/confirmation.component';
+import { ConfirmationComponent } from './dialog/confirmation/confirmation.component';
 import { ChangePasswordComponent } from './dialog/change-password/change-password.component';
 import { GerenciaCategoriaComponent } from './gerencia-categoria/gerencia-categoria.component';
 import { CategoriaComponent } from './dialog/categoria/categoria.component';
@@ -28,7 +27,6 @@ import { CategoriaComponent } from './dialog/categoria/categoria.component';
   ],
   providers: [],
   declarations: [
-    ViewBillProductsComponent,
     ConfirmationComponent,
     ChangePasswordComponent,
     GerenciaCategoriaComponent,

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ChangePasswordComponent } from 'src/app/material-component/dialog/change-password/change-password.component';
-import { ConfirmationComponent } from 'src/app/material-component/dialog/view-bill-products/confirmation/confirmation.component';
+import { ConfirmationComponent } from 'src/app/material-component/dialog/confirmation/confirmation.component';
 
 @Component({
   selector: 'app-header',
