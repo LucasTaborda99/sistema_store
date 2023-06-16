@@ -285,7 +285,7 @@ async function checarToken(req, res) {
 async function alterarSenha(req, res) {
     const user = req.body
     const email = res.locals.email
-    const senhaNova = user.senhaNova
+    const senhaNova = user.newPassword
 
         const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
         const dataExpiracao = moment.utc(createdAt).add(1, 'years').format('YYYY-MM-DD HH:mm:ss');
@@ -301,16 +301,19 @@ async function alterarSenha(req, res) {
             return res.status(400).json({ message: "Usuário não encontrado" })
         } else {
             const senhaAtual = rows[0].senha;
-            const senhaAntiga = user.senhaAntiga;
+            const senhaAntiga = user.oldPassword;
+            console.log('senhaAntiga:', senhaAntiga);
+            console.log('senhaAtual:', senhaAtual);
+
             const senhaAtualCorreta = bcrypt.compareSync(senhaAntiga, senhaAtual)
 
             if (!senhaAtualCorreta) {
                 connection.release();
-                return res.status(400).json({ message: 'Senha antiga incorreta' })
+                return res.status(400).json({ message: 'Senha atual incorreta' })
             } else {
                 const senhaNovaHash = bcrypt.hashSync(senhaNova, 10)
                 query = "UPDATE usuarios set senha = ?, updated_at = NOW(), updated_by = ?, data_expiracao = ? WHERE email = ?"
-                const [results] = await connection.query(query, [senhaNovaHash, res.locals.email, dataExpiracao, email]);
+                const [results] = await connection.query(query, [senhaNovaHash, email, dataExpiracao, email]);
                 connection.release();
                 return res.status(200).json({ message: "Senha alterada com sucesso" })
             }

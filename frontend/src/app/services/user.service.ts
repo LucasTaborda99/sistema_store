@@ -39,7 +39,7 @@ export class UserService {
 
   // Método para mudar a senha
   mudarSenha(data: any) {
-    return this.httpClient.post(this.url + 'user/alterarSenha/', data, {
+    return this.httpClient.post(this.url + '/user/alterarSenha/', data, {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     })
   }

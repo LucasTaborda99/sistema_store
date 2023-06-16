@@ -4,7 +4,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { UserService } from 'src/app/services/user.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-
 @Component({
   selector: 'app-change-password',
   templateUrl: './change-password.component.html',
@@ -29,7 +28,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   validateSubmit() {
-    if(this.changePasswordForm.controls.newPassword.value != this.changePasswordForm.controls.confirmPassword.value) {
+    if(this.changePasswordForm.controls.newPassword.value !== this.changePasswordForm.controls.confirmPassword.value) {
       return true
     } else {
       return false
@@ -38,11 +37,16 @@ export class ChangePasswordComponent implements OnInit {
 
   handleChangePasswordSubmit() {
     let formData = this.changePasswordForm.value
+    
     let data = {
       oldPassword: formData.oldPassword,
       newPassword: formData.newPassword,
       confirmPassword: formData.confirmPassword
     }
+
+    console.log(formData)
+    console.log(data)
+
     this.userService.mudarSenha(data).subscribe(
       (resp: any) => {
       this.responseMessage = resp?.message
@@ -51,6 +55,7 @@ export class ChangePasswordComponent implements OnInit {
       },
       (error) => {
         if (error.error?.message) {
+          console.log(error)
           this.responseMessage = error.error?.message;
         } else {
           this.responseMessage = GlobalConstants.genericError;
