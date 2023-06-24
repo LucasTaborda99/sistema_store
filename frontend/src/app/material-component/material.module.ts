@@ -13,6 +13,7 @@ import { ConfirmationComponent } from './dialog/confirmation/confirmation.compon
 import { ChangePasswordComponent } from './dialog/change-password/change-password.component';
 import { GerenciaCategoriaComponent } from './gerencia-categoria/gerencia-categoria.component';
 import { CategoriaComponent } from './dialog/categoria/categoria.component';
+import { GerenciarUsuarioComponent } from './gerenciar-usuario/gerenciar-usuario.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { CategoriaComponent } from './dialog/categoria/categoria.component';
     ConfirmationComponent,
     ChangePasswordComponent,
     GerenciaCategoriaComponent,
-    CategoriaComponent    
+    CategoriaComponent,
+    GerenciarUsuarioComponent    
   ]
 })
 export class MaterialComponentsModule {}

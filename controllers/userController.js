@@ -200,7 +200,8 @@ async function get(req, res) {
     }
 }
 
-// Atualiza o status dos usuários, de 'false' para 'true', podendo assim o usuário realizar o login no sistema, funcionalidade disponível apenas aos roles = 'admin'
+// Atualiza o status dos usuários, de 'false' para 'true' ou vice-versa, podendo assim o usuário realizar o login no sistema, funcionalidade disponível apenas aos roles = 'admin', e também sendo
+// possível atualizar o role do usuário de 'user' para 'admin' ou vice-versa
 async function updateStatusERole(req, res) {
   try {
     const { id, status, role } = req.body;

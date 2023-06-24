@@ -1,0 +1,37 @@
+<mat-card>
+    <b><span>Gerenciar Usuários</span></b>
+</mat-card>
+<mat-card>
+    <mat-form-field appearance="fill">
+        <mat-label>Filtro</mat-label>
+        <input matInput (keyup)="aplicarFiltro($event)" #input> 
+    </mat-form-field>
+</mat-card>
+<hr>
+<div class="tabela_responsiva">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>Nome</th>
+            <td mat-cell *matCellDef="let element">{{element.nome}}</td>
+        </ng-container>
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element">{{element.email}}</td>
+        </ng-container>
+        <ng-container matColumnDef="numero_contato">
+            <th mat-header-cell *matHeaderCellDef>Número Contato</th>
+            <td mat-cell *matCellDef="let element">{{element.numero_contato}}</td>
+        </ng-container>
+
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef>Desativar / Ativar</th>
+                <td mat-cell *matCellDef="let element" class="acao-link">
+                  <mat-slide-toggle (change)="changeStatusERoleUsuarios($event.checked, element.id)" 
+                    matTooltip="Ativar ou Desativar Usuário" [checked]="element.status"></mat-slide-toggle>
+                </td>
+              </ng-container>
+              
+        <tr mat-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+</div>

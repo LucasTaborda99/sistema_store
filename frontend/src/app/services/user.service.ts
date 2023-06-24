@@ -43,4 +43,16 @@ export class UserService {
       headers: new HttpHeaders().set('Content-Type', 'application/json')
     })
   }
+
+  // Método para recuperar o usuário
+  getUsuario() {
+    return this.httpClient.get(this.url + '/user/get/')
+  }
+
+  // Método para atualizar o status e role do usuário
+  updateUsuarioStatusERole(data: any) {
+    return this.httpClient.patch(this.url + '/user/updateStatusERole/', data, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    })
+  }
 }

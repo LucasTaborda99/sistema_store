@@ -6,7 +6,6 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
 import { CategoriaComponent } from '../dialog/categoria/categoria.component';
-import { response } from 'express';
 
 @Component({
   selector: 'app-gerencia-categoria',
