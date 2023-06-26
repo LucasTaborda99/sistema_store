@@ -1,8 +1,8 @@
-<body>
-    <mat-card>
-      <b><span>Dashboard</span></b>
-    </mat-card>
-    <br />
+<mat-card>
+    <b><span>Dashboard</span></b>
+</mat-card>
+  <hr>
+  <mat-card>
     <div class="row">
       <div class="column">
         <div class="card">
@@ -10,7 +10,7 @@
             <h2 class="title">Total Categorias:</h2>
             <h1 class="title">{{ data?.categoriasCount }}</h1>
             <p>
-              <button class="button" [routerLink]="['/']">
+              <button class="button" [routerLink]="['/sistemastore/categoria']">
                 Ver Categorias
               </button>
             </p>
@@ -19,19 +19,19 @@
       </div>
     </div>
 
-    <div class="row">
-        <div class="column">
-          <div class="card">
-            <div class="container">
-              <h2 class="title">Total Produtos:</h2>
-              <h1 class="title">{{ data?.produtosCount }}</h1>
-              <p>
-                <button class="button" [routerLink]="['/']">
-                  Ver Produtos
-                </button>
-              </p>
-            </div>
+  <div class="row">
+      <div class="column">
+        <div class="card">
+          <div class="container">
+            <h2 class="title">Total Produtos:</h2>
+            <h1 class="title">{{ data?.produtosCount }}</h1>
+            <p>
+              <button class="button" [routerLink]="['/']">
+                Ver Produtos
+              </button>
+            </p>
           </div>
         </div>
       </div>
-  </body>
+    </div>
+  </mat-card>

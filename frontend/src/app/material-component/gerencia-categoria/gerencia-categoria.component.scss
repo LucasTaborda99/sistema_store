@@ -4,9 +4,13 @@
 }
 
 .float-right {
-    float: right;
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+    top: 50%;
     background: #1F9EE7;
     color: #FFFFFF;
+    margin-right: 20px;
 }
 
 mat-card {

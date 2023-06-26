@@ -20,7 +20,7 @@ body {
   *, *:before, *:after {
     box-sizing: inherit;
   }
-  
+
   .column {
     float: left;
     width: 33.3%;
@@ -31,6 +31,7 @@ body {
   .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     margin: 8px;
+    border-radius: 3px;
   }
   
   .about-section {
@@ -41,7 +42,7 @@ body {
   }
   
   .container {
-    padding: 0 16px;
+    padding: 15px;
   }
   
   .container::after, .row::after {
@@ -66,10 +67,11 @@ body {
     cursor: pointer;
     width: 100%;
     font-weight: bold;
+    border-radius: 3px;
   }
   
   .button:hover {
-    background-color: #555;
+    background-color: #1996df;
   }
   
   @media screen and (max-width: 650px) {

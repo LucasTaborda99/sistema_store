@@ -27,3 +27,55 @@ File: scss
 @import 'responsive';
 
 @import "../styles/icons/material-design-iconic-font/css/materialdesignicons.min.css";
+
+$toggle-off-selected: #e4e4e4;
+$toggle-on-selected: #0dd862;
+$toggle-background-on-selected: #b5f6c7;
+$toggle-background-off-selected: #f2f2f2;
+
+// Estilos do mat-slide-toggle
+.mat-slide-toggle {
+  // Cor primária
+  &.mat-accent {
+    & .mat-slide-toggle-thumb {
+      background-color: $toggle-off-selected;
+    }
+
+    & .mat-slide-toggle-bar {
+      background-color: $toggle-background-off-selected;
+    }
+  
+    &.mat-checked .mat-slide-toggle-thumb {
+      background-color: $toggle-on-selected;
+    }
+  
+    &.mat-checked .mat-slide-toggle-bar {
+      background-color: $toggle-background-on-selected;
+    }
+  
+    &.mat-checked:not(.mat-disabled) {
+      &:hover {
+        .mat-slide-toggle-thumb {
+          background-color: darken($toggle-on-selected, 10%);
+        }
+  
+        .mat-slide-toggle-bar {
+          background-color: darken($toggle-background-on-selected, 10%);
+        }
+      }
+    }
+  }
+  
+  &.mat-disabled {
+    & .mat-slide-toggle-thumb,
+    & .mat-slide-toggle-bar {
+      background-color: $toggle-off-selected;
+      opacity: 0.5;
+    }
+  }
+}
+
+
+
+
+  
