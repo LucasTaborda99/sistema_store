@@ -186,12 +186,12 @@ async function esqueciSenha(req, res) {
     }
 }
 
-// Visualiza todos os usuários que possuem role 'user' e que não foram deletados, essa função só está disponível aos roles = 'admin'
+// Visualiza todos os usuários com suas informações e que não foram deletados, essa função só está disponível aos roles = 'admin'
 async function get(req, res) {
     try {
       const users = await Usuario.findAll({
-        attributes: ['id', 'nome', 'numero_contato', 'email', 'status'],
-        where: { role: 'user', deleted_at: null}
+        attributes: ['id', 'nome', 'numero_contato', 'email', 'status', 'role'],
+        where: { deleted_at: null}
       });
       return res.status(200).json(users);
     } catch (err) {

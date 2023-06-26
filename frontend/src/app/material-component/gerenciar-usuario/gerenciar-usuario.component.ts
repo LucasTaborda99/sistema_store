@@ -11,7 +11,7 @@ import { GlobalConstants } from 'src/app/shared/global-constants';
 })
 export class GerenciarUsuarioComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'status']
+  displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'status', 'role']
   dataSource: any
   responseMessage: any
 
@@ -25,7 +25,6 @@ export class GerenciarUsuarioComponent implements OnInit {
   tableData() {
     this.userService.getUsuario().subscribe((response: any) => {
       this.dataSource = new MatTableDataSource(response);
-      console.log(response)
     }, (error: any) => {
       if(error.error?.message) {
         this.responseMessage = error.error?.message;
@@ -41,9 +40,30 @@ export class GerenciarUsuarioComponent implements OnInit {
     this.dataSource.filter = valorFiltro.trim().toLowerCase()
   }
 
-  changeStatusERoleUsuarios(status: any, id: any) {
+  changeStatusUsuarios(status: any, id: any) {
     let data = {
       status: status.toString(),
+      id: id
+    }
+    this.userService.updateUsuarioStatusERole(data).subscribe((response: any) => {
+      this.responseMessage = response?.message
+      this.snackbarService.openSnackBar(this.responseMessage, "Success")
+    }, (error: any) => {
+      if(error.error?.message) {
+        this.responseMessage = error.error?.message;
+        console.log(error)
+      } else {
+        this.responseMessage = GlobalConstants.genericError;
+        console.log(error)
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
+    })
+  }
+
+  changeRoleUsuarios(isAdmin: any, id: any) {
+    const role = isAdmin ? "admin" : "user"
+    let data = {
+      role: role.toString(),
       id: id
     }
     this.userService.updateUsuarioStatusERole(data).subscribe((response: any) => {
