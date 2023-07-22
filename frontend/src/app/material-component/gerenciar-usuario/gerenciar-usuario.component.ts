@@ -37,6 +37,11 @@ export class GerenciarUsuarioComponent implements OnInit {
 
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value
+    
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      const valorColunaNome = data.nome.toLowerCase()
+      return valorColunaNome.includes(filter)
+    }
     this.dataSource.filter = valorFiltro.trim().toLowerCase()
   }
 
