@@ -10,6 +10,7 @@ export interface Menu{
 const ITENSMENU = [
     {state: 'dashboard', nome: 'Dashboard', icone: 'dashboard', role: ''},
     {state: 'categoria', nome: 'Gerenciar Categorias', icone: 'category', role: ''},
+    {state: 'produto', nome: 'Gerenciar Produtos', icone: 'inventory_2', role: ''},
     {state: 'usuario', nome: 'Gerenciar Usuários', icone: 'people', role: 'admin'}
 ]
 
