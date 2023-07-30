@@ -6,6 +6,8 @@ import { CategoriaService } from 'src/app/services/categoria.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
 import { CategoriaComponent } from '../dialog/categoria/categoria.component';
+import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-gerencia-categoria',
@@ -14,7 +16,7 @@ import { CategoriaComponent } from '../dialog/categoria/categoria.component';
 })
 export class GerenciaCategoriaComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'editar']
+  displayedColumns: string[] = ['nome', 'id', 'editar']
   dataSource: any
   responseMessage: any
 
@@ -79,6 +81,38 @@ export class GerenciaCategoriaComponent implements OnInit {
         this.tableData()
       }
     )
+  }
+
+  handleDeletarAction(values: any) {
+    const dialogConfig = new MatDialogConfig()
+    dialogConfig.data = {
+      message: 'deletar ' + ' a categoria ' + '"' + values.nome + '"'
+    }
+    const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig)
+    const sub = dialogRef.componentInstance.emitirMudancaStatus.subscribe((response) => {
+      this.deletarCategoria(values.id)
+      dialogRef.close()
+    })
+  }
+
+  deletarCategoria(id: any) {
+    this.categoriaService.delete(id).subscribe(
+      (response: any) => {
+        this.tableData();
+        this.responseMessage = response?.message;
+        this.snackbarService.openSnackBar(this.responseMessage, "success");
+      },
+      (error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.responseMessage = "Apenas administradores têm permissão para deletar categorias";
+        } else if (error.status === 404) {
+          this.responseMessage = "ID não encontrado";
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+      }
+    );
   }
 
 }

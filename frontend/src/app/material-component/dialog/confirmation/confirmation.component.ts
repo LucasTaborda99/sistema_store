@@ -10,6 +10,8 @@ export class ConfirmationComponent implements OnInit {
 
   emitirMudancaStatus = new EventEmitter()
   details: any = {}
+  onEmitMudancaStatus: any;
+  onEmitStatusChange: any;
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any) { }
 
   ngOnInit(): void {

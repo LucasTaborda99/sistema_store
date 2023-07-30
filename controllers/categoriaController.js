@@ -1,6 +1,6 @@
 // Categoria - Controller 
 
-// Importando o m�dulo connection, respons�vel por estabelecer conex�o com o banco de dados
+// Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
 const Database = require('../connection');
 
 // Importando a model Categoria
@@ -13,32 +13,44 @@ const { NOW } = require('sequelize');
 require('dotenv').config()
 
 // Cria categoria dos produtos, funcionalidade disponível apenas aos roles = 'admin'
-async function adicionarCategoria (req, res){
+async function adicionarCategoria(req, res) {
   try {
     const categoria = req.body;
     const nome = categoria.nome;
     const createdBy = res.locals.email;
     const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
-
     const foundCategoria = await Categoria.findOne({ where: { nome } });
-    
-    if (foundCategoria) {
-        return res.status(400).json({ message: "Categoria já existente" });
+
+    if (foundCategoria && foundCategoria.deleted_by === null) {
+      return res.status(400).json({ message: "Categoria já existente e não está marcado como deletado" });
     }
-    console.log(createdBy)
+
+    if (foundCategoria && foundCategoria.deleted_by !== null) {
+      await foundCategoria.update({
+        created_by: createdBy,
+        created_at: createdAt,
+        deleted_by: null,
+        deleted_at: null
+      });
+
+      return res.status(201).json({ message: 'Categoria adicionada com sucesso' });
+    }
+
     const newCategoria = await Categoria.create({
       nome: categoria.nome,
       created_by: createdBy,
-      created_at: createdAt
+      created_at: createdAt,
+      
     });
 
     res.status(201).json({ message: 'Categoria adicionada com sucesso' });
   } catch (error) {
     console.error(error);
-      res.status(500).json({ message: 'Ocorreu um erro ao criar a categoria' });
-    }
+    res.status(500).json({ message: 'Ocorreu um erro ao criar a categoria' });
+  }
 }
+
 
 // Visualiza categoria, ordenando pelo ID
 async function getCategoria(req, res) {
@@ -97,7 +109,11 @@ async function deleteCategoria(req, res) {
           return res.status(404).json({ message: "ID não encontrado" });
       }
 
-      return res.status(200).json({ message: "Categoria marcada como excluído com sucesso" });
+      if (res.locals.role !== 'admin') {
+        return res.status(401).json({ message: "Apenas administradores têm permissão para deletar categorias" });
+      }
+
+      return res.status(200).json({ message: "Categoria marcada como excluída com sucesso" });
   } catch (err) {
       console.error(err);
       return res.status(500).json({ message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde" });

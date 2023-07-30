@@ -11,6 +11,6 @@ let verRole = require('../services/verificaRole')
 router.post('/adicionarCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.adicionarCategoria)
 router.get('/getCategoria', categoriaController.getCategoria)
 router.patch('/updateCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.updateCategoria)
-router.delete('/deleteCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.deleteCategoria)
+router.patch('/deleteCategoria', aut.autenticacaoToken, verRole.verificaRole, categoriaController.deleteCategoria)
 
 module.exports = router

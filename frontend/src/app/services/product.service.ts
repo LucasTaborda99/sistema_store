@@ -11,7 +11,7 @@ export class ProductService {
   constructor(private httpClient: HttpClient) {}
 
   adicionar(data: any) {
-    return this.httpClient.post(this.url + "/produto/adicionarProduto/", data, {
+    return this.httpClient.post(this.url + '/produto/adicionarProduto/', data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     })
   }
@@ -33,9 +33,9 @@ export class ProductService {
   }
 
   delete(id: any) {
-    return this.httpClient.delete(this.url + "/produto/deleteProduto/" + id, {
+    const data = { id: id };
+    return this.httpClient.patch(this.url + "/produto/deleteProduto/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     })
   }
-
 }

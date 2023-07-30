@@ -4,7 +4,7 @@ const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Produto extends Model {
     static associate(models) {
-      // Associações com outras tabelas, se necessário
+      // AssociaÃ§Ãµes com outras tabelas, se necessÃ¡rio
       Produto.belongsTo(models.Categoria, { foreignKey: 'id_categoria' });
     }
   }
@@ -63,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Produto',
-    timestamps: false, // desabilita a criação das colunas created_at e updated_at
+    timestamps: false, // desabilita a criaÃ§Ã£o das colunas created_at e updated_at
     underscored: true
   });
 

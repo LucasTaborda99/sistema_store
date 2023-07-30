@@ -18,6 +18,7 @@ export class CategoriaComponent implements OnInit {
   dialogAcao: any = "Adicionar";
   action: any = "Adicionar";
   mensagemResposta: any;
+  onEditarProduto: any;
 
   constructor(@Inject(MAT_DIALOG_DATA)
   public dialogData: any,

@@ -1,0 +1,78 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+      <span class="title-center">{{ dialogData.action }} Produto</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="produtoForm">
+      <div fxFlex fxLayout="column">
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input type="text" matInput formControlName="nome" required />
+            <mat-error *ngIf="produtoForm.controls.nome.touched && produtoForm.controls.nome.invalid">
+              <span *ngIf="produtoForm.controls.nome.errors.required">Esse campo é obrigatório</span>
+              <span *ngIf="produtoForm.controls.nome.errors.pattern">Esse campo é inválido</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Preço</mat-label>
+              <input type="text" matInput formControlName="preco" required />
+              <mat-error *ngIf="produtoForm.controls.preco.touched && produtoForm.controls.preco.invalid">
+                <span *ngIf="produtoForm.controls.preco.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="produtoForm.controls.preco.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Descrição</mat-label>
+              <input type="text" matInput formControlName="descricao" required />
+              <mat-error *ngIf="produtoForm.controls.descricao.touched && produtoForm.controls.descricao.invalid">
+                <span *ngIf="produtoForm.controls.descricao.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="produtoForm.controls.descricao.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Quantidade</mat-label>
+              <input type="text" matInput formControlName="quantidade" required />
+              <mat-error *ngIf="produtoForm.controls.quantidade.touched && produtoForm.controls.quantidade.invalid">
+                <span *ngIf="produtoForm.controls.quantidade.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="produtoForm.controls.quantidade.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>ID Categoria</mat-label>
+              <input type="text" matInput formControlName="id_categoria" required />
+              <mat-error *ngIf="produtoForm.controls.id_categoria.touched && produtoForm.controls.id_categoria.invalid">
+                <span *ngIf="produtoForm.controls.id_categoria.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="produtoForm.controls.id_categoria.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      class="btnAtualizar"
+      type="submit"
+      (click)="submit()"
+      [disabled]="!(produtoForm.valid && produtoForm.dirty)"
+    >
+      {{ action }}
+    </button>
+  
+    <button mat-raised-button class="btnFechar" mat-dialog-close>
+      Fechar
+    </button>
+  </mat-dialog-actions>

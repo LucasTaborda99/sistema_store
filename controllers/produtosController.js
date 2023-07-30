@@ -4,7 +4,7 @@
 const Database = require('../connection');
 
 // Importando a model Produto
-const Produto = require('../models').Produto;
+const { Produto } = require('../models/index');
 
 // Importando a model Categoria
 const Categoria = require('../models').Categoria
@@ -26,11 +26,10 @@ async function adicionarProduto (req, res){
     const createdBy = res.locals.email;
     const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
-
-    const foundProduto = await Produto.findOne({ where: { nome } });
+    const foundProduto = await Produto.findOne({ where: { nome, deleted_by: null } });
     
     if (foundProduto) {
-        return res.status(400).json({ message: "Produto já existente" });
+        return res.status(400).json({ message: "Produto já existente e não está marcado como deletado" });
     }
 
     const foundCategoria = await Categoria.findOne({ where: { id: produto.id_categoria } });
@@ -71,31 +70,40 @@ async function getProduto(req, res) {
   }
 }
 
-// Atualiza Produto pelo ID, funcionalidade disponível apenas aos roles = 'admin'
-const updateProduto = async (req, res) => {
-  
-  const { id, nome } = req.body;
+async function updateProduto(req, res) {
+  const produto = req.body
   const updatedBy = res.locals.email;
-  const updatedAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+  const querySelect = 'SELECT nome FROM produtos WHERE id = ?'
+  const queryUpdate = 'UPDATE produtos set nome = ?, descricao = ?, preco = ?, quantidade = ?, id_categoria = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
+  let connection
 
   try {
-    // Busca o produto pelo ID
-    const Produto = await Produto.findByPk(id);
-    if (!Produto) {
-      return res.status(404).json({ message: 'Produto com esse ID não encontrado' });
-    }
-    // Verifica se já existe um produto com esse nome
-    const ProdutoExistente = await Produto.findOne({ where: { nome } });
-    if (ProdutoExistente && ProdutoExistente.id !== Produto.id) {
-      return res.status(400).json({ message: 'Já existe um produto com esse nome' });
-    }
-    // Atualiza o produto
-    await Produto.update({ nome, updated_by: updatedBy, updated_at: updatedAt});
-    return res.status(200).json({ message: 'Produto atualizado com sucesso' });
-  } catch (error) {
-    res.status(500).json({ message: 'Ocorreu um erro ao atualizar o produto' });
+      const db = Database.getInstance();
+      connection = await db.getConnection();
+
+      const [results] = await connection.query(querySelect, [produto.id]);
+
+      if (results.length === 0) {
+          connection.release();
+          return res.status(404).json({ message: 'Produto não encontrado' })
+      }
+
+      const [updateResult] = await connection.query(queryUpdate, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.id_categoria, updatedBy, produto.id]);
+
+      if (updateResult.affectedRows === 0) {
+          connection.release();
+          return res.status(404).json({ message: 'Nome do produto não encontrado' })
+      }
+
+      return res.status(200).json({ message: 'Produto atualizado com sucesso' })
+  } catch (err) {
+      console.error(err);
+      return res.status(500).json(err)
+  } finally {
+      if(connection)
+      connection.release();
   }
-};
+}
 
 // 'Deleta' produto ('softdelete', atualiza a coluna 'deleted_at' com a data e horário que o produto foi deletado
 // e atualiza a coluna deleted_by com o email do usuário que deletou), funcionalidade disponível apenas aos roles = 'admin'
@@ -104,7 +112,7 @@ async function deleteProduto(req, res) {
       const produto = req.body;
       const deletedBy = res.locals.email;
 
-      const query = "UPDATE produto SET deleted_at = NOW(), deleted_by = ? WHERE id = ?";
+      const query = "UPDATE produtos SET deleted_at = NOW(), deleted_by = ? WHERE id = ?";
 
       const db = Database.getInstance();
       const connection = await db.getConnection();
@@ -114,6 +122,10 @@ async function deleteProduto(req, res) {
 
       if (results.affectedRows == 0) {
           return res.status(404).json({ message: "ID não encontrado" });
+      }
+
+      if (res.locals.role !== 'admin') {
+        return res.status(401).json({ message: "Apenas administradores têm permissão para deletar produtos" });
       }
 
       return res.status(200).json({ message: "Produto marcado como excluído com sucesso" });

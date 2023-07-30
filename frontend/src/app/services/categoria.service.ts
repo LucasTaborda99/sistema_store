@@ -25,4 +25,11 @@ export class CategoriaService {
   getCategoria() {
     return this.httpClient.get(this.url + "/categoria/getCategoria/")
   }
+
+  delete(id: any) {
+    const data = { id: id };
+    return this.httpClient.patch(this.url + "/categoria/deleteCategoria/", data, {
+      headers: new HttpHeaders().set('Content-Type', "application/json")
+    })
+  }
 }
