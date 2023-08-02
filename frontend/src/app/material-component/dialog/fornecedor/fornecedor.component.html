@@ -1,0 +1,69 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+      <span class="title-center">{{ dialogData.action }} Fornecedor</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="fornecedorForm">
+      <div fxFlex fxLayout="column">
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input type="text" matInput formControlName="nome" required />
+            <mat-error *ngIf="fornecedorForm.controls.nome.touched && fornecedorForm.controls.nome.invalid">
+              <span *ngIf="fornecedorForm.controls.nome.errors.required">Esse campo é obrigatório</span>
+              <span *ngIf="fornecedorForm.controls.nome.errors.pattern">Esse campo é inválido</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Endereço</mat-label>
+              <input type="text" matInput formControlName="endereco" required />
+              <mat-error *ngIf="fornecedorForm.controls.endereco.touched && fornecedorForm.controls.endereco.invalid">
+                <span *ngIf="fornecedorForm.controls.endereco.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="fornecedorForm.controls.endereco.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Telefone</mat-label>
+              <input type="text" matInput formControlName="telefone" required />
+              <mat-error *ngIf="fornecedorForm.controls.telefone.touched && fornecedorForm.controls.telefone.invalid">
+                <span *ngIf="fornecedorForm.controls.telefone.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="fornecedorForm.controls.telefone.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>CNPJ</mat-label>
+              <input type="text" matInput formControlName="cnpj" required />
+              <mat-error *ngIf="fornecedorForm.controls.cnpj.touched && fornecedorForm.controls.cnpj.invalid">
+                <span *ngIf="fornecedorForm.controls.cnpj.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="fornecedorForm.controls.cnpj.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      class="btnAtualizar"
+      type="submit"
+      (click)="submit()"
+      [disabled]="!(fornecedorForm.valid && fornecedorForm.dirty)"
+    >
+      {{ action }}
+    </button>
+  
+    <button mat-raised-button class="btnFechar" mat-dialog-close>
+      Fechar
+    </button>
+  </mat-dialog-actions>
+

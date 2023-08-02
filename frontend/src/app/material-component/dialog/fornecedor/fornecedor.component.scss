@@ -1,0 +1,28 @@
+// Arquivo de estilização da tela de cadastar
+
+.mat-toolbar {
+    margin: -24px;
+    width: auto;
+    margin-bottom: 10px;
+    background: #1F9EE7;
+    color: #FFFFFF;
+}
+
+.title-center {
+    flex: 1 1 auto;
+    text-align: center;
+}
+
+mat-form-field {
+    padding: 5px;
+}
+
+.btnSignup, .btnFechar {
+    background: #1F9EE7;
+    color: #FFFFFF;
+}
+  
+  /* Estilo personalizado para a cor das mensagens de erro */
+.mat-error {
+    color: #fd0202;
+}

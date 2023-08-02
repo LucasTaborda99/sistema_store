@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
     telefone: {
       type: DataTypes.STRING
     },
+    cnpj: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
     created_at: {
       allowNull: false,
       type: DataTypes.DATE,
@@ -42,6 +46,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Fornecedor',
+    tableName: 'Fornecedor',
     timestamps: false,
     underscored: true
   });

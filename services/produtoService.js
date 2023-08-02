@@ -6,7 +6,7 @@ const { Produto } = require('../models/index');
 // Criando a classe ProdutoRepository, servindo como uma interface
 class ProdutoRepository {
   async findAllProdutos() {
-    throw new Error('MÈtodo n„o implementado');
+    throw new Error('M√©todo n√£o implementado');
   }
 }
 

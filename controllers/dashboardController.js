@@ -9,6 +9,9 @@ const Categoria = require('../models').Categoria;
 // Importando a model Produto
 const Produto = require('../models').Produto;
 
+// Importando a model Fornecedor
+const Fornecedor = require('../models').Fornecedor;
+
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
@@ -25,7 +28,12 @@ async function detailsDashboard(req, res) {
       const produtos = await Produto.count({
         where: { deleted_at: null}
       });
-      return res.status(200).json({ categoriasCount: categorias, produtosCount: produtos });
+
+      const fornecedores = await Fornecedor.count({
+        where: { deleted_at: null}
+      });
+
+      return res.status(200).json({ categoriasCount: categorias, produtosCount: produtos, fornecedoresCount: fornecedores });
     } catch (err) {
       return res.status(500).json(err);
     }

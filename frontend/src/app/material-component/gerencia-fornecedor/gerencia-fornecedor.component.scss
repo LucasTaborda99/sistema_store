@@ -1,0 +1,26 @@
+.btnAdicionarCategoria {
+    background: #1F9EE7;
+    color: #FFFFFF;
+}
+
+.float-right {
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+    top: 50%;
+    background: #1F9EE7;
+    color: #FFFFFF;
+    margin-right: 20px;
+}
+
+.red-delete-button {
+    color: rgb(216, 10, 10);
+}
+
+mat-card {
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+}

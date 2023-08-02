@@ -17,9 +17,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-  <div class="row">
       <div class="column">
         <div class="card">
           <div class="container">
@@ -28,6 +25,19 @@
             <p>
               <button class="button" [routerLink]="['/sistemastore/produto']">
                 Ver Produtos
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+          <div class="container">
+            <h2 class="title">Total Fornecedores:</h2>
+            <h1 class="title">{{ data?.fornecedoresCount }}</h1>
+            <p>
+              <button class="button" [routerLink]="['/sistemastore/fornecedor']">
+                Ver Fornecedores
               </button>
             </p>
           </div>
