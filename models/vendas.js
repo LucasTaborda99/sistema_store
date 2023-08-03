@@ -1,0 +1,50 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class Vendas extends Model {
+    static associate(models) {
+        Vendas.belongsTo(models.Produto, { foreignKey: 'id_produto' });
+    }
+  }
+  
+  Vendas.init({
+    quantidade_vendida: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      data: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+    created_at: {
+      allowNull: false,
+      type: DataTypes.DATE,
+      defaultValue: sequelize.fn('NOW')
+    },
+    created_by: {
+      allowNull: false,
+      type: DataTypes.STRING
+    },
+    updated_at: {
+      type: DataTypes.DATE
+    },
+    updated_by: {
+      type: DataTypes.STRING
+    },
+    deleted_at: {
+      type: DataTypes.DATE
+    },
+    deleted_by: {
+      type: DataTypes.STRING,
+    }
+  }, {
+    sequelize,
+    modelName: 'Vendas',
+    timestamps: false, // desabilita a criação das colunas created_at e updated_at
+    underscored: true
+  });
+
+  return Vendas;
+};
