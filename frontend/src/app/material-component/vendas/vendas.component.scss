@@ -1,0 +1,59 @@
+/* Estilos para o componente de vendas */
+
+.container {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 30px;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  
+    label {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+  
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+  
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+        box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+      }
+    }
+  }
+  
+  .btn-submit {
+    background-color: #1F9EE7;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-left: 70px;
+    width: 100%; /* Make the button take the full width of the container */
+    max-width: 200px; 
+  
+    &:hover {
+      background-color: #3595fc;
+    }
+  }
+  

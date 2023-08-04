@@ -7,7 +7,7 @@
       <div class="column">
         <div class="card">
           <div class="container">
-            <h2 class="title">Total Categorias:</h2>
+            <h2 class="title">Total Categorias</h2>
             <h1 class="title">{{ data?.categoriasCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/categoria']">
@@ -20,7 +20,7 @@
       <div class="column">
         <div class="card">
           <div class="container">
-            <h2 class="title">Total Produtos:</h2>
+            <h2 class="title">Total Produtos</h2>
             <h1 class="title">{{ data?.produtosCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/produto']">
@@ -33,11 +33,26 @@
       <div class="column">
         <div class="card">
           <div class="container">
-            <h2 class="title">Total Fornecedores:</h2>
+            <h2 class="title">Total Fornecedores</h2>
             <h1 class="title">{{ data?.fornecedoresCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/fornecedor']">
                 Ver Fornecedores
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div class="card">
+          <div class="container">
+            <h2 class="title">Total Vendas</h2>
+            <h1 class="title">{{ data?.vendasCount }}</h1>
+            <p>
+              <button class="button" [routerLink]="['/sistemastore/vendas']">
+                Ver Vendas
               </button>
             </p>
           </div>

@@ -59,7 +59,7 @@ async function registrarVenda (req, res) {
         { where: { id: produto_id } }
       );
 
-      return res.status(201).json({ message: 'Venda adicionada com sucesso' });
+      return res.status(201).json({ message: 'Venda registrada com sucesso' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Erro ao registrar a venda' });

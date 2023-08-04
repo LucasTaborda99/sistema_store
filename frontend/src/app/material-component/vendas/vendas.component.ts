@@ -20,6 +20,17 @@ export class VendasComponent implements OnInit {
     quantidade_vendida: null
   }
 
+  // Método para não aceitar números negativos
+  preventNegativeNumbers(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.value) {
+      const value = parseInt(inputElement.value, 10);
+      if (value < 0) {
+        inputElement.value = '0';
+      }
+    }
+  }
+
   // displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'status', 'role']
   dataSource: any
   responseMessage: any
@@ -60,7 +71,6 @@ export class VendasComponent implements OnInit {
   registrarVenda() {
     this.vendasService.registrar(this.venda).subscribe(
       (response: any) => {
-        console.log('Venda registrada com sucesso', response);
         this.tableData();
         this.responseMessage = response?.message;
         this.snackbarService.openSnackBar(this.responseMessage, "success");
