@@ -59,13 +59,38 @@ async function registrarVenda (req, res) {
         { where: { id: produto_id } }
       );
 
-      return res.status(201).json(venda);
+      return res.status(201).json({ message: 'Venda adicionada com sucesso' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Erro ao registrar a venda' });
     }
 }
 
+async function  getVenda (req, res) {
+    try {
+
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'Erro ao registrar a venda' });
+    }
+} 
+
+// Visualiza Venda, ordenando pelo ID
+async function getVenda(req, res) {
+    try {
+      // Cria uma instância da classe SequelizeVendaRepository
+      const vendaRepository = new SequelizeVendasRepository();
+  
+      // Chama o método findAllVendas da instância de vendaRepository e aguarda sua conclusão
+      const vendas = await vendaRepository.findAllVendas();
+  
+      return res.status(200).json(vendas);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+
 module.exports = {
-    registrarVenda
+    registrarVenda,
+    getVenda
 }

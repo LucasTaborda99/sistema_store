@@ -16,4 +16,8 @@ export class VendasService {
     })
   }
 
+  get() {
+    return this.httpClient.get(this.url + "/vendas/getVenda/")
+  }
+
 }

@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { SnackbarService } from 'src/app/services/snackbar.service';
+import { Router } from '@angular/router';
 import { VendasService } from 'src/app/services/vendas.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
+import { GlobalConstants } from 'src/app/shared/global-constants';
+import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-vendas',
@@ -17,28 +22,30 @@ export class VendasComponent implements OnInit {
 
   // displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'status', 'role']
   dataSource: any
-  // responseMessage: any
+  responseMessage: any
 
   constructor(private vendasService: VendasService,
-    private snackbarService: SnackbarService) { }
+    private snackbarService: SnackbarService,
+    private dialog: MatDialog,
+    private router: Router) { }
 
   ngOnInit(): void {
-  //   this.tableData()
+     this.tableData()
   }
 
-  // tableData() {
-  //   this.vendasService.get().subscribe((response: any) => {
-  //     this.dataSource = new MatTableDataSource(response);
-  //     console.log(response)
-  //   }, (error: any) => {
-  //     if(error.error?.message) {
-  //       this.responseMessage = error.error?.message;
-  //     } else {
-  //       this.responseMessage = GlobalConstants.genericError;
-  //     }
-  //     this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
-  //   })
-  // }
+  tableData() {
+    this.vendasService.get().subscribe((response: any) => {
+      this.dataSource = new MatTableDataSource(response);
+      console.log(response)
+    }, (error: any) => {
+      if(error.error?.message) {
+        this.responseMessage = error.error?.message;
+      } else {
+        this.responseMessage = GlobalConstants.genericError;
+      }
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error)
+    })
+  }
 
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value
@@ -52,15 +59,23 @@ export class VendasComponent implements OnInit {
 
   registrarVenda() {
     this.vendasService.registrar(this.venda).subscribe(
-      (response) => {
+      (response: any) => {
         console.log('Venda registrada com sucesso', response);
-
-        // Limpa os campos após o registro da venda
-        this.venda.produto_id = null;
-        this.venda.quantidade_vendida = null;
+        this.tableData();
+        this.responseMessage = response?.message;
+        this.snackbarService.openSnackBar(this.responseMessage, "success");
       },
-      (error) => {
-        console.error('Erro ao registrar a venda', error);
+      (error: HttpErrorResponse) => {
+        if (error.status === 401) {
+          this.responseMessage = "Apenas administradores têm permissão para deletar fornecedores";
+        } else if (error.status === 404) {
+          this.responseMessage = "Produto não encontrado";
+        } else if (error.status === 400) {
+          this.responseMessage = "Quantidade insuficiente em estoque ou campo 'ID do Produto' e 'Quantidade Vendida' devem ser maiores do que 0";
+        } else {
+          this.responseMessage = GlobalConstants.genericError;
+        }
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
       }
     );
   }
