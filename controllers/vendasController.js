@@ -66,15 +66,6 @@ async function registrarVenda (req, res) {
     }
 }
 
-async function  getVenda (req, res) {
-    try {
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Erro ao registrar a venda' });
-    }
-} 
-
 // Visualiza Venda, ordenando pelo ID
 async function getVenda(req, res) {
     try {
