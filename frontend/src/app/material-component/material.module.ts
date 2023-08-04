@@ -18,6 +18,7 @@ import { GerenciarProdutoComponent } from './gerenciar-produto/gerenciar-produto
 import { ProdutoComponent } from './dialog/produto/produto.component';
 import { GerenciaFornecedorComponent } from './gerencia-fornecedor/gerencia-fornecedor.component';
 import { FornecedorComponent } from './dialog/fornecedor/fornecedor.component';
+import { VendasComponent } from './vendas/vendas.component';
 
 @NgModule({
   imports: [
@@ -40,7 +41,8 @@ import { FornecedorComponent } from './dialog/fornecedor/fornecedor.component';
     GerenciarProdutoComponent,
     ProdutoComponent,
     GerenciaFornecedorComponent,
-    FornecedorComponent    
+    FornecedorComponent,
+    VendasComponent    
   ]
 })
 export class MaterialComponentsModule {}

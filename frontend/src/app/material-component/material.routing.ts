@@ -4,6 +4,7 @@ import { GerenciaCategoriaComponent } from './gerencia-categoria/gerencia-catego
 import { GerenciarUsuarioComponent } from './gerenciar-usuario/gerenciar-usuario.component';
 import { GerenciarProdutoComponent } from './gerenciar-produto/gerenciar-produto.component';
 import { GerenciaFornecedorComponent } from './gerencia-fornecedor/gerencia-fornecedor.component';
+import { VendasComponent } from './vendas/vendas.component';
 
 export const MaterialRoutes: Routes = [
     {
@@ -25,6 +26,14 @@ export const MaterialRoutes: Routes = [
     {
         path: 'fornecedor',
         component: GerenciaFornecedorComponent,
+        canActivate: [RouteCheckService],
+        data: {
+            roleEsperado: ['admin', 'user']
+        }
+    },
+    {
+        path: 'vendas',
+        component: VendasComponent,
         canActivate: [RouteCheckService],
         data: {
             roleEsperado: ['admin', 'user']
