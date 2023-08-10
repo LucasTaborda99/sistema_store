@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
       },
+      preco_unitario: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+      },
       preco_medio_venda: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: true,
