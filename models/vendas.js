@@ -19,6 +19,30 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
+      cliente_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Clientes',
+          key: 'id'
+        }
+      },
+      total_venda: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      preco_medio_venda: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+      },
+      desconto_aplicado: {
+        type: DataTypes.DECIMAL(5, 2),
+        allowNull: true,
+      },
+      lucro: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: true,
+      },
     created_at: {
       allowNull: false,
       type: DataTypes.DATE,

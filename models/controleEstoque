@@ -1,0 +1,36 @@
+'use strict';
+const { Model } = require('sequelize');
+
+module.exports = (sequelize, DataTypes) => {
+  class ControleEstoque extends Model {
+    static associate(models) {
+      ControleEstoque.belongsTo(models.Produto, { foreignKey: 'produto_id' });
+    }
+  }
+
+  ControleEstoque.init({
+    data: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    quantidade_minima: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    quantidade_maxima: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    quantidade_atual: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+  }, {
+    sequelize,
+    modelName: 'ControleEstoque',
+    timestamps: false,
+    underscored: true,
+  });
+
+  return ControleEstoque;
+};
