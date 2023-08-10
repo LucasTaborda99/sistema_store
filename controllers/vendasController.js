@@ -26,7 +26,7 @@ async function registrarVenda (req, res) {
       const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
       // Obtém os dados da venda a partir do corpo da requisição
-      const { produto_id, quantidade_vendida } = req.body;
+      const { produto_id, preco_unitario, quantidade_vendida, desconto_aplicado, cliente_id, total_venda} = req.body;
     
       // Verifica se o id do produto e a quantidade vendida foram informadas, acima de 0
       if (!produto_id || !quantidade_vendida) {
@@ -44,13 +44,17 @@ async function registrarVenda (req, res) {
         return res.status(400).json({ message: 'Quantidade insuficiente em estoque' });
       }
 
-      // Crie a venda no banco de dados
+      // Cria a venda no banco de dados
       const venda = await Vendas.create({
         produto_id,
+        preco_unitario,
         quantidade_vendida,
+        desconto_aplicado,
+        total_venda,
+        cliente_id,
         created_by: createdBy,
         created_at: createdAt,
-        data: createdAt,
+        data: createdAt
       });
 
       // Atualize a quantidade do produto na tabela Produtos

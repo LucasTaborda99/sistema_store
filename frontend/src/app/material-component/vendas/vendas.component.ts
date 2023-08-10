@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
 import { VendasService } from 'src/app/services/vendas.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
-import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
@@ -17,7 +16,11 @@ export class VendasComponent implements OnInit {
 
   venda = {
     produto_id: null,
-    quantidade_vendida: null
+    preco_unitario: null,
+    quantidade_vendida: null,
+    desconto_aplicado: null,
+    cliente_id: null,
+    total_venda: 0
   }
 
   // Método para não aceitar números negativos
@@ -31,7 +34,6 @@ export class VendasComponent implements OnInit {
     }
   }
 
-  // displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'status', 'role']
   dataSource: any
   responseMessage: any
 
@@ -58,17 +60,21 @@ export class VendasComponent implements OnInit {
     })
   }
 
-  aplicarFiltro(event: Event) {
-    const valorFiltro = (event.target as HTMLInputElement).value
-    
-    this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const valorColunaNome = data.id.toLowerCase()
-      return valorColunaNome.includes(filter)
-    }
-    this.dataSource.filter = valorFiltro.trim().toLowerCase()
+  calcularValorTotalVenda(): void {
+    const precoUnitario = this.venda.preco_unitario || 0;
+    const quantidadeVendida = this.venda.quantidade_vendida || 0;
+    const descontoAplicado = this.venda.desconto_aplicado || 0;
+
+    this.venda.total_venda = (precoUnitario * quantidadeVendida) - descontoAplicado;
+  }
+
+  updateTotalValue(): void {
+    this.calcularValorTotalVenda();
   }
 
   registrarVenda() {
+    this.calcularValorTotalVenda()
+
     this.vendasService.registrar(this.venda).subscribe(
       (response: any) => {
         this.tableData();

@@ -5,7 +5,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     padding: 30px;
-    max-width: 400px;
+    max-width: 1200px;
     width: 100%;
   }
   
@@ -39,6 +39,12 @@
     }
   }
   
+  .button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
   .btn-submit {
     background-color: #1F9EE7;
     color: #fff;
@@ -48,12 +54,25 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.2s;
-    margin-left: 70px;
-    width: 100%; /* Make the button take the full width of the container */
-    max-width: 200px; 
+    width: 100%;
+    max-width: 400px; 
   
     &:hover {
       background-color: #3595fc;
     }
   }
+
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
   
+    .form-group {
+      flex: 1;
+      margin-right: 10px;
+  
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
