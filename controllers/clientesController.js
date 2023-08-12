@@ -65,7 +65,7 @@ async function getCliente(req, res) {
 async function updateCliente(req, res) {
   const cliente = req.body
   const updatedBy = res.locals.email;
-  const querySelect = 'SELECT nome FROM cliente WHERE id = ?'
+  const querySelect = 'SELECT nome FROM clientes WHERE id = ?'
   const queryUpdate = 'UPDATE clientes set nome = ?, endereco = ?, telefone = ?, email = ?, cpf = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
   let connection
 

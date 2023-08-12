@@ -1,0 +1,78 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+      <span class="title-center">{{ dialogData.action }} Cliente</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="clienteForm">
+      <div fxFlex fxLayout="column">
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input type="text" matInput formControlName="nome" required />
+            <mat-error *ngIf="clienteForm.controls.nome.touched && clienteForm.controls.nome.invalid">
+              <span *ngIf="clienteForm.controls.nome.errors.required">Esse campo é obrigatório</span>
+              <span *ngIf="clienteForm.controls.nome.errors.pattern">Esse campo é inválido</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Endereço</mat-label>
+              <input type="text" matInput formControlName="endereco" required />
+              <mat-error *ngIf="clienteForm.controls.endereco.touched && clienteForm.controls.endereco.invalid">
+                <span *ngIf="clienteForm.controls.endereco.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="clienteForm.controls.endereco.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Telefone</mat-label>
+              <input type="text" matInput formControlName="telefone" required />
+              <mat-error *ngIf="clienteForm.controls.telefone.touched && clienteForm.controls.telefone.invalid">
+                <span *ngIf="clienteForm.controls.telefone.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="clienteForm.controls.telefone.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Email</mat-label>
+              <input type="text" matInput formControlName="email" required />
+              <mat-error *ngIf="clienteForm.controls.email.touched && clienteForm.controls.email.invalid">
+                <span *ngIf="clienteForm.controls.email.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="clienteForm.controls.email.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>CPF</mat-label>
+              <input type="text" matInput formControlName="cpf" required />
+              <mat-error *ngIf="clienteForm.controls.cpf.touched && clienteForm.controls.cpf.invalid">
+                <span *ngIf="clienteForm.controls.cpf.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="clienteForm.controls.cpf.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      class="btnAtualizar"
+      type="submit"
+      (click)="submit()"
+      [disabled]="!(clienteForm.valid && clienteForm.dirty)"
+    >
+      {{ action }}
+    </button>
+  
+    <button mat-raised-button class="btnFechar" mat-dialog-close>
+      Fechar
+    </button>
+  </mat-dialog-actions>

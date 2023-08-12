@@ -11,7 +11,7 @@ import { GlobalConstants } from 'src/app/shared/global-constants';
 })
 export class GerenciarUsuarioComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'status', 'role']
+  displayedColumns: string[] = ['nome', 'email', 'numero_contato', 'id', 'status', 'role']
   dataSource: any
   responseMessage: any
 

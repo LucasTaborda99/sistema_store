@@ -16,7 +16,7 @@ import { FornecedorService } from 'src/app/services/fornecedor.service';
 })
 export class GerenciaFornecedorComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'endereco', 'telefone', 'cnpj', 'editar']
+  displayedColumns: string[] = ['nome', 'endereco', 'telefone', 'cnpj', 'id', 'editar']
   dataSource: any
   responseMessage: any
 
