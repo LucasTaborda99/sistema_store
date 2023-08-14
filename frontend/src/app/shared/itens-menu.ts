@@ -13,6 +13,7 @@ const ITENSMENU = [
     {state: 'produto', nome: 'Gerenciar Produtos', icone: 'inventory', role: ''},
     {state: 'fornecedor', nome: 'Gerenciar Fornecedores', icone: 'group', role: ''},
     {state: 'clientes', nome: 'Gerenciar Clientes', icone: 'groups_3', role: ''},
+    {state: 'compras', nome: 'Gerenciar Compras', icone: 'receipt_long', role: ''},
     {state: 'vendas', nome: 'Gerenciar Vendas', icone: 'point_of_sale', role: ''},
     {state: 'usuario', nome: 'Gerenciar Usuários', icone: 'people', role: 'admin'}
 ]

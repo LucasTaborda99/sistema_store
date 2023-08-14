@@ -30,7 +30,7 @@
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="cliente_id">Cliente:</label>
+          <label for="cliente_id">Cliente ID:</label>
           <input type="number" id="cliente_id" name="cliente_id" pattern="[0-9]*" inputmode="numeric"
           [(ngModel)]="venda.cliente_id" (input)="preventNegativeNumbers($event)" required>
         </div>

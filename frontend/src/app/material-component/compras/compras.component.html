@@ -1,0 +1,46 @@
+<mat-card>
+    <b><span>Gerenciar Compras</span></b>
+  </mat-card>
+  <hr>
+    <div class="container">
+      <h2>Registrar Compra</h2>
+      <form (ngSubmit)="registrarCompra()">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="produto_id">ID do Produto:</label>
+            <input type="number" id="produto_id" name="produto_id" [(ngModel)]="compra.produto_id" (input)="preventNegativeNumbers($event)" required>
+          </div>
+          <div class="form-group">
+            <label for="preco_unitario">Preço Unitário:</label>
+            <input type="number" id="preco_unitario" name="preco_unitario" pattern="[0-9]*" inputmode="numeric"
+            [(ngModel)]="compra.preco_unitario" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="quantidade_comprada">Quantidade Comprada:</label>
+            <input type="number" id="quantidade_comprada" name="quantidade_comprada" pattern="[0-9]*" inputmode="numeric"
+            [(ngModel)]="compra.quantidade_comprada" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
+          </div>
+          <div class="form-group">
+            <label for="desconto_recebido">Desconto Recebido:</label>
+            <input type="number" id="desconto_recebido" name="desconto_recebido" pattern="[0-9]*" inputmode="numeric"
+            [(ngModel)]="compra.desconto_recebido" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fornecedor_id">Fornecedor ID:</label>
+            <input type="number" id="fornecedor_id" name="fornecedor_id" pattern="[0-9]*" inputmode="numeric"
+            [(ngModel)]="compra.fornecedor_id" (input)="preventNegativeNumbers($event)" required>
+          </div>
+          <div class="form-group">
+            <label for="total_compra">Valor Total da Compra:</label>
+            <span> {{ compra.total_compra }}</span>
+          </div>
+        </div>
+        <div class="button-wrapper">
+          <button type="submit" class="btn-submit">Registrar Compra</button>
+      </div>
+      </form>
+    </div>  

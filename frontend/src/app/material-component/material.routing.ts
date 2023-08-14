@@ -6,6 +6,7 @@ import { GerenciarProdutoComponent } from './gerenciar-produto/gerenciar-produto
 import { GerenciaFornecedorComponent } from './gerencia-fornecedor/gerencia-fornecedor.component';
 import { VendasComponent } from './vendas/vendas.component';
 import { GerenciarClientesComponent } from './gerenciar-clientes/gerenciar-clientes.component';
+import { ComprasComponent } from './compras/compras.component';
 
 export const MaterialRoutes: Routes = [
     {
@@ -35,6 +36,14 @@ export const MaterialRoutes: Routes = [
     {
         path: 'clientes',
         component: GerenciarClientesComponent,
+        canActivate: [RouteCheckService],
+        data: {
+            roleEsperado: ['admin', 'user']
+        }
+    },
+    {
+        path: 'compras',
+        component: ComprasComponent,
         canActivate: [RouteCheckService],
         data: {
             roleEsperado: ['admin', 'user']

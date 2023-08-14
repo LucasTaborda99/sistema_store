@@ -83,7 +83,7 @@ export class VendasComponent implements OnInit {
       },
       (error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.responseMessage = "Apenas administradores têm permissão para deletar fornecedores";
+          this.responseMessage = "Apenas administradores têm permissão para deletar as vendas";
         } else if (error.status === 404) {
           this.responseMessage = "Produto não encontrado";
         } else if (error.status === 400) {

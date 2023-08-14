@@ -15,6 +15,9 @@ const Fornecedor = require('../models').Fornecedor;
 // Importando a model Vendas
 const Vendas = require('../models').Vendas;
 
+// Importando a model Compras
+const Compras = require('../models').Compras;
+
 // Importando a model Clientes
 const Clientes = require('../models').Clientes;
 
@@ -39,6 +42,10 @@ async function detailsDashboard(req, res) {
         where: { deleted_at: null}
       });
 
+      const compras = await Compras.count({
+        where: { deleted_at: null}
+      });
+
       const vendas = await Vendas.count({
         where: { deleted_at: null}
       });
@@ -48,7 +55,7 @@ async function detailsDashboard(req, res) {
       });
 
       return res.status(200).json({ categoriasCount: categorias, produtosCount: produtos, fornecedoresCount: fornecedores,
-       vendasCount: vendas, clientesCount: clientes});
+        comprasCount: compras, vendasCount: vendas, clientesCount: clientes});
        
     } catch (err) {
       return res.status(500).json(err);

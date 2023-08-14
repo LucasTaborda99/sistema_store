@@ -48,6 +48,19 @@
       <div class="column">
         <div class="card">
           <div class="container">
+            <h2 class="title">Total Compras</h2>
+            <h1 class="title">{{ data?.comprasCount }}</h1>
+            <p>
+              <button class="button" [routerLink]="['/sistemastore/compras']">
+                Ver Compras
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="column">
+        <div class="card">
+          <div class="container">
             <h2 class="title">Total Vendas</h2>
             <h1 class="title">{{ data?.vendasCount }}</h1>
             <p>
