@@ -28,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'ControleEstoque',
+    tableName: 'controleEstoque',
     timestamps: false,
     underscored: true,
   });
