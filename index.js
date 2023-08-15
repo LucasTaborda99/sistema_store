@@ -11,6 +11,7 @@ const clientesRoute = require('./routes/clientes')
 const vendasRoute = require('./routes/vendas')
 const comprasRoute = require('./routes/compras')
 const controleEstoqueRoute = require('./routes/controleEstoque')
+const notificacaoEstoqueRoute = require('./routes/notificacaoEstoque')
 
 const app = express()
 const { sequelize } = require('./models');
@@ -28,6 +29,7 @@ app.use('/clientes', clientesRoute)
 app.use('/vendas', vendasRoute)
 app.use('/compras', comprasRoute)
 app.use('/controleEstoque', controleEstoqueRoute)
+app.use('/notificacaoEstoque', notificacaoEstoqueRoute)
 
 // Importando o módulo connection, responsável por estabelecer conexão com o banco de dados
 const Database = require('./connection');

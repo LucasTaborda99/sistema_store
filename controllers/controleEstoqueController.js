@@ -12,6 +12,8 @@ const { Produto } = require('../models/index');
 // Importando o módulo controleEstoqueService.js que está localizada na pasta services
 const { SequelizeControleEstoqueRepository } = require('../services/ControleEstoque');
 
+const Sequelize = require('sequelize');
+
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
@@ -68,7 +70,35 @@ async function getControleEstoque(req, res) {
     }
   }
 
+  async function getProdutosEstoqueBaixo(req, res) {
+    try {
+      const produtosComEstoqueBaixo = await ControleEstoque.findAll({
+        where: {
+          quantidade_atual: {
+            // Biblioteca do Sequelize: Sequelize.Op, lte -> less than or equal,
+            // ou seja, quantidade_atual <= quantidade_minima
+            [Sequelize.Op.lte]: Sequelize.col('quantidade_minima')
+          }
+        },
+        include: [Produto]
+      });
+  
+      console.log('Produtos com estoque baixo:', produtosComEstoqueBaixo);
+
+    // Transformando o resultado em um array de objetos
+    const produtosArray = produtosComEstoqueBaixo.map(item => item.dataValues);
+     
+    return produtosArray;
+    //return res.status(200).json(produtosArray);
+
+    } catch (error) {
+      console.error(error);
+      throw new Error('Erro ao buscar produtos com estoque baixo');
+    }
+  }
+
 module.exports = {
     registrarControleEstoque,
-    getControleEstoque
+    getControleEstoque,
+    getProdutosEstoqueBaixo
 }
