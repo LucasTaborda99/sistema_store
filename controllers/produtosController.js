@@ -16,6 +16,9 @@ const { SequelizeProdutoRepository } = require('../services/ProdutoService');
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
 
+// Importando o módulo logger
+const logger = require('../services/logger');
+
 require('dotenv').config()
 
 // Cria Produto, funcionalidade disponível apenas aos roles = 'admin'
@@ -29,12 +32,14 @@ async function adicionarProduto (req, res){
     const foundProduto = await Produto.findOne({ where: { nome, deleted_by: null } });
     
     if (foundProduto) {
+        logger.warn(`Tentativa de adicionar produto já existente: ${nome}`);
         return res.status(400).json({ message: "Produto já existente e não está marcado como deletado" });
     }
 
     const foundCategoria = await Categoria.findOne({ where: { id: produto.id_categoria } });
 
     if (!foundCategoria) {
+        logger.warn(`Tentativa de adicionar produto com categoria inválida: ${produto.id_categoria}`);
         return res.status(400).json({ message: "Categoria inválida" })
     }
 
@@ -48,9 +53,12 @@ async function adicionarProduto (req, res){
       id_categoria: produto.id_categoria
     });
 
+    logger.info(`Produto "${produto.nome}" foi adicionado por "${createdBy}"`);
+
     res.status(201).json({ message: 'Produto adicionado com sucesso' });
   } catch (error) {
     console.error(error);
+      logger.error(`Erro ao criar produto: ${error.message}`);
       res.status(500).json({ message: 'Ocorreu um erro ao criar o produto' });
     }
 }
@@ -73,14 +81,15 @@ async function getProduto(req, res) {
 async function updateProduto(req, res) {
   const produto = req.body
   const updatedBy = res.locals.email;
-  const querySelect = 'SELECT nome FROM produtos WHERE id = ?'
+  const querySelect = 'SELECT id, nome, descricao, preco, quantidade, id_categoria FROM produtos WHERE id = ?'
   const queryUpdate = 'UPDATE produtos set nome = ?, descricao = ?, preco = ?, quantidade = ?, id_categoria = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
   let connection
 
   try {
       const db = Database.getInstance();
       connection = await db.getConnection();
-
+      
+       // Apenas um registro é esperado
       const [results] = await connection.query(querySelect, [produto.id]);
 
       if (results.length === 0) {
@@ -92,8 +101,12 @@ async function updateProduto(req, res) {
 
       if (updateResult.affectedRows === 0) {
           connection.release();
+          logger.warn(`Tentativa de atualizar produto não encontrado. ID: ${produto.id}`);
           return res.status(404).json({ message: 'Nome do produto não encontrado' })
       }
+
+      // Mensagem de log
+      logger.info(`Produto com ID ${produto.id} foi atualizado por ${updatedBy} \n Produto após a atualização: ${JSON.stringify(produto)} \n Produto antes da atualização: ${JSON.stringify(results)}`);
 
       return res.status(200).json({ message: 'Produto atualizado com sucesso' })
   } catch (err) {
@@ -121,8 +134,11 @@ async function deleteProduto(req, res) {
       connection.release();
 
       if (results.affectedRows == 0) {
+          logger.warn(`Tentativa de exclusão de produto não encontrado. ID: ${produto.id}`);
           return res.status(404).json({ message: "ID não encontrado" });
       }
+
+      logger.info(`Produto com ID ${produto.id} foi marcado como excluído por ${deletedBy}`);
 
       if (res.locals.role !== 'admin') {
         return res.status(401).json({ message: "Apenas administradores têm permissão para deletar produtos" });
@@ -131,6 +147,7 @@ async function deleteProduto(req, res) {
       return res.status(200).json({ message: "Produto marcado como excluído com sucesso" });
   } catch (err) {
       console.error(err);
+      logger.error(`Erro ao deletar produto: ${err.message}`);
       return res.status(500).json({ message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde" });
   }
 }

@@ -1,0 +1,65 @@
+2023-08-16 14:08:44 info: Produto com ID 12 foi marcado como excluído por admin@gmail.com
+2023-08-16 14:09:32 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 14:10:05 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 14:10:50 error: Erro ao criar produto: Incorrect decimal value: 'lll' for column 'preco' at row 1
+2023-08-16 11:23:56 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:24:38 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:25:31 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:25:31 info: Estado anterior:
+2023-08-16 11:25:31 info: Estado atualizado:
+2023-08-16 11:27:38 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:31:05 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:31:05 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:31:05 info: Produto com ID 11 foi atualizado por admin@gmail.com
+2023-08-16 11:31:05 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:35:18 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:38:10 info: Produto com ID [object Object] foi atualizado por admin@gmail.com
+2023-08-16 11:38:29 info: Produto com ID undefined foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 11 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 11:39:09 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 11:39:09 info: Estado anterior:
+2023-08-16 11:39:09 info: Estado atualizado:
+2023-08-16 13:01:27 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 13:01:53 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 13:01:53 info: Estado anterior:
+2023-08-16 13:09:40 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 13:09:40 info: Estado anterior:
+2023-08-16 13:09:40 info: Estado atualizado:
+2023-08-16 13:10:16 info: Produto com ID 2 foi atualizado por admin@gmail.com
+2023-08-16 13:10:16 info: Estado anterior:
+2023-08-16 13:10:16 info: Estado atualizado:
+2023-08-16 13:10:42 info: Produto com ID {"id":2,"nome":"Tênis Adid","preco":"1000.00","descricao":"TÊnis Adidas, número 41","quantidade":9,"id_categoria":2} foi atualizado por admin@gmail.com
+2023-08-16 13:10:42 info: Estado anterior:
+2023-08-16 13:10:42 info: Estado atualizado:
+2023-08-16 13:14:42 info: Produto com ID 2 foi atualizado por admin@gmail.com, produto atualizado: {"id":2,"nome":"Tênis Adida","preco":"1000.00","descricao":"TÊnis Adidas, número 41","quantidade":9,"id_categoria":2} 
+, produto antes atualização: [{"nome":"Tênis Adid"}]
+2023-08-16 13:16:01 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ produto atualizado: {"id":2,"nome":"Tênis Adid","preco":"1000.00","descricao":"TÊnis Adidas, número 41","quantidade":9,"id_categoria":2} 
+, produto antes atualização: [{"id":2,"nome":"Tênis Adida","descricao":"TÊnis Adidas, número 41","preco":"1000.00","quantidade":9,"created_at":"2023-04-14T11:36:17.000Z","created_by":"admin@gmail.com","updated_at":"2023-08-16T13:14:47.000Z","updated_by":"admin@gmail.com","deleted_at":null,"deleted_by":null,"id_categoria":2}]
+2023-08-16 13:21:10 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adidas","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":"90","id_categoria":2} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adid","descricao":"TÊnis Adidas, número 41","preco":"1000.00","quantidade":9}]
+2023-08-16 13:23:01 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adida3","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":90,"id_categoria":2} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adidas","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":90,"id_categoria":2}]
+2023-08-16 13:25:30 info: Produto com ID 11 foi marcado como excluído por admin@gmail.com
