@@ -105,6 +105,9 @@ async function updateProduto(req, res) {
           return res.status(404).json({ message: 'Nome do produto não encontrado' })
       }
 
+      const produtoInstance = await Produto.findByPk(produto.id);
+      await produtoInstance.updatePrecoValor(produto.preco);
+
       // Mensagem de log
       logger.info(`Produto com ID ${produto.id} foi atualizado por ${updatedBy} \n Produto após a atualização: ${JSON.stringify(produto)} \n Produto antes da atualização: ${JSON.stringify(results)}`);
 
