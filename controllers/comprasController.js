@@ -9,6 +9,9 @@ const { Compras } = require('../models/index');
 // Importando a model Produto
 const { Produto } = require('../models/index');
 
+// Importando a model ProdutoXFornecedor
+const { ProdutoXFornecedor } = require('../models/index');
+
 // Importando o módulo comprasService.js que está localizada na pasta services
 const { SequelizeComprasRepository } = require('../services/comprasService');
 
@@ -51,6 +54,12 @@ async function registrarCompra (req, res) {
         created_by: createdBy,
         created_at: createdAt,
         data: createdAt
+      });
+
+      // Cria um registro na tabela ProdutoXFornecedor para associar o produto ao fornecedor
+      await ProdutoXFornecedor.create({
+        produto_id: produto_id,
+        fornecedor_id: fornecedor_id,
       });
 
       // Atualize a quantidade do produto na tabela Produtos
