@@ -10,6 +10,9 @@ const Categoria = require('../models').Categoria;
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
 
+// Importando o módulo logger
+const logger = require('../services/logger');
+
 require('dotenv').config()
 
 // Cria categoria dos produtos, funcionalidade disponível apenas aos roles = 'admin'
@@ -23,6 +26,7 @@ async function adicionarCategoria(req, res) {
     const foundCategoria = await Categoria.findOne({ where: { nome } });
 
     if (foundCategoria && foundCategoria.deleted_by === null) {
+      logger.warn(`Tentativa de adicionar categoria já existente e não marcado como deletado: ${nome}`);
       return res.status(400).json({ message: "Categoria já existente e não está marcado como deletado" });
     }
 
@@ -44,9 +48,11 @@ async function adicionarCategoria(req, res) {
       
     });
 
+    logger.info(`Categoria "${categoria.nome}" foi adicionado por "${createdBy}"`);
     res.status(201).json({ message: 'Categoria adicionada com sucesso' });
   } catch (error) {
     console.error(error);
+    logger.error(`Erro ao criar categoria: ${error.message}`);
     res.status(500).json({ message: 'Ocorreu um erro ao criar a categoria' });
   }
 }
@@ -73,6 +79,10 @@ const updateCategoria = async (req, res) => {
   const updatedAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
   try {
+
+    // Apenas um registro é esperado
+    const categoriaAntes = await Categoria.findByPk(id);
+
     // busca a categoria pelo ID
     const categoria = await Categoria.findByPk(id);
     if (!categoria) {
@@ -85,7 +95,11 @@ const updateCategoria = async (req, res) => {
     }
     // atualiza a categoria
     await categoria.update({ nome, updated_by: updatedBy, updated_at: updatedAt});
+
+    // Mensagem de log
+    logger.info(`Categoria com ID ${categoria.id} foi atualizado por ${updatedBy} \n Categoria após a atualização: ${categoria.nome} \n Categoria antes da atualização: ${categoriaAntes.nome}`);
     return res.status(200).json({ message: 'Categoria atualizada com sucesso' });
+
   } catch (error) {
     res.status(500).json({ message: 'Ocorreu um erro ao atualizar a categoria' });
   }
@@ -106,6 +120,7 @@ async function deleteCategoria(req, res) {
       connection.release();
 
       if (results.affectedRows == 0) {
+        logger.warn(`Tentativa de exclusão de categoria não encontrado. ID: ${categoria.id}`);
           return res.status(404).json({ message: "ID não encontrado" });
       }
 
@@ -113,9 +128,11 @@ async function deleteCategoria(req, res) {
         return res.status(401).json({ message: "Apenas administradores têm permissão para deletar categorias" });
       }
 
+      logger.info(`Categoria com ID ${categoria.id} foi marcado como excluído por ${deletedBy}`);
       return res.status(200).json({ message: "Categoria marcada como excluída com sucesso" });
   } catch (err) {
       console.error(err);
+      logger.error(`Erro ao deletar categoria: ${err.message}`);
       return res.status(500).json({ message: "Ops! Algo deu errado. Por favor, tente novamente mais tarde" });
   }
 }

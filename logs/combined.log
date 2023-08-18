@@ -109,3 +109,49 @@
 2023-08-18 13:00:40 info: Produto com ID 2 foi atualizado por admin@gmail.com 
  Produto após a atualização: {"id":2,"nome":"Tênis Adidas","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":90,"id_categoria":5} 
  Produto antes da atualização: [{"id":2,"nome":"Tênis Adidas","descricao":"Tênis Adidas, número 41","preco":"252.00","quantidade":90,"id_categoria":5}]
+2023-08-18 14:35:44 info: Produto "Garrafa de Àgua" foi adicionado por "admin@gmail.com"
+2023-08-18 14:35:44 info: Produto com ID 13 foi marcado como excluído por admin@gmail.com
+2023-08-18 15:25:24 warn: Tentativa de adicionar categoria já existente: Alimentos e não marcado como deletado
+2023-08-18 15:26:13 warn: Tentativa de adicionar categoria já existente e não marcado como deletado: Alimentos
+2023-08-18 15:28:00 info: Categoria "Casa" foi adicionado por "admin@gmail.com"
+2023-08-18 15:28:00 info: Categoria "2858" foi adicionado por "admin@gmail.com"
+2023-08-18 15:34:21 info: Categoria com ID 4 foi atualizado por admin@gmail.com 
+ Categoria após a atualização: Alimento 
+ Categoria antes da atualização: Alimento
+2023-08-18 15:35:54 info: Categoria com ID 4 foi atualizado por admin@gmail.com 
+ Categoria após a atualização: Alimentos 
+ Categoria antes da atualização: Alimentos
+2023-08-18 15:36:18 info: Categoria com ID 4 foi atualizado por admin@gmail.com 
+ Categoria após a atualização: Aliment 
+ Categoria antes da atualização: Alimentos
+2023-08-18 15:38:36 info: Categoria "Automóveis" foi adicionado por "admin@gmail.com"
+2023-08-18 15:38:36 info: Categoria com ID 11 foi atualizado por admin@gmail.com 
+ Categoria após a atualização: Auto 
+ Categoria antes da atualização: Automóveis
+2023-08-18 15:38:36 info: Categoria com ID 11 foi marcado como excluído por admin@gmail.com
+2023-08-18 15:38:36 info: Categoria com ID 10 foi marcado como excluído por admin@gmail.com
+2023-08-18 15:38:36 info: Categoria com ID 8 foi marcado como excluído por admin@gmail.com
+2023-08-18 15:38:36 info: Categoria com ID 5 foi atualizado por admin@gmail.com 
+ Categoria após a atualização: Computador 
+ Categoria antes da atualização: Computadores
+2023-08-18 15:38:36 info: Categoria "teste" foi adicionado por "admin@gmail.com"
+2023-08-18 15:38:36 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adida","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":100,"id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adidas","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
+2023-08-18 15:38:36 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adidas","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":100,"id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adida","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
+2023-08-18 15:38:36 info: Produto "Teste" foi adicionado por "admin@gmail.com"
+2023-08-18 15:38:36 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adida","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":100,"id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adidas","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
+2023-08-18 15:44:03 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adidas","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":100,"id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adida","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
+2023-08-18 15:44:26 info: Produto com ID 2 foi atualizado por admin@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adida","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":100,"id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adidas","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
+2023-08-18 15:44:26 info: Categoria com ID 4 foi marcado como excluído por admin@gmail.com
+2023-08-18 15:45:24 info: Categoria com ID 5 foi atualizado por admin@gmail.com 
+ Categoria após a atualização: Computadores 
+ Categoria antes da atualização: Computador
