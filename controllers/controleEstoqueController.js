@@ -12,6 +12,9 @@ const { Produto } = require('../models/index');
 // Importando o módulo controleEstoqueService.js que está localizada na pasta services
 const { SequelizeControleEstoqueRepository } = require('../services/ControleEstoque');
 
+// Importando a função envioNotificacaoEstoqueBaixo do módulo notificacaoEstoqueController.js
+const { envioNotificacaoEstoqueBaixo } = require('./notificacaoEstoqueController');
+
 const Sequelize = require('sequelize');
 
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
@@ -28,25 +31,45 @@ async function registrarControleEstoque (req, res) {
       const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
       // Obtém os dados do controle de estoque a partir do corpo da requisição
-      const { data, quantidade_minima, quantidade_maxima, quantidade_atual, produto_id } = req.body;
+      const { quantidade_minima, quantidade_maxima, id, produto_id } = req.body;
 
       // Verifica se o produto existe
       const produto = await Produto.findByPk(produto_id);
       if (!produto) {
         return res.status(404).json({ message: 'Produto não encontrado' });
       }
+
+      // Verifica se o controle_id já existe na tabela
+      const controleExistente = await ControleEstoque.findOne({
+        where: {
+          id
+        }
+      });
+
+      if (controleExistente) {
+        return res.status(400).json({ message: 'Já existe um controle com esse ID' });
+      }
+
+      // Usando o valor da quantidade_atual do produto
+      const quantidade_atual = produto.quantidade;
       
       // Cria o controle de estoque no banco de dados
       const controleEstoque = await ControleEstoque.create({
-        data,
         quantidade_minima,
         quantidade_maxima,
         quantidade_atual,
         produto_id,
+        id,
         created_by: createdBy,
         created_at: createdAt,
         data: createdAt
       });
+
+      // Verifica se a quantidade atual é menor ou igual à quantidade mínima
+      if (quantidade_atual <= quantidade_minima) {
+        // Chama a função para enviar a notificação de estoque baixo
+        await envioNotificacaoEstoqueBaixo(produto);
+      }
 
       return res.status(201).json({ message: 'Controle estoque com sucesso' });
     } catch (error) {
@@ -97,8 +120,56 @@ async function getControleEstoque(req, res) {
     }
   }
 
+  // ... (código anterior)
+
+// Atualiza o controle de estoque
+async function atualizarControleEstoque(req, res) {
+  try {
+
+      const createdBy = res.locals.email;
+      const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
+      const { quantidade_minima, quantidade_maxima, id, produto_id } = req.body;
+
+      const produto = await Produto.findByPk(produto_id);
+      if (!produto) {
+          return res.status(404).json({ message: 'Produto não encontrado' });
+      }
+
+      // Usando o valor da quantidade_atual do produto
+      const quantidade_atual = produto.quantidade;
+
+      await ControleEstoque.update(
+          {
+            quantidade_minima,
+            quantidade_maxima,
+            quantidade_atual,
+            produto_id,
+            id,
+            created_by: createdBy,
+            created_at: createdAt,
+            data: createdAt
+          },
+          {
+              where: { id: id }
+          }
+      );
+
+      // Verifica se a quantidade atual é menor ou igual à quantidade mínima
+      if (quantidade_atual <= quantidade_minima) {
+          // Chama a função para enviar a notificação de estoque baixo
+          await envioNotificacaoEstoqueBaixo(produto);
+      }
+
+      return res.status(200).json({ message: 'Controle estoque atualizado com sucesso' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Erro ao atualizar o controle de estoque' });
+  }
+}
+
 module.exports = {
     registrarControleEstoque,
     getControleEstoque,
-    getProdutosEstoqueBaixo
+    getProdutosEstoqueBaixo,
+    atualizarControleEstoque
 }
