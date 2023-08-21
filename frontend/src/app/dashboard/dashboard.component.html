@@ -11,7 +11,7 @@
             <h1 class="title">{{ data?.categoriasCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/categoria']">
-                Ver Categorias
+                Gerenciar Categorias
               </button>
             </p>
           </div>
@@ -24,7 +24,7 @@
             <h1 class="title">{{ data?.produtosCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/produto']">
-                Ver Produtos
+                Gerenciar Produtos
               </button>
             </p>
           </div>
@@ -37,7 +37,7 @@
             <h1 class="title">{{ data?.fornecedoresCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/fornecedor']">
-                Ver Fornecedores
+                Gerenciar Fornecedores
               </button>
             </p>
           </div>
@@ -52,7 +52,7 @@
             <h1 class="title">{{ data?.comprasCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/compras']">
-                Ver Compras
+                Registrar Compras
               </button>
             </p>
           </div>
@@ -65,7 +65,7 @@
             <h1 class="title">{{ data?.vendasCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/vendas']">
-                Ver Vendas
+                Registrar Vendas
               </button>
             </p>
           </div>
@@ -78,7 +78,22 @@
             <h1 class="title">{{ data?.clientesCount }}</h1>
             <p>
               <button class="button" [routerLink]="['/sistemastore/clientes']">
-                Ver Clientes
+                Gerenciar Clientes
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <div class="card">
+          <div class="container">
+            <h2 class="title">Total Controle Estoque</h2>
+            <h1 class="title">{{ data?.controleEstoqueCount }}</h1>
+            <p>
+              <button class="button" [routerLink]="['/sistemastore/controleEstoque']">
+                Controle Estoque
               </button>
             </p>
           </div>

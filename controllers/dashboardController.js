@@ -21,6 +21,9 @@ const Compras = require('../models').Compras;
 // Importando a model Clientes
 const Clientes = require('../models').Clientes;
 
+// Importando a model ControleEstoque
+const ControleEstoque = require('../models').ControleEstoque;
+
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
@@ -54,8 +57,11 @@ async function detailsDashboard(req, res) {
         where: { deleted_at: null}
       });
 
+      const controleEstoque = await ControleEstoque.count({
+      });
+
       return res.status(200).json({ categoriasCount: categorias, produtosCount: produtos, fornecedoresCount: fornecedores,
-        comprasCount: compras, vendasCount: vendas, clientesCount: clientes});
+        comprasCount: compras, vendasCount: vendas, clientesCount: clientes, controleEstoqueCount: controleEstoque});
        
     } catch (err) {
       return res.status(500).json(err);

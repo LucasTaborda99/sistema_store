@@ -22,6 +22,8 @@ import { VendasComponent } from './vendas/vendas.component';
 import { GerenciarClientesComponent } from './gerenciar-clientes/gerenciar-clientes.component';
 import { ClienteComponent } from './dialog/cliente/cliente.component';
 import { ComprasComponent } from './compras/compras.component';
+import { ControleEstoqueComponent } from './controle-estoque/controle-estoque.component';
+import { EstoqueComponent } from './dialog/estoque/estoque.component';
 
 @NgModule({
   imports: [
@@ -48,7 +50,9 @@ import { ComprasComponent } from './compras/compras.component';
     VendasComponent,
     GerenciarClientesComponent,
     ClienteComponent,
-    ComprasComponent    
+    ComprasComponent,
+    EstoqueComponent,
+    ControleEstoqueComponent    
   ]
 })
 export class MaterialComponentsModule {}

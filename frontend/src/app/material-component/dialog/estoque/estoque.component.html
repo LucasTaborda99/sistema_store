@@ -1,0 +1,68 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row fxLayout="row">
+      <span class="title-center">{{ dialogData.action }} Controle Estoque</span>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  
+  <mat-dialog-content class="mat-typography">
+    <form [formGroup]="controleEstoqueForm">
+      <div fxFlex fxLayout="column">
+        <div fxLayout="row wrap">
+          <mat-form-field appearance="fill">
+            <mat-label>ID do Cadastro</mat-label>
+            <input type="text" matInput formControlName="id" required />
+            <mat-error *ngIf="controleEstoqueForm.controls.id.touched && controleEstoqueForm.controls.id.invalid">
+              <span *ngIf="controleEstoqueForm.controls.id.errors.required">Esse campo é obrigatório</span>
+              <span *ngIf="controleEstoqueForm.controls.id.errors.pattern">Esse campo é inválido</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>ID do Produto</mat-label>
+              <input type="text" matInput formControlName="produto_id" required />
+              <mat-error *ngIf="controleEstoqueForm.controls.produto_id.touched && controleEstoqueForm.controls.produto_id.invalid">
+                <span *ngIf="controleEstoqueForm.controls.produto_id.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="controleEstoqueForm.controls.produto_id.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Quantidade Mínima</mat-label>
+              <input type="text" matInput formControlName="quantidade_minima" required />
+              <mat-error *ngIf="controleEstoqueForm.controls.quantidade_minima.touched && controleEstoqueForm.controls.quantidade_minima.invalid">
+                <span *ngIf="controleEstoqueForm.controls.quantidade_minima.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="controleEstoqueForm.controls.quantidade_minima.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row wrap">
+            <mat-form-field appearance="fill">
+              <mat-label>Quantidade Máxima</mat-label>
+              <input type="text" matInput formControlName="quantidade_maxima" required />
+              <mat-error *ngIf="controleEstoqueForm.controls.quantidade_maxima.touched && controleEstoqueForm.controls.quantidade_maxima.invalid">
+                <span *ngIf="controleEstoqueForm.controls.quantidade_maxima.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="controleEstoqueForm.controls.quantidade_maxima.errors.pattern">Esse campo é inválido</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+      </div>
+    </form>
+  </mat-dialog-content>
+  
+  <mat-dialog-actions align="center">
+    <button
+      mat-raised-button
+      class="btnAtualizar"
+      type="submit"
+      (click)="submit()"
+      [disabled]="!(controleEstoqueForm.valid && controleEstoqueForm.dirty)"
+    >
+      {{ action }}
+    </button>
+  
+    <button mat-raised-button class="btnFechar" mat-dialog-close>
+      Fechar
+    </button>
+  </mat-dialog-actions>

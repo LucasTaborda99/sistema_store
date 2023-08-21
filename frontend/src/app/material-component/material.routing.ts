@@ -7,6 +7,7 @@ import { GerenciaFornecedorComponent } from './gerencia-fornecedor/gerencia-forn
 import { VendasComponent } from './vendas/vendas.component';
 import { GerenciarClientesComponent } from './gerenciar-clientes/gerenciar-clientes.component';
 import { ComprasComponent } from './compras/compras.component';
+import { ControleEstoqueComponent } from './controle-estoque/controle-estoque.component';
 
 export const MaterialRoutes: Routes = [
     {
@@ -23,6 +24,14 @@ export const MaterialRoutes: Routes = [
         canActivate: [RouteCheckService],
         data: {
             roleEsperado: ['admin', 'user']
+        }
+    },
+    {
+        path: 'controleEstoque',
+        component: ControleEstoqueComponent,
+        canActivate: [RouteCheckService],
+        data: {
+            roleEsperado: ['admin']
         }
     },
     {

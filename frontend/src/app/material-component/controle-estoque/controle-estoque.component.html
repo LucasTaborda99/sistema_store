@@ -1,0 +1,45 @@
+<mat-card>
+    <b><span>Controle Estoque</span></b>
+    <button mat-flat-button class="float-right" (click)="adicionarAction()">Adicionar Controle Estoque</button>
+</mat-card>
+<hr>
+<mat-card>
+    <mat-form-field appearance="fill">
+        <mat-label>ID do Produto</mat-label>
+        <input matInput (keyup)="aplicarFiltro($event)" #input>
+    </mat-form-field>
+</mat-card>
+<hr>
+<div class="responsive_table">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="nome">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="descricao">
+            <th mat-header-cell *matHeaderCellDef>ID do Produto</th>
+            <td mat-cell *matCellDef="let element">{{element.produto_id}}</td>
+        </ng-container>
+        <ng-container matColumnDef="preco">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Mínima</th>
+            <td mat-cell *matCellDef="let element">{{element.quantidade_minima}}</td>
+        </ng-container>
+        <ng-container matColumnDef="quantidade">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Máxima</th>
+            <td mat-cell *matCellDef="let element">{{element.quantidade_maxima}}</td>
+        </ng-container>
+        <ng-container matColumnDef="editar">
+            <th mat-header-cell *matHeaderCellDef>Ação</th>
+            <td mat-cell *matCellDef="let element" class="action-link">
+                <button mat-icon-button matTooltip="Editar" (click)="editarAction(element)">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button matTooltip="Deletar" (click)="handleDeletarAction(element)" class="red-delete-button">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns:displayedColumns"></tr>
+    </table>
+</div>
