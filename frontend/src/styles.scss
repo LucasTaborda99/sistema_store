@@ -1,4 +1,5 @@
 // Arquivo para styles global
+@import '~@angular/material/theming';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -41,4 +42,22 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     max-width: 100vw !important;
     margin-top: 70px !important;
     padding: 20px !important;
+}
+
+// Tema claro
+$theme-primary: mat-palette($mat-indigo);
+$theme-accent: mat-palette($mat-pink, A200, A100, A400);
+$theme-warn: mat-palette($mat-red);
+
+$light-theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
+
+// Tema escuro
+$dark-theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
+
+// Aplicar o tema padrão (claro) ao aplicativo
+@include angular-material-theme($light-theme);
+
+// Adicionar uma classe de escopo global para alternar entre os temas
+.dark-theme {
+  @include angular-material-theme($dark-theme);
 }

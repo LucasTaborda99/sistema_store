@@ -140,41 +140,44 @@ async function esqueciSenha(req, res) {
             let emailCorpo = {
                 from: process.env.EMAIL,
                 to: foundUser.email,
-                subject: 'Recuperação de senha do SistemaStore',
+                subject: 'SistemaStore - Recuperação de senha',
                 html: `
-                    <p>Olá, <b>${foundUser.nome}</b></p>
-                    <p>Conforme solicitado, segue sua senha provisória para acesso ao SistemaStore:
-                    <p>Seus detalhes de login ao <b>SistemaStore</b>:</p>
-                    <ul>
-                        <li><b>Usuário:</b> ${foundUser.nome}</li>
-                        <li><b>Email:</b> ${foundUser.email}</li>
-                        <li><b>Nova senha:</b> ${newPassword}</li>
-                    </ul>
-                    <p><b>Observação:</b> A nova senha gerada é válida apenas por 30 minutos. Acesse o SistemaStore e altere sua senha.</p>
-                    <p><b>Se você já recebeu esse código ou não precisa mais dele, desconsidere este e-mail.</b></p>
-                    <p>Clique <a href="http://localhost:4200/">aqui</a> para fazer login.</p>
-                    <p>Atenciosamente,
-                    <p>Equipe do SistemaStore</p>
-                `,
-                // Estilos CSS embutidos para formatar o texto
-                css: `
-                    p {
-                        font-size: 16px;
-                        color: #333;
-                        margin-bottom: 10px;
-                    }
-                    b {
-                        font-weight: bold;
-                    }
-                    ul {
-                        list-style-type: none;
-                        padding-left: 20px;
-                    }
-                    a {
-                        color: #007bff;
-                        text-decoration: none;
-                    }
-                `
+                <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); max-width: 600px; margin: 0 auto;">
+                  <h2 style="color: #1f9ee7;">Recuperação de senha do SistemaStore</h2>
+                  <p style="font-size: 16px; color: #333;">Olá, <strong style="font-weight: bold;">${foundUser.nome}</strong></p>
+                  <p style="font-size: 16px; color: #333;">Conforme solicitado, segue sua senha provisória para acesso ao SistemaStore:</p>
+                  <p style="font-size: 16px; color: #333;"><strong style="font-weight: bold;">Seus detalhes de login ao SistemaStore:</strong></p>
+                  <ul style="list-style-type: none; padding-left: 20px;">
+                    <li style="font-size: 16px; color: #333;"><strong style="font-weight: bold;">Usuário:</strong> ${foundUser.nome}</li>
+                    <li style="font-size: 16px; color: #333;"><strong style="font-weight: bold;">Email:</strong> ${foundUser.email}</li>
+                    <li style="font-size: 16px; color: #333;"><strong style="font-weight: bold;">Nova senha:</strong> ${newPassword}</li>
+                  </ul>
+                  <p style="font-size: 16px; color: #333;"><strong style="font-weight: bold;">Observação:</strong> A nova senha gerada é válida apenas por <strong>30 minutos</strong>. Acesse o SistemaStore e altere sua senha.</p>
+                  <p style="font-size: 16px; color: #333;"><strong style="font-weight: bold;">Se você já recebeu esse código ou não precisa mais dele, desconsidere este e-mail.</strong></p>
+                  <p style="font-size: 16px; color: #333;">Clique <a href="http://localhost:4200/" style="color: #007bff; text-decoration: none;">aqui</a> para realizar login.</p>
+                  <p style="font-size: 16px; color: #333;">Atenciosamente,</p>
+                  <p style="font-size: 16px; font-weight: bold; color: #333;">Equipe do SistemaStore</p>
+                </div>
+              `,
+              // Estilos CSS embutidos para formatar o texto
+              css: `
+                p {
+                  font-size: 16px;
+                  color: #333;
+                  margin-bottom: 10px;
+                }
+                strong {
+                  font-weight: bold;
+                }
+                ul {
+                  list-style-type: none;
+                  padding-left: 20px;
+                }
+                a {
+                  color: #007bff;
+                  text-decoration: none;
+                }
+              `
             };
 
             await transportador.sendMail(emailCorpo);

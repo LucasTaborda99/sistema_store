@@ -7,13 +7,14 @@ import { ConfirmationComponent } from 'src/app/material-component/dialog/confirm
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: []
+  styleUrls: ['./header.component.scss']
 })
 export class AppHeaderComponent {
   role: any;
+  isDarkMode: boolean = false;
+
   constructor(private router: Router,
     private dialog: MatDialog) {
-
   }
 
   logout() {
@@ -37,6 +38,15 @@ export class AppHeaderComponent {
 
     dialogConfig.width = "550px"
     this.dialog.open(ChangePasswordComponent, dialogConfig)
+  }
+
+  toggleDarkMode() {
+    this.isDarkMode = !this.isDarkMode;
+    if (this.isDarkMode) {
+      document.body.classList.add('dark-theme');
+    } else {
+      document.body.classList.remove('dark-theme');
+    }
   }
 
 }

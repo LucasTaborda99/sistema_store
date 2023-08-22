@@ -12,12 +12,17 @@ export class DashboardComponent implements AfterViewInit {
 	responseMessage: any
 	data: any
 	token: any
+	isDarkMode: boolean = false;
 
 	ngAfterViewInit() { }
 
 	constructor(private dashboardService: DashboardService, private snackbarService: SnackbarService) {
 		this.dashboardData()
 	}
+
+	toggleDarkMode() {
+		this.isDarkMode = !this.isDarkMode;
+	  }
 
 	dashboardData() {
 		this.dashboardService.getDetails().subscribe((response: any) => {

@@ -1,6 +1,11 @@
-<button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5">
-    <mat-icon>account_circle</mat-icon>
-</button>
+<div class="header">
+    <button mat-icon-button class="mode-toggle-button" (click)="toggleDarkMode()">
+        <mat-icon>{{ isDarkMode ? 'brightness_4' : 'brightness_5' }}</mat-icon>
+    </button>
+    <button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5">
+        <mat-icon>account_circle</mat-icon>
+    </button>
+</div>
 <mat-menu #profile="matMenu" class="mymegamenu">
     <button mat-menu-item (click)="changePassword()">
         <mat-icon>password</mat-icon> Mudar Senha

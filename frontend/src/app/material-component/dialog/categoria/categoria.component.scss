@@ -26,4 +26,25 @@ mat-form-field {
 .mat-error {
     color: #fd0202;
 }
+
+.dark-mode {
+    background-color: #333; // Exemplo de fundo escuro
+    color: white; // Cor do texto clara no modo escuro
   
+    // Estilo para os botões Adicionar Categoria e Fechar
+    .btnAtualizar, .btnFechar {
+      background: #1F9EE7; // Mantém a cor de fundo original
+      color: white; // Cor do texto clara no modo escuro
+    }
+  
+    // Estilo para o campo Nome
+    mat-form-field {
+      padding: 5px;
+      color: white; // Cor do texto clara no modo escuro
+    }
+  
+    // Estilo para a mensagem de erro
+    .mat-error {
+      color: #fd0202; // Mantém a cor original da mensagem de erro
+    }
+  }

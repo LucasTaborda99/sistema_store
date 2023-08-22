@@ -73,6 +73,10 @@ body {
   .button:hover {
     background-color: #1996df;
   }
+
+  .dark-mode {
+    text-align: center !important;
+  }
   
   @media screen and (max-width: 650px) {
     .column {

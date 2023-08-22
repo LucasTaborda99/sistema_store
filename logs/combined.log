@@ -155,3 +155,10 @@
 2023-08-18 15:45:24 info: Categoria com ID 5 foi atualizado por admin@gmail.com 
  Categoria após a atualização: Computadores 
  Categoria antes da atualização: Computador
+2023-08-22 10:37:44 info: Produto com ID 2 foi atualizado por llucas352@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adida","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":"100","id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adida","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":110,"id_categoria":5}]
+2023-08-22 10:37:44 info: Produto com ID 2 foi atualizado por llucas352@gmail.com 
+ Produto após a atualização: {"id":2,"nome":"Tênis Adida","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":"10","id_categoria":5} 
+ Produto antes da atualização: [{"id":2,"nome":"Tênis Adida","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
+2023-08-22 14:43:56 info: Produto "Pulseira" foi adicionado por "victoriagabi052@gmail.com"
