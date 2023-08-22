@@ -71,7 +71,7 @@ async function registrarControleEstoque (req, res) {
         await envioNotificacaoEstoqueBaixo(produto);
       }
 
-      return res.status(201).json({ message: 'Controle estoque com sucesso' });
+      return res.status(201).json({ message: 'Controle estoque adicionado com sucesso' });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Erro ao registrar o controle de estoque' });
@@ -167,9 +167,29 @@ async function atualizarControleEstoque(req, res) {
   }
 }
 
+// Deleta o controle de estoque pelo ID
+async function deletarControleEstoque(req, res) {
+  try {
+      const { id } = req.params;
+
+      const controleEstoque = await ControleEstoque.findByPk(id);
+      if (!controleEstoque) {
+          return res.status(404).json({ message: 'Controle de estoque não encontrado' });
+      }
+
+      await controleEstoque.destroy();
+
+      return res.status(200).json({ message: 'Controle de estoque deletado com sucesso' });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: 'Erro ao deletar o controle de estoque' });
+  }
+}
+
 module.exports = {
     registrarControleEstoque,
     getControleEstoque,
     getProdutosEstoqueBaixo,
-    atualizarControleEstoque
+    atualizarControleEstoque,
+    deletarControleEstoque
 }

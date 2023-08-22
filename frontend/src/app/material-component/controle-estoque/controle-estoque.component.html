@@ -12,21 +12,25 @@
 <hr>
 <div class="responsive_table">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="nome">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let element">{{element.id}}</td>
-        </ng-container>
-        <ng-container matColumnDef="descricao">
+        <ng-container matColumnDef="produto_id">
             <th mat-header-cell *matHeaderCellDef>ID do Produto</th>
             <td mat-cell *matCellDef="let element">{{element.produto_id}}</td>
         </ng-container>
-        <ng-container matColumnDef="preco">
+        <ng-container matColumnDef="quantidade_atual">
+            <th mat-header-cell *matHeaderCellDef>Quantidade Atual</th>
+            <td mat-cell *matCellDef="let element">{{element.quantidade_atual}}</td>
+        </ng-container>
+        <ng-container matColumnDef="quantidade_minima">
             <th mat-header-cell *matHeaderCellDef>Quantidade Mínima</th>
             <td mat-cell *matCellDef="let element">{{element.quantidade_minima}}</td>
         </ng-container>
-        <ng-container matColumnDef="quantidade">
+        <ng-container matColumnDef="quantidade_maxima">
             <th mat-header-cell *matHeaderCellDef>Quantidade Máxima</th>
             <td mat-cell *matCellDef="let element">{{element.quantidade_maxima}}</td>
+        </ng-container>
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef>ID</th>
+            <td mat-cell *matCellDef="let element">{{element.id}}</td>
         </ng-container>
         <ng-container matColumnDef="editar">
             <th mat-header-cell *matHeaderCellDef>Ação</th>

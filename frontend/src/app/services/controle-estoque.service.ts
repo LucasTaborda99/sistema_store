@@ -17,7 +17,7 @@ export class ControleEstoqueService {
   }
 
   update(data: any) {
-    return this.httpClient.patch(this.url + "/controleEstoque/atualizarControleEstoque/", data, {
+    return this.httpClient.post(this.url + "/controleEstoque/atualizarControleEstoque/", data, {
       headers: new HttpHeaders().set('Content-Type', "application/json")
     })
   }
@@ -25,11 +25,11 @@ export class ControleEstoqueService {
   get() {
     return this.httpClient.get(this.url + "/controleEstoque/getControleEstoque/")
   }
-
+  
   delete(id: any) {
-    const data = { id: id };
-    return this.httpClient.patch(this.url + "/controleEstoque/deleteControleEstoque/", data, {
-      headers: new HttpHeaders().set('Content-Type', "application/json")
-    })
+    return this.httpClient.delete(`${this.url}/controleEstoque/deletarControleEstoque/${id}`, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
+  
 }

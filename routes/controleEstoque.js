@@ -12,5 +12,6 @@ router.post('/registrarControleEstoque', aut.autenticacaoToken, controleEstoqueC
 router.get('/getControleEstoque', aut.autenticacaoToken, controleEstoqueController.getControleEstoque)
 router.get('/getProdutosEstoqueBaixo', aut.autenticacaoToken, controleEstoqueController.getProdutosEstoqueBaixo)
 router.post('/atualizarControleEstoque', aut.autenticacaoToken, controleEstoqueController.atualizarControleEstoque)
+router.delete('/deletarControleEstoque/:id', aut.autenticacaoToken, controleEstoqueController.deletarControleEstoque)
 
 module.exports = router

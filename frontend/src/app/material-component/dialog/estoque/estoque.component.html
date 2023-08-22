@@ -9,7 +9,7 @@
       <div fxFlex fxLayout="column">
         <div fxLayout="row wrap">
           <mat-form-field appearance="fill">
-            <mat-label>ID do Cadastro</mat-label>
+            <mat-label>ID</mat-label>
             <input type="text" matInput formControlName="id" required />
             <mat-error *ngIf="controleEstoqueForm.controls.id.touched && controleEstoqueForm.controls.id.invalid">
               <span *ngIf="controleEstoqueForm.controls.id.errors.required">Esse campo é obrigatório</span>
