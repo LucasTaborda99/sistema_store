@@ -162,3 +162,19 @@
  Produto após a atualização: {"id":2,"nome":"Tênis Adida","preco":"250.00","descricao":"Tênis Adidas, número 41","quantidade":"10","id_categoria":5} 
  Produto antes da atualização: [{"id":2,"nome":"Tênis Adida","descricao":"Tênis Adidas, número 41","preco":"250.00","quantidade":100,"id_categoria":5}]
 2023-08-22 14:43:56 info: Produto "Pulseira" foi adicionado por "victoriagabi052@gmail.com"
+2023-08-31 09:19:02 info: Categoria com ID 5 foi marcado como excluído por llucas352@gmail.com
+2023-08-31 09:19:02 info: Categoria com ID 6 foi marcado como excluído por llucas352@gmail.com
+2023-08-31 09:19:02 info: Categoria com ID 7 foi marcado como excluído por llucas352@gmail.com
+2023-08-31 11:25:48 error: Erro ao deletar categoria: id is not defined
+2023-08-31 11:29:45 info: Categoria com ID 12 foi marcado como excluído por llucas352@gmail.com
+2023-08-31 11:29:45 info: Categoria "Natureza" foi adicionado por "llucas352@gmail.com"
+2023-08-31 11:29:45 info: Categoria "Futebol" foi adicionado por "llucas352@gmail.com"
+2023-08-31 11:29:45 info: Categoria "Esportes" foi adicionado por "llucas352@gmail.com"
+2023-08-31 11:29:45 info: Categoria "Acessórios" foi adicionado por "llucas352@gmail.com"
+2023-08-31 11:29:45 info: Categoria "Parafusos" foi adicionado por "llucas352@gmail.com"
+2023-08-31 11:29:45 info: Categoria com ID 13 foi marcado como excluído por llucas352@gmail.com
+2023-08-31 11:29:45 info: Produto com ID 14 foi atualizado por llucas352@gmail.com 
+ Produto após a atualização: {"id":14,"nome":"Garrafa de Àgua","preco":"2.00","descricao":"Garrafa de Àgua 2L Nova","quantidade":200,"id_categoria":"14"} 
+ Produto antes da atualização: [{"id":14,"nome":"Garrafa de Àgua","descricao":"Garrafa de Àgua 2L Nova","preco":"2.00","quantidade":200,"id_categoria":4}]
+2023-08-31 11:34:22 info: Produto com ID 2 foi marcado como excluído por llucas352@gmail.com
+2023-08-31 15:33:00 info: Categoria com ID 15 foi marcado como excluído por llucas352@gmail.com

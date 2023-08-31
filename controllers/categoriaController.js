@@ -6,6 +6,9 @@ const Database = require('../connection');
 // Importando a model Categoria
 const Categoria = require('../models').Categoria;
 
+// Importando a model Produto
+const { Produto } = require('../models/index');
+
 // Importando a biblioteca - Moment.js, que permite trabalhar com datas e horários.
 const moment = require('moment-timezone');
 const { NOW } = require('sequelize');
@@ -112,6 +115,16 @@ async function deleteCategoria(req, res) {
       const categoria = req.body;
       const deletedBy = res.locals.email;
 
+      // Verificando se algum produto está utilizando a categoria
+      const produtosComCategoria = await Produto.findAll({
+        where: { id_categoria: categoria.id },
+      });
+      console.log('Products with this category:', produtosComCategoria);
+  
+      if (produtosComCategoria.length > 0) {
+        return res.status(400).json({ message: 'Não é possível excluir a categoria, pois existem produtos associados a ela' });
+      }
+
       const query = "UPDATE categoria SET deleted_at = NOW(), deleted_by = ? WHERE id = ?";
       const db = Database.getInstance();
       const connection = await db.getConnection();
@@ -123,6 +136,8 @@ async function deleteCategoria(req, res) {
         logger.warn(`Tentativa de exclusão de categoria não encontrado. ID: ${categoria.id}`);
           return res.status(404).json({ message: "ID não encontrado" });
       }
+
+
 
       if (res.locals.role !== 'admin') {
         return res.status(401).json({ message: "Apenas administradores têm permissão para deletar categorias" });

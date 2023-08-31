@@ -107,6 +107,8 @@ export class GerenciaCategoriaComponent implements OnInit {
           this.responseMessage = "Apenas administradores têm permissão para deletar categorias";
         } else if (error.status === 404) {
           this.responseMessage = "ID não encontrado";
+        } else if (error.status === 400) {
+          this.responseMessage = "Não é possível excluir a categoria, pois existem produtos associados a ela";
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
