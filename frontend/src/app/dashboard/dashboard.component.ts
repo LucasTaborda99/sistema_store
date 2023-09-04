@@ -23,6 +23,7 @@ export class DashboardComponent implements AfterViewInit {
 	}
 
 	generatePDF() {
+		
 		// Criando uma instância do jsPDF
 		const doc = new jsPDF();
 	
@@ -62,11 +63,9 @@ export class DashboardComponent implements AfterViewInit {
 			controleEstoqueCount
 		  ]
 		];
-	
-		// Adicionando o título do relatório
 		doc.setFontSize(18);
 
-		// Definindo o alinhamento horizontal como 'center'
+		// Adicionando o título do relatório e definindo o alinhamento horizontal como 'center'
 		doc.text('Relatório do Dashboard - SistemaStore', 105, 10, { align: 'center' });
 		
 		// Cor azul em RGB para os cabeçalhos das colunas

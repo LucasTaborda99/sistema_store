@@ -8,6 +8,8 @@ import { GlobalConstants } from 'src/app/shared/global-constants';
 import { ProdutoComponent } from '../dialog/produto/produto.component';
 import { ConfirmationComponent } from '../dialog/confirmation/confirmation.component';
 import { HttpErrorResponse } from '@angular/common/http';
+import jsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 @Component({
   selector: 'app-gerenciar-produto',
@@ -43,6 +45,64 @@ export class GerenciarProdutoComponent implements OnInit {
     })
   }
 
+  generatePDF() {
+
+    // Criando uma instância do jsPDF
+    const doc = new jsPDF();
+  
+    // Definindo as informações do relatório
+    const columns = ['Nome', 'Descrição', 'Preço', 'Quantidade', 'ID'];
+  
+    // Obtendo os valores diretamente da tela
+    const data = this.dataSource.data.map((element: any) => [
+      element.nome,
+      element.descricao,
+      element.preco,
+      element.quantidade,
+      element.id
+    ]);
+  
+    doc.setFontSize(18);
+
+		// Adicionando o título do relatório e definindo o alinhamento horizontal como 'center'
+		doc.text('Relatório de Produtos - SistemaStore', 105, 10, { align: 'center' });
+  
+		// Cor azul em RGB para os cabeçalhos das colunas
+		const blueColor = 'rgb(31, 158, 231)';
+
+    // Cor preta em RGB para as linhas de separação das colunas
+		const blackColor = 'rgb(128, 128, 128)';
+  
+    // Criando a tabela usando 'jspdf-autotable'
+    autoTable(doc, {
+      head: [columns],
+      body: data,
+      theme: 'grid',
+      styles: {
+        cellPadding: 2,
+        fontSize: 12,
+        valign: 'middle',
+        halign: 'center',
+        lineColor: blackColor
+      },
+      columnStyles: {
+        0: { cellWidth: 40 },
+        1: { cellWidth: 40 },
+        2: { cellWidth: 30 },
+        3: { cellWidth: 30 },
+        4: { cellWidth: 30 }
+      },
+      headStyles: {
+        fillColor: blueColor,
+        textColor: 'white',
+        halign: 'center',
+        }
+    });
+  
+    // Salvando ou exibindo o PDF
+    doc.save('relatorioProdutosSistemaStore.pdf');
+  }
+  
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value
     
