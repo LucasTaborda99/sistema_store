@@ -49,11 +49,11 @@
           </div>
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
-              <mat-label>ID Categoria</mat-label>
-              <input type="text" matInput formControlName="id_categoria" required />
-              <mat-error *ngIf="produtoForm.controls.id_categoria.touched && produtoForm.controls.id_categoria.invalid">
-                <span *ngIf="produtoForm.controls.id_categoria.errors.required">Esse campo é obrigatório</span>
-                <span *ngIf="produtoForm.controls.id_categoria.errors.pattern">Esse campo é inválido</span>
+              <mat-label>Categoria</mat-label>
+              <input type="text" matInput formControlName="nome_categoria" required />
+              <mat-error *ngIf="produtoForm.controls.nome_categoria.touched && produtoForm.controls.id_categoria.invalid">
+                <span *ngIf="produtoForm.controls.nome_categoria.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="produtoForm.controls.nome_categoria.errors.pattern">Esse campo é inválido</span>
               </mat-error>
             </mat-form-field>
           </div>

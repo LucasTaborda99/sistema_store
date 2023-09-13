@@ -5,7 +5,12 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Categoria extends Model {
     static associate(models) {
-    }
+      Categoria.hasMany(models.Produto, {
+        foreignKey: 'id_categoria',
+        sourceKey: 'id', // Campo na tabela Categoria que corresponde à chave primária
+        as: 'produtos', // Alias para a associação
+      });
+    }    
   }
 
   Categoria.init({

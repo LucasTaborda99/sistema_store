@@ -34,7 +34,7 @@ export class ProdutoComponent implements OnInit {
       preco: [null, Validators.required],
       descricao: [null, Validators.required],
       quantidade: [null, Validators.required],
-      id_categoria: [null, Validators.required]
+      nome_categoria: [null, [Validators.required, Validators.pattern(GlobalConstants.nomeRegex)]]
     })
 
     if(this.dialogData.action === 'Editar') {
@@ -73,7 +73,7 @@ export class ProdutoComponent implements OnInit {
       preco: formData.preco,
       descricao: formData.descricao,
       quantidade: formData.quantidade,
-      id_categoria: formData.id_categoria
+      nome_categoria: formData.nome_categoria
     }
     console.log(data)
     this.productService.adicionar(data).subscribe((response: any) => {
@@ -101,7 +101,7 @@ export class ProdutoComponent implements OnInit {
       preco: formData.preco,
       descricao: formData.descricao,
       quantidade: formData.quantidade,
-      id_categoria: formData.id_categoria
+      nome_categoria: formData.nome_categoria
     }
     this.productService.update(data).subscribe((response: any) => {
     this.dialogRef.close()

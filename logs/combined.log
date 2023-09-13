@@ -178,3 +178,32 @@
  Produto antes da atualização: [{"id":14,"nome":"Garrafa de Àgua","descricao":"Garrafa de Àgua 2L Nova","preco":"2.00","quantidade":200,"id_categoria":4}]
 2023-08-31 11:34:22 info: Produto com ID 2 foi marcado como excluído por llucas352@gmail.com
 2023-08-31 15:33:00 info: Categoria com ID 15 foi marcado como excluído por llucas352@gmail.com
+2023-09-13 13:27:58 warn: Tentativa de adicionar produto com categoria inválida: 31
+2023-09-13 13:27:58 info: Produto "Celular" foi adicionado por "llucas352@gmail.com"
+2023-09-13 13:27:58 warn: Tentativa de adicionar produto já existente: Celular
+2023-09-13 13:27:58 info: Produto "Cel" foi adicionado por "llucas352@gmail.com"
+2023-09-13 13:38:46 warn: Tentativa de adicionar produto já existente: Cel
+2023-09-13 13:38:46 warn: Tentativa de adicionar produto já existente: Cel
+2023-09-13 13:38:46 info: Produto "Cel7" foi adicionado por "llucas352@gmail.com"
+2023-09-13 13:44:22 info: Produto "Cel8" foi adicionado por "llucas352@gmail.com"
+2023-09-13 13:45:44 info: Produto "Cel9" foi adicionado por "llucas352@gmail.com"
+2023-09-13 13:46:48 warn: Tentativa de adicionar produto já existente: Cel9
+2023-09-13 13:46:48 info: Produto "Cel10" foi adicionado por "llucas352@gmail.com"
+2023-09-13 15:04:41 warn: Tentativa de adicionar produto já existente: Cel10
+2023-09-13 15:04:41 warn: Tentativa de adicionar produto com categoria inválida: undefined
+2023-09-13 15:04:41 info: Produto "Geladeira" foi adicionado por "llucas352@gmail.com"
+2023-09-13 15:04:41 info: Produto "TV" foi adicionado por "llucas352@gmail.com"
+2023-09-13 15:04:41 info: Produto com ID 25 foi marcado como excluído por llucas352@gmail.com
+2023-09-13 15:20:36 info: Produto com ID 27 foi atualizado por llucas352@gmail.com 
+ Produto após a atualização: {"id":27,"nome":"TV","descricao":"TV 42'","preco":1500,"quantidade":30,"nome_categoria":"Cards"} 
+ Produto antes da atualização: [{"id":27,"nome":"TV","descricao":"TV 42'","preco":"1500.00","quantidade":20,"nome_categoria":"Eletro"}]
+2023-09-13 15:20:36 info: Produto com ID 27 foi atualizado por llucas352@gmail.com 
+ Produto após a atualização: {"id":27,"nome":"TV","preco":"1500.00","descricao":"TV 42'","quantidade":30,"nome_categoria":"Cards"} 
+ Produto antes da atualização: [{"id":27,"nome":"TV","descricao":"TV 42'","preco":"1500.00","quantidade":30,"nome_categoria":"Cards"}]
+2023-09-13 15:20:36 info: Produto com ID 27 foi atualizado por llucas352@gmail.com 
+ Produto após a atualização: {"id":27,"nome":"TV","preco":"1500.00","descricao":"TV 42'","quantidade":30,"nome_categoria":"Computadores"} 
+ Produto antes da atualização: [{"id":27,"nome":"TV","descricao":"TV 42'","preco":"1500.00","quantidade":30,"nome_categoria":"Cards"}]
+2023-09-13 15:20:36 warn: Tentativa de adicionar produto com categoria inválida: undefined
+2023-09-13 15:24:23 warn: Tentativa de adicionar produto com categoria inválida: undefined
+2023-09-13 15:24:23 warn: Tentativa de adicionar produto com categoria inválida: undefined
+2023-09-13 15:24:23 warn: Tentativa de adicionar produto com categoria inválida: undefined

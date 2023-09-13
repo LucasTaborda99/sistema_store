@@ -26,6 +26,8 @@ async function adicionarProduto (req, res){
   try {
     const produto = req.body;
     const nome = produto.nome;
+     // Cliente fornece o nome da categoria
+    const nomeCategoria = produto.nome_categoria;
     const createdBy = res.locals.email;
     const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
@@ -36,7 +38,8 @@ async function adicionarProduto (req, res){
         return res.status(400).json({ message: "Produto já existente e não está marcado como deletado" });
     }
 
-    const foundCategoria = await Categoria.findOne({ where: { id: produto.id_categoria } });
+    // Procurando a categoria pelo nome fornecido pelo cliente
+    const foundCategoria = await Categoria.findOne({ where: { nome: nomeCategoria } });
 
     if (!foundCategoria) {
         logger.warn(`Tentativa de adicionar produto com categoria inválida: ${produto.id_categoria}`);
@@ -50,7 +53,8 @@ async function adicionarProduto (req, res){
       quantidade: produto.quantidade,
       created_by: createdBy,
       created_at: createdAt,
-      id_categoria: produto.id_categoria
+      id_categoria: foundCategoria.id,
+      nome_categoria: foundCategoria.nome
     });
 
     logger.info(`Produto "${produto.nome}" foi adicionado por "${createdBy}"`);
@@ -81,8 +85,10 @@ async function getProduto(req, res) {
 async function updateProduto(req, res) {
   const produto = req.body
   const updatedBy = res.locals.email;
-  const querySelect = 'SELECT id, nome, descricao, preco, quantidade, id_categoria FROM produtos WHERE id = ?'
-  const queryUpdate = 'UPDATE produtos set nome = ?, descricao = ?, preco = ?, quantidade = ?, id_categoria = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
+  // Cliente fornece o nome da categoria
+  const nomeCategoria = produto.nome_categoria;
+  const querySelect = 'SELECT id, nome, descricao, preco, quantidade, nome_categoria FROM produtos WHERE id = ?'
+  const queryUpdate = 'UPDATE produtos set nome = ?, descricao = ?, preco = ?, quantidade = ?, nome_categoria = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
   let connection
 
   try {
@@ -97,7 +103,15 @@ async function updateProduto(req, res) {
           return res.status(404).json({ message: 'Produto não encontrado' })
       }
 
-      const [updateResult] = await connection.query(queryUpdate, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.id_categoria, updatedBy, produto.id]);
+      // Procurando a categoria pelo nome fornecido pelo cliente
+      const foundCategoria = await Categoria.findOne({ where: { nome: nomeCategoria } });
+
+      if (!foundCategoria) {
+          logger.warn(`Tentativa de adicionar produto com categoria inválida: ${produto.id_categoria}`);
+          return res.status(400).json({ message: "Categoria inválida" })
+      }
+
+      const [updateResult] = await connection.query(queryUpdate, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.nome_categoria, updatedBy, produto.id]);
 
       if (updateResult.affectedRows === 0) {
           connection.release();

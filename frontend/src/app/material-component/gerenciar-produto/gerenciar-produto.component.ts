@@ -18,7 +18,7 @@ import autoTable from 'jspdf-autotable'
 })
 export class GerenciarProdutoComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'descricao', 'preco', 'quantidade', 'id', 'editar']
+  displayedColumns: string[] = ['nome', 'nome_categoria', 'descricao', 'preco', 'quantidade', 'editar']
   dataSource: any
   responseMessage: any
 
@@ -51,7 +51,7 @@ export class GerenciarProdutoComponent implements OnInit {
     const doc = new jsPDF();
   
     // Definindo as informações do relatório
-    const columns = ['Nome', 'Descrição', 'Preço', 'Quantidade', 'ID'];
+    const columns = ['Nome', 'Descrição', 'Preço', 'Quantidade', 'Categoria'];
   
     // Obtendo os valores diretamente da tela
     const data = this.dataSource.data.map((element: any) => [
@@ -59,7 +59,7 @@ export class GerenciarProdutoComponent implements OnInit {
       element.descricao,
       element.preco,
       element.quantidade,
-      element.id
+      element.nome_categoria
     ]);
   
     doc.setFontSize(18);
@@ -171,7 +171,7 @@ export class GerenciarProdutoComponent implements OnInit {
         if (error.status === 401) {
           this.responseMessage = "Apenas administradores têm permissão para deletar produtos";
         } else if (error.status === 404) {
-          this.responseMessage = "ID não encontrado";
+          this.responseMessage = "Produto não encontrado";
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }

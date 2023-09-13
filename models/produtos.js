@@ -7,6 +7,10 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Produto.belongsTo(models.Categoria, { foreignKey: 'id_categoria' });
       Produto.hasMany(models.Precos, { foreignKey: 'produto_id', as: 'precos' });
+      Produto.belongsTo(models.Categoria, {
+        foreignKey: 'id_categoria',
+        as: 'categoria',
+      });
     }
 
     // const Precos = require('./precos')
@@ -66,6 +70,10 @@ module.exports = (sequelize, DataTypes) => {
           key: 'id',
         },
       },
+      nome_categoria: {
+        type: DataTypes.STRING(250),
+        allowNull: true,
+      },      
       created_at: {
         allowNull: false,
         type: DataTypes.DATE,
