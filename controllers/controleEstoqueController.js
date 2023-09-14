@@ -27,49 +27,61 @@ require('dotenv').config()
 async function registrarControleEstoque (req, res) {
     try {
 
+      const produto = req.body;
+      const nomeProduto = req.body.nome_produto;
       const createdBy = res.locals.email;
       const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
       // Obtém os dados do controle de estoque a partir do corpo da requisição
-      const { quantidade_minima, quantidade_maxima, id, produto_id } = req.body;
+      const { quantidade_minima, quantidade_maxima, nome_produto } = req.body;
 
-      // Verifica se o produto existe
-      const produto = await Produto.findByPk(produto_id);
-      if (!produto) {
+      // Verifica se o produto existe com base no nome_produto
+      const produtos = await Produto.findOne({
+        where: {
+          nome: nomeProduto,
+        },
+      });
+
+      if (!produtos) {
         return res.status(404).json({ message: 'Produto não encontrado' });
       }
 
-      // Verifica se o controle_id já existe na tabela
+      // Procurando o produto pelo nome fornecido pelo cliente
+      const foundProduto = await Produto.findOne({ where: { nome: nomeProduto } });
+
+      // Verifica se já existe um controle com base no nome_produto
       const controleExistente = await ControleEstoque.findOne({
         where: {
-          id
-        }
+          nome_produto: nomeProduto,
+        },
       });
 
       if (controleExistente) {
-        return res.status(400).json({ message: 'Já existe um controle com esse ID' });
+        return res.status(400).json({ message: 'Já existe um controle com esse nome de produto' });
       }
 
       // Usando o valor da quantidade_atual do produto
-      const quantidade_atual = produto.quantidade;
+      const quantidade_atual = produtos.quantidade;
       
       // Cria o controle de estoque no banco de dados
       const controleEstoque = await ControleEstoque.create({
         quantidade_minima,
         quantidade_maxima,
         quantidade_atual,
-        produto_id,
-        id,
+        produto_id: produtos.id,
+        nome_produto: nomeProduto,
         created_by: createdBy,
         created_at: createdAt,
         data: createdAt
       });
 
+      console.log(foundProduto.nome)
+
       // Verifica se a quantidade atual é menor ou igual à quantidade mínima
       if (quantidade_atual <= quantidade_minima) {
         console.log("Valor de userEmail:", createdBy);
         // Chama a função para enviar a notificação de estoque baixo
-        await envioNotificacaoEstoqueBaixo(produto, createdBy);
+        await envioNotificacaoEstoqueBaixo(produtos, createdBy);
       }
 
       return res.status(201).json({ message: 'Controle estoque adicionado com sucesso' });
@@ -129,29 +141,38 @@ async function atualizarControleEstoque(req, res) {
 
       const createdBy = res.locals.email;
       const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
-      const { quantidade_minima, quantidade_maxima, id, produto_id } = req.body;
+      const { quantidade_minima, quantidade_maxima, nome_produto } = req.body;
 
-      const produto = await Produto.findByPk(produto_id);
+      // Verifica se o produto existe com base no nome_produto
+      const produto = await Produto.findOne({
+        where: {
+          nome: nome_produto,
+        },
+      });
+
       if (!produto) {
-          return res.status(404).json({ message: 'Produto não encontrado' });
+        return res.status(404).json({ message: 'Produto não encontrado' });
       }
 
       // Usando o valor da quantidade_atual do produto
       const quantidade_atual = produto.quantidade;
+
+      // Obtém o ID do controle de estoque a ser atualizado
+      const id = req.params.id;
 
       await ControleEstoque.update(
           {
             quantidade_minima,
             quantidade_maxima,
             quantidade_atual,
-            produto_id,
-            id,
+            produto_id: produto.id,
+            nome_produto: nome_produto,
             created_by: createdBy,
             created_at: createdAt,
             data: createdAt
           },
           {
-              where: { id: id }
+              where: { nome_produto: nome_produto }
           }
       );
 

@@ -16,7 +16,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class GerenciaCategoriaComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'id', 'editar']
+  displayedColumns: string[] = ['nome', 'editar']
   dataSource: any
   responseMessage: any
 
