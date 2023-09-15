@@ -5,16 +5,16 @@
 <hr>
 <mat-card>
     <mat-form-field appearance="fill">
-        <mat-label>ID do Produto</mat-label>
+        <mat-label>Produto</mat-label>
         <input matInput (keyup)="aplicarFiltro($event)" #input>
     </mat-form-field>
 </mat-card>
 <hr>
 <div class="responsive_table">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-        <ng-container matColumnDef="produto_id">
-            <th mat-header-cell *matHeaderCellDef>ID do Produto</th>
-            <td mat-cell *matCellDef="let element">{{element.produto_id}}</td>
+        <ng-container matColumnDef="nome_produto">
+            <th mat-header-cell *matHeaderCellDef>Produto</th>
+            <td mat-cell *matCellDef="let element">{{element.nome_produto}}</td>
         </ng-container>
         <ng-container matColumnDef="quantidade_atual">
             <th mat-header-cell *matHeaderCellDef>Quantidade Atual</th>
@@ -27,10 +27,6 @@
         <ng-container matColumnDef="quantidade_maxima">
             <th mat-header-cell *matHeaderCellDef>Quantidade Máxima</th>
             <td mat-cell *matCellDef="let element">{{element.quantidade_maxima}}</td>
-        </ng-container>
-        <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef>ID</th>
-            <td mat-cell *matCellDef="let element">{{element.id}}</td>
         </ng-container>
         <ng-container matColumnDef="editar">
             <th mat-header-cell *matHeaderCellDef>Ação</th>

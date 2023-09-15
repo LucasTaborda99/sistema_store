@@ -8,22 +8,12 @@
     <form [formGroup]="controleEstoqueForm">
       <div fxFlex fxLayout="column">
         <div fxLayout="row wrap">
-          <mat-form-field appearance="fill">
-            <mat-label>ID</mat-label>
-            <input type="text" matInput formControlName="id" required />
-            <mat-error *ngIf="controleEstoqueForm.controls.id.touched && controleEstoqueForm.controls.id.invalid">
-              <span *ngIf="controleEstoqueForm.controls.id.errors.required">Esse campo é obrigatório</span>
-              <span *ngIf="controleEstoqueForm.controls.id.errors.pattern">Esse campo é inválido</span>
-            </mat-error>
-          </mat-form-field>
-        </div>
-        <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
-              <mat-label>ID do Produto</mat-label>
-              <input type="text" matInput formControlName="produto_id" required />
-              <mat-error *ngIf="controleEstoqueForm.controls.produto_id.touched && controleEstoqueForm.controls.produto_id.invalid">
-                <span *ngIf="controleEstoqueForm.controls.produto_id.errors.required">Esse campo é obrigatório</span>
-                <span *ngIf="controleEstoqueForm.controls.produto_id.errors.pattern">Esse campo é inválido</span>
+              <mat-label>Nome do Produto</mat-label>
+              <input type="text" matInput formControlName="nome_produto" required />
+              <mat-error *ngIf="controleEstoqueForm.controls.nome_produto.touched && controleEstoqueForm.controls.nome_produto.invalid">
+                <span *ngIf="controleEstoqueForm.controls.nome_produto.errors.required">Esse campo é obrigatório</span>
+                <span *ngIf="controleEstoqueForm.controls.nome_produto.errors.pattern">Esse campo é inválido</span>
               </mat-error>
             </mat-form-field>
           </div>

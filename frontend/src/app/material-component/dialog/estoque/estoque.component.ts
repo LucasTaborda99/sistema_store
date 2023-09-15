@@ -28,8 +28,7 @@ export class EstoqueComponent implements OnInit {
 
   ngOnInit(): void {
     this.controleEstoqueForm = this.formBuilder.group({
-      id: [null, [Validators.required, Validators.pattern(GlobalConstants.nomeRegex)]],
-      produto_id: [null, Validators.required],
+      nome_produto: [null, [Validators.required, Validators.pattern(GlobalConstants.nomeRegex)]],
       quantidade_minima: [null, Validators.required],
       quantidade_maxima: [null, Validators.required],
     })
@@ -52,8 +51,7 @@ export class EstoqueComponent implements OnInit {
   adicionar() {
     let formData = this.controleEstoqueForm.value
     let data = {
-      id: formData.id,
-      produto_id: formData.produto_id,
+      nome_produto: formData.nome_produto,
       quantidade_minima: formData.quantidade_minima,
       quantidade_maxima: formData.quantidade_maxima
     }
@@ -78,8 +76,7 @@ export class EstoqueComponent implements OnInit {
   editar() {
     let formData = this.controleEstoqueForm.value
     let data = {
-      id: formData.id,
-      produto_id: formData.produto_id,
+      nome_produto: formData.nome_produto,
       quantidade_minima: formData.quantidade_minima,
       quantidade_maxima: formData.quantidade_maxima
     }

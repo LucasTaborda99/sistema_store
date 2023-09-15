@@ -16,7 +16,7 @@ import { ControleEstoqueService } from 'src/app/services/controle-estoque.servic
 })
 export class ControleEstoqueComponent implements OnInit {
 
-  displayedColumns: string[] = ['produto_id', 'quantidade_atual', 'quantidade_minima', 'quantidade_maxima', 'id', 'editar']
+  displayedColumns: string[] = ['nome_produto', 'quantidade_atual', 'quantidade_minima', 'quantidade_maxima', 'editar']
   dataSource: any
   responseMessage: any
 
@@ -47,7 +47,7 @@ export class ControleEstoqueComponent implements OnInit {
     const valorFiltro = (event.target as HTMLInputElement).value
     
     this.dataSource.filterPredicate = (data: any, filter: string) => {
-      const valorColunaProdutoId = data.produto_id.toString().toLowerCase();
+      const valorColunaProdutoId = data.nome_produto.toString().toLowerCase();
       return valorColunaProdutoId.includes(filter)
     }
     this.dataSource.filter = valorFiltro.trim().toLowerCase()
@@ -91,7 +91,7 @@ export class ControleEstoqueComponent implements OnInit {
   handleDeletarAction(values: any) {
     const dialogConfig = new MatDialogConfig()
     dialogConfig.data = {
-      message: 'deletar ' + ' o controle de estoque com ID ' + '"' + values.id + '"'
+      message: 'deletar ' + ' o controle de estoque do produto ' + '"' + values.nome_produto + '"'
     }
     const dialogRef = this.dialog.open(ConfirmationComponent, dialogConfig)
     const sub = dialogRef.componentInstance.emitirMudancaStatus.subscribe((response) => {
@@ -111,7 +111,7 @@ export class ControleEstoqueComponent implements OnInit {
         if (error.status === 401) {
           this.responseMessage = "Apenas administradores têm permissão para deletar os controles de estoque";
         } else if (error.status === 404) {
-          this.responseMessage = "ID do controle de estoque não encontrado";
+          this.responseMessage = "Controle de estoque não encontrado";
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
