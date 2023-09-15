@@ -16,7 +16,7 @@ import { ClienteComponent } from '../dialog/cliente/cliente.component';
 })
 export class GerenciarClientesComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'endereco', 'telefone', 'email', 'cpf', 'id', 'editar']
+  displayedColumns: string[] = ['nome', 'endereco', 'telefone', 'email', 'cpf', 'editar']
   dataSource: any
   responseMessage: any
 
@@ -111,7 +111,7 @@ export class GerenciarClientesComponent implements OnInit {
           if (error.status === 401) {
             this.responseMessage = "Apenas administradores têm permissão para deletar clientes";
           } else if (error.status === 404) {
-            this.responseMessage = "ID não encontrado";
+            this.responseMessage = "Cliente não encontrado";
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }

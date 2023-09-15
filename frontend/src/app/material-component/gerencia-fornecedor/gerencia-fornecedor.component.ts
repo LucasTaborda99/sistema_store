@@ -16,7 +16,7 @@ import { FornecedorService } from 'src/app/services/fornecedor.service';
 })
 export class GerenciaFornecedorComponent implements OnInit {
 
-  displayedColumns: string[] = ['nome', 'endereco', 'telefone', 'cnpj', 'id', 'editar']
+  displayedColumns: string[] = ['nome', 'endereco', 'telefone', 'cnpj', 'editar']
   dataSource: any
   responseMessage: any
 
@@ -111,7 +111,7 @@ export class GerenciaFornecedorComponent implements OnInit {
         if (error.status === 401) {
           this.responseMessage = "Apenas administradores têm permissão para deletar fornecedores";
         } else if (error.status === 404) {
-          this.responseMessage = "ID não encontrado";
+          this.responseMessage = "Fornecedor não encontrado";
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }
