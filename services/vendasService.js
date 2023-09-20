@@ -16,7 +16,7 @@ class SequelizeVendasRepository extends VendasRepository {
 
     // Buscando todos as vendas, ordenando pelo id e onde a coluna 'deleted_at' for null
     return Vendas.findAll({
-      order: ['id'],
+      order: ['cliente_nome'],
       where: { deleted_at: null }
     });
   }

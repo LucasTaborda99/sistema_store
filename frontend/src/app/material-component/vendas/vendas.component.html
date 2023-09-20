@@ -7,8 +7,8 @@
     <form (ngSubmit)="registrarVenda()">
       <div class="form-row">
         <div class="form-group">
-          <label for="produto_id">ID do Produto:</label>
-          <input type="number" id="produto_id" name="produto_id" [(ngModel)]="venda.produto_id" (input)="preventNegativeNumbers($event)" required>
+          <label for="produto_nome">Nome do Produto:</label>
+          <input id="produto_nome" name="produto_nome" [(ngModel)]="venda.produto_nome" required>
         </div>
         <div class="form-group">
           <label for="quantidade_vendida">Preço Unitário:</label>
@@ -30,9 +30,8 @@
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="cliente_id">Cliente ID:</label>
-          <input type="number" id="cliente_id" name="cliente_id" pattern="[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.cliente_id" (input)="preventNegativeNumbers($event)" required>
+          <label for="cliente_nome">Nome do Cliente:</label>
+          <input id="cliente_nome" name="cliente_nome" [(ngModel)]="venda.cliente_nome" required>
         </div>
         <div class="form-group">
           <label for="total_venda">Valor Total da Venda:</label>

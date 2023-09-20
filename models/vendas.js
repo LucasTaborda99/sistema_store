@@ -5,8 +5,8 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Vendas extends Model {
     static associate(models) {
-        Vendas.belongsTo(models.Produto, { foreignKey: 'produto_id' });
-        Vendas.belongsTo(models.Clientes, { foreignKey: 'cliente_id' });
+      Vendas.belongsTo(models.Produto, { foreignKey: 'produto_nome' });
+      Vendas.belongsTo(models.Clientes, { foreignKey: 'cliente_nome' });
     }
   }
   
@@ -18,14 +18,6 @@ module.exports = (sequelize, DataTypes) => {
       data: {
         type: DataTypes.DATE,
         allowNull: false,
-      },
-      cliente_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: {
-          model: 'Clientes',
-          key: 'id'
-        }
       },
       total_venda: {
         type: DataTypes.DECIMAL(10, 2),

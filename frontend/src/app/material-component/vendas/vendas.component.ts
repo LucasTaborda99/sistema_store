@@ -15,11 +15,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class VendasComponent implements OnInit {
 
   venda = {
-    produto_id: null,
+    produto_nome: null,
     preco_unitario: null,
     quantidade_vendida: null,
     desconto_aplicado: null,
-    cliente_id: null,
+    cliente_nome: null,
     total_venda: 0
   }
 
@@ -87,7 +87,7 @@ export class VendasComponent implements OnInit {
         } else if (error.status === 404) {
           this.responseMessage = "Produto não encontrado";
         } else if (error.status === 400) {
-          this.responseMessage = "Quantidade insuficiente em estoque ou campo 'ID do Produto' e 'Quantidade Vendida' devem ser maiores do que 0";
+          this.responseMessage = "Quantidade insuficiente em estoque ou campo 'Nome do Produto' e 'Quantidade Vendida' devem ser maiores do que 0";
         } else {
           this.responseMessage = GlobalConstants.genericError;
         }

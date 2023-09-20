@@ -7,8 +7,8 @@
       <form (ngSubmit)="registrarCompra()">
         <div class="form-row">
           <div class="form-group">
-            <label for="produto_id">ID do Produto:</label>
-            <input type="number" id="produto_id" name="produto_id" [(ngModel)]="compra.produto_id" (input)="preventNegativeNumbers($event)" required>
+            <label for="produto_nome">Nome do Produto:</label>
+            <input id="produto_nome" name="produto_nome" [(ngModel)]="compra.produto_nome" required>
           </div>
           <div class="form-group">
             <label for="preco_unitario">Preço Unitário:</label>
@@ -30,9 +30,9 @@
         </div>
         <div class="form-row">
           <div class="form-group">
-            <label for="fornecedor_id">Fornecedor ID:</label>
-            <input type="number" id="fornecedor_id" name="fornecedor_id" pattern="[0-9]*" inputmode="numeric"
-            [(ngModel)]="compra.fornecedor_id" (input)="preventNegativeNumbers($event)" required>
+            <label for="fornecedor_nome">Nome do Fornecedor:</label>
+            <input id="fornecedor_nome" name="fornecedor_nome"
+            [(ngModel)]="compra.fornecedor_nome" required>
           </div>
           <div class="form-group">
             <label for="total_compra">Valor Total da Compra:</label>

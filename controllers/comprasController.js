@@ -51,7 +51,7 @@ async function registrarCompra (req, res) {
     }
     console.log(produto_nome)
 
-    // Verifica se o forncedor existe
+    // Verifica se o fornecedor existe
     const fornecedor = await Fornecedor.findOne({
       where: {
         nome: fornecedor_nome
@@ -76,7 +76,7 @@ async function registrarCompra (req, res) {
         created_at: createdAt,
         data: createdAt
       });
-      
+
       return res.status(201).json({ message: 'Compra registrada com sucesso' });
     } catch (error) {
         console.error(error);

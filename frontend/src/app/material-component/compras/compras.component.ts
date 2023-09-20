@@ -15,11 +15,11 @@ import { ComprasService } from 'src/app/services/compras.service';
 export class ComprasComponent implements OnInit {
 
   compra = {
-    produto_id: null,
+    produto_nome: null,
     preco_unitario: null,
     quantidade_comprada: null,
     desconto_recebido: null,
-    fornecedor_id: null,
+    fornecedor_nome: null,
     total_compra: 0
   }
 
@@ -87,7 +87,7 @@ export class ComprasComponent implements OnInit {
           } else if (error.status === 404) {
             this.responseMessage = "Produto não encontrado";
           } else if (error.status === 400) {
-            this.responseMessage = "Quantidade insuficiente em estoque ou campo 'ID do Produto' e 'Quantidade Comprada' devem ser maiores do que 0";
+            this.responseMessage = "Quantidade insuficiente em estoque ou campo 'Nome do Produto' e 'Quantidade Comprada' devem ser maiores do que 0";
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }
