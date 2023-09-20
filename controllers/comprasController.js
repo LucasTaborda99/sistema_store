@@ -9,6 +9,9 @@ const { Compras } = require('../models/index');
 // Importando a model Produto
 const { Produto } = require('../models/index');
 
+// Importando a model Produto
+const { Fornecedor } = require('../models/index');
+
 // Importando a model ProdutoXFornecedor
 const { ProdutoXFornecedor } = require('../models/index');
 
@@ -29,45 +32,51 @@ async function registrarCompra (req, res) {
       const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
       // Obtém os dados da compra a partir do corpo da requisição
-      const { produto_id, preco_unitario, quantidade_comprada, desconto_recebido, fornecedor_id, total_compra} = req.body;
+      const { produto_nome, preco_unitario, quantidade_comprada, desconto_recebido, fornecedor_nome, total_compra} = req.body;
     
-      // Verifica se o id do produto e a quantidade comprada foram informadas, acima de 0
-      if (!produto_id || !quantidade_comprada) {
-        return res.status(400).json({ message: 'É necessário fornecer o produto_id e quantidade_comprada' });
+      // Verifica se o nome do produto e a quantidade comprada foram informadas, acima de 0
+      if (!produto_nome || !quantidade_comprada) {
+        return res.status(400).json({ message: 'É necessário fornecer o nome do produto e quantidade_comprada' });
       }
 
-      // Verifica se o produto existe
-      const produto = await Produto.findByPk(produto_id);
-      if (!produto) {
-        return res.status(404).json({ message: 'Produto não encontrado' });
+    // Verifica se o produto existe
+    const produto = await Produto.findOne({
+      where: {
+        nome: produto_nome
       }
-      
+    });
+
+    if (!produto) {
+      return res.status(404).json({ message: 'Produto não encontrado' });
+    }
+    console.log(produto_nome)
+
+    // Verifica se o forncedor existe
+    const fornecedor = await Fornecedor.findOne({
+      where: {
+        nome: fornecedor_nome
+      }
+    });
+
+    if (!fornecedor) {
+      return res.status(404).json({ message: 'Fornecedor não encontrado' });
+    }
+    console.log(fornecedor_nome)
+
       // Cria a compra no banco de dados
       const compra = await Compras.create({
-        produto_id,
+        produto_nome: produto.nome,
         preco_unitario,
         quantidade_comprada,
         desconto_recebido,
-        fornecedor_id,
+        fornecedor_nome: fornecedor_nome,
         total_compra,
         custo_total: total_compra,
         created_by: createdBy,
         created_at: createdAt,
         data: createdAt
       });
-
-      // Cria um registro na tabela ProdutoXFornecedor para associar o produto ao fornecedor
-      await ProdutoXFornecedor.create({
-        produto_id: produto_id,
-        fornecedor_id: fornecedor_id,
-      });
-
-      // Atualize a quantidade do produto na tabela Produtos
-      await Produto.update(
-        { quantidade: produto.quantidade + quantidade_comprada },
-        { where: { id: produto_id } }
-      );
-
+      
       return res.status(201).json({ message: 'Compra registrada com sucesso' });
     } catch (error) {
         console.error(error);

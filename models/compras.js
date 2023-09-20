@@ -1,31 +1,31 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Compras extends Model {
     static associate(models) {
-        Compras.belongsTo(models.Produto, { foreignKey: 'produto_id' });
-        Compras.belongsTo(models.Fornecedor, { foreignKey: 'fornecedor_id' });
+      Compras.belongsTo(models.Produto, { foreignKey: 'produto_id', as: 'produto' });
+      Compras.belongsTo(models.Fornecedor, { foreignKey: 'fornecedor_id', as: 'fornecedor' });
     }
+
+    get produto_nome() {
+      return this.getDataValue('produto.nome');
+    }
+
+    get fornecedor_nome() {
+      return this.getDataValue('fornecedor.nome');
+    }
+
   }
-  
+
   Compras.init({
     quantidade_comprada: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
     data: {
       type: DataTypes.DATE,
       allowNull: false,
-    },
-    fornecedor_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Fornecedor',
-        key: 'id'
-      }
     },
     preco_unitario: {
       type: DataTypes.DECIMAL(10, 2),
@@ -47,32 +47,40 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: true,
     },
+    produto_nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    fornecedor_nome: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     created_at: {
       allowNull: false,
       type: DataTypes.DATE,
-      defaultValue: sequelize.fn('NOW')
+      defaultValue: sequelize.fn('NOW'),
     },
     created_by: {
       allowNull: false,
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     updated_at: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
     },
     updated_by: {
-      type: DataTypes.STRING
+      type: DataTypes.STRING,
     },
     deleted_at: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
     },
     deleted_by: {
       type: DataTypes.STRING,
-    }
+    },
   }, {
     sequelize,
     modelName: 'Compras',
-    timestamps: false, // desabilita a criação das colunas created_at e updated_at
-    underscored: true
+    timestamps: false, // Desabilita a criação das colunas created_at e updated_at
+    underscored: true,
   });
 
   return Compras;

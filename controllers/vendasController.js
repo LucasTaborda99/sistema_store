@@ -9,6 +9,9 @@ const { Vendas } = require('../models/index');
 // Importando a model Produto
 const { Produto } = require('../models/index');
 
+// Importando a model Produto
+const { Clientes } = require('../models/index');
+
 // Importando o módulo vendasService.js que está localizada na pasta services
 const { SequelizeVendasRepository } = require('../services/vendasService');
 
@@ -26,18 +29,36 @@ async function registrarVenda (req, res) {
       const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
       // Obtém os dados da venda a partir do corpo da requisição
-      const { produto_id, preco_unitario, quantidade_vendida, desconto_aplicado, cliente_id, total_venda} = req.body;
+      const { produto_nome, preco_unitario, quantidade_vendida, desconto_aplicado, cliente_nome, total_venda} = req.body;
     
       // Verifica se o id do produto e a quantidade vendida foram informadas, acima de 0
-      if (!produto_id || !quantidade_vendida) {
-        return res.status(400).json({ message: 'É necessário fornecer o produto_id e quantidade_vendida' });
+      if (!produto_nome || !quantidade_vendida) {
+        return res.status(400).json({ message: 'É necessário fornecer o nome do produto e a quantidade vendida' });
       }
 
       // Verifica se o produto existe
-      const produto = await Produto.findByPk(produto_id);
-      if (!produto) {
-        return res.status(404).json({ message: 'Produto não encontrado' });
+    const produto = await Produto.findOne({
+      where: {
+        nome: produto_nome
       }
+    });
+
+    if (!produto) {
+      return res.status(404).json({ message: 'Produto não encontrado' });
+    }
+    console.log(produto_nome)
+
+    // Verifica se o cliente existe
+    const cliente = await Clientes.findOne({
+      where: {
+        nome: cliente_nome
+      }
+    });
+
+    if (!cliente) {
+      return res.status(404).json({ message: 'Cliente não encontrado' });
+    }
+    console.log(cliente_nome)
 
       // Verifica se a quantidade vendida é maior do que a disponível no estoque
       if (quantidade_vendida > produto.quantidade) {
@@ -46,12 +67,12 @@ async function registrarVenda (req, res) {
 
       // Cria a venda no banco de dados
       const venda = await Vendas.create({
-        produto_id,
+        produto_nome: produto.nome,
         preco_unitario,
         quantidade_vendida,
         desconto_aplicado,
         total_venda,
-        cliente_id,
+        cliente_nome: cliente_nome,
         created_by: createdBy,
         created_at: createdAt,
         data: createdAt
@@ -60,7 +81,7 @@ async function registrarVenda (req, res) {
       // Atualize a quantidade do produto na tabela Produtos
       await Produto.update(
         { quantidade: produto.quantidade - quantidade_vendida },
-        { where: { id: produto_id } }
+        { where: { nome: produto_nome } }
       );
 
       return res.status(201).json({ message: 'Venda registrada com sucesso' });
