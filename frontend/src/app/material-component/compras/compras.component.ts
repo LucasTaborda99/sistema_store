@@ -85,7 +85,7 @@ export class ComprasComponent implements OnInit {
           if (error.status === 401) {
             this.responseMessage = "Apenas administradores têm permissão para deletar as compras";
           } else if (error.status === 404) {
-            this.responseMessage = "Produto não encontrado";
+            this.responseMessage = "Fornecedor não encontrado";
           } else if (error.status === 400) {
             this.responseMessage = "Quantidade insuficiente em estoque ou campo 'Nome do Produto' e 'Quantidade Comprada' devem ser maiores do que 0";
           } else {

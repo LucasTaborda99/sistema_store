@@ -40,16 +40,16 @@ async function registrarCompra (req, res) {
       }
 
     // Verifica se o produto existe
-    const produto = await Produto.findOne({
-      where: {
-        nome: produto_nome
-      }
-    });
+    // const produto = await Produto.findOne({
+    //   where: {
+    //     nome: produto_nome
+    //   }
+    // });
 
-    if (!produto) {
-      return res.status(404).json({ message: 'Produto não encontrado' });
-    }
-    console.log(produto_nome)
+    // if (!produto) {
+    //   return res.status(404).json({ message: 'Produto não encontrado' });
+    // }
+    // console.log(produto_nome)
 
     // Verifica se o fornecedor existe
     const fornecedor = await Fornecedor.findOne({
@@ -65,7 +65,7 @@ async function registrarCompra (req, res) {
 
       // Cria a compra no banco de dados
       const compra = await Compras.create({
-        produto_nome: produto.nome,
+        produto_nome: produto_nome,
         preco_unitario,
         quantidade_comprada,
         desconto_recebido,

@@ -1,0 +1,36 @@
+/* cliente-mais-comprou.component.scss */
+.cliente-mais-comprou {
+    background-color: #ca1010;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  
+    h2 {
+      font-size: 24px;
+      color: #e20606;
+      margin-bottom: 10px;
+    }
+  
+    p {
+      font-size: 18px;
+      margin: 5px 0;
+  
+      &.client-name {
+        font-weight: bold;
+        color: #007bff; /* Azul */
+      }
+  
+      &.total-compras {
+        color: #28a745; /* Verde */
+      }
+    }
+  
+    .no-data {
+      color: #dc3545; /* Vermelho */
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+  }
+  

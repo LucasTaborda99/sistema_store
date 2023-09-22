@@ -24,6 +24,7 @@ import { ClienteComponent } from './dialog/cliente/cliente.component';
 import { ComprasComponent } from './compras/compras.component';
 import { ControleEstoqueComponent } from './controle-estoque/controle-estoque.component';
 import { EstoqueComponent } from './dialog/estoque/estoque.component';
+import { ClienteMaisComprouComponent } from './cliente-mais-comprou/cliente-mais-comprou.component';
 
 @NgModule({
   imports: [
@@ -52,7 +53,8 @@ import { EstoqueComponent } from './dialog/estoque/estoque.component';
     ClienteComponent,
     ComprasComponent,
     EstoqueComponent,
-    ControleEstoqueComponent    
+    ControleEstoqueComponent,
+    ClienteMaisComprouComponent    
   ]
 })
 export class MaterialComponentsModule {}

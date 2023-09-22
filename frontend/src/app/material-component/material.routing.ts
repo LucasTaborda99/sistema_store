@@ -8,6 +8,7 @@ import { VendasComponent } from './vendas/vendas.component';
 import { GerenciarClientesComponent } from './gerenciar-clientes/gerenciar-clientes.component';
 import { ComprasComponent } from './compras/compras.component';
 import { ControleEstoqueComponent } from './controle-estoque/controle-estoque.component';
+import { ClienteMaisComprouComponent } from './cliente-mais-comprou/cliente-mais-comprou.component';
 
 export const MaterialRoutes: Routes = [
     {
@@ -69,6 +70,14 @@ export const MaterialRoutes: Routes = [
     {
         path: 'usuario',
         component: GerenciarUsuarioComponent,
+        canActivate: [RouteCheckService],
+        data: {
+            roleEsperado: ['admin']
+        }
+    },
+    {
+        path: 'estatistica',
+        component: ClienteMaisComprouComponent,
         canActivate: [RouteCheckService],
         data: {
             roleEsperado: ['admin']
