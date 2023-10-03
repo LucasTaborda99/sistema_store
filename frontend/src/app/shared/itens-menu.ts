@@ -9,7 +9,7 @@ export interface Menu{
 
 const ITENSMENU = [
     {state: 'dashboard', nome: 'Dashboard', icone: 'dashboard', role: ''},
-    {state: 'estatistica', nome: 'Estatisticas', icone: 'query_stats', role: 'admin'},
+    {state: 'estatistica', nome: 'Estatísticas', icone: 'query_stats', role: 'admin'},
     {state: 'categoria', nome: 'Gerenciar Categorias', icone: 'category', role: ''},
     {state: 'produto', nome: 'Gerenciar Produtos', icone: 'inventory', role: ''},
     {state: 'controleEstoque', nome: 'Controle Estoque', icone: 'settings', role: 'admin'},
