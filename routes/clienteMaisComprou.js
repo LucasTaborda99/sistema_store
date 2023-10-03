@@ -9,7 +9,7 @@ let verRole = require('../services/verificaRole')
 
 // Rota para encontrar o cliente que mais comprou
 router.get('/clienteMaisComprou', clienteMaisComprouController.clienteMaisComprou);
-router.get('/fornecedorMaisVendeu', clienteMaisComprouController.fornecedorMaisCompras);
+router.get('/fornecedorMaisCompras', clienteMaisComprouController.fornecedorMaisCompras);
 
 
 module.exports = router;
