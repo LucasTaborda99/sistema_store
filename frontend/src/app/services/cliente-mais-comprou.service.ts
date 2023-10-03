@@ -18,4 +18,8 @@ export class ClienteMaisComprouService {
   getFornecedorMaisCompras() {
     return this.httpClient.get(this.url + "/clienteMaisComprou/fornecedorMaisCompras/")
   }
+
+  getProdutoMaisVendido() {
+    return this.httpClient.get(this.url + "/clienteMaisComprou/produtoMaisVendido/")
+  }
 }

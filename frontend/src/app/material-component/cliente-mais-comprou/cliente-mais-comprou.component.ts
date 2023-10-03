@@ -10,6 +10,7 @@ import { ClienteMaisComprouService } from '../../services/cliente-mais-comprou.s
 export class ClienteMaisComprouComponent implements OnInit {
   clienteMaisComprou: any;
   fornecedorMaisVendeu: any;
+  produtoMaisVendido: any;
 
   constructor(private clienteMaisComprouService: ClienteMaisComprouService) { }
 
@@ -27,6 +28,15 @@ export class ClienteMaisComprouComponent implements OnInit {
       .subscribe(
         (data) => {
           this.fornecedorMaisVendeu = data;
+        },
+        (error) => {
+          console.error('Erro:', error);
+        }
+      );
+      this.clienteMaisComprouService.getProdutoMaisVendido()
+      .subscribe(
+        (data) => {
+          this.produtoMaisVendido = data;
         },
         (error) => {
           console.error('Erro:', error);

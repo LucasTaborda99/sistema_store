@@ -58,7 +58,31 @@ const { Compras } = require('../models');
     }
   }
 
-module.exports = {
+  async function produtoMaisVendido(req, res) {
+    try {
+      const result = await Vendas.findAll({
+        attributes: [
+          'produto_nome',
+          [Sequelize.fn('COUNT', Sequelize.col('produto_nome')), 'total_vendas'],
+        ],
+        group: ['produto_nome'],
+        order: [[Sequelize.literal('total_vendas'), 'DESC']],
+        limit: 1,
+      });
+  
+      if (result.length > 0) {
+        res.status(200).json(result[0]);
+      } else {
+        res.status(404).json({ message: 'Nenhum dado encontrado.' });
+      }
+    } catch (error) {
+      console.error('Erro:', error);
+      res.status(500).json({ message: 'Erro ao processar a consulta.' });
+    }
+  }
+  
+  module.exports = {
     clienteMaisComprou,
-    fornecedorMaisCompras
-}
+    fornecedorMaisCompras,
+    produtoMaisVendido
+  };

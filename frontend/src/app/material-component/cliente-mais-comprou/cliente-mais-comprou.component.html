@@ -25,3 +25,19 @@
     <p class="no-data" style="font-size: 16px; margin: 10px 0; font-weight: bold; color: #dc3545;">Nenhum dado encontrado.</p>
   </ng-template>
 </div>
+
+<hr>
+
+<div class="container" class="dark-mode" style="background-color: #ffffff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border-radius: 8px; padding: 30px; max-width: 1200px; width: 100%;">
+  <h2 style="font-size: 24px; margin-bottom: 20px; text-align: center; color: #000000;">Produto mais vendido</h2>
+  <hr>
+  <ng-container *ngIf="produtoMaisVendido; else noData">
+    <p class="produto-name" style="font-size: 16px; margin: 0; color: #000000;">Nome do Produto: {{ produtoMaisVendido.produto_nome }}</p>
+    <hr>
+    <p class="total-vendas" style="font-size: 16px; margin: 0; color: #1F9EE7;">Total de Vendas: {{ produtoMaisVendido.total_vendas }}</p>
+  </ng-container>
+  <ng-template #noData>
+    <p class="no-data" style="font-size: 16px; margin: 10px 0; font-weight: bold; color: #dc3545;">Nenhum dado encontrado.</p>
+  </ng-template>
+</div>
+
