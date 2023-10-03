@@ -20,7 +20,7 @@
         <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Preço</mat-label>
-              <input type="text" matInput formControlName="preco" required />
+              <input type="text" matInput formControlName="preco" required pattern="[0-9]+(\.[0-9]+)?"/>
               <mat-error *ngIf="produtoForm.controls.preco.touched && produtoForm.controls.preco.invalid">
                 <span *ngIf="produtoForm.controls.preco.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="produtoForm.controls.preco.errors.pattern">Esse campo é inválido</span>
@@ -40,7 +40,7 @@
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Quantidade</mat-label>
-              <input type="text" matInput formControlName="quantidade" required />
+              <input type="text" matInput formControlName="quantidade" required pattern="[0-9]+"/>
               <mat-error *ngIf="produtoForm.controls.quantidade.touched && produtoForm.controls.quantidade.invalid">
                 <span *ngIf="produtoForm.controls.quantidade.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="produtoForm.controls.quantidade.errors.pattern">Esse campo é inválido</span>
@@ -51,7 +51,7 @@
             <mat-form-field appearance="fill">
               <mat-label>Categoria</mat-label>
               <input type="text" matInput formControlName="nome_categoria" required />
-              <mat-error *ngIf="produtoForm.controls.nome_categoria.touched && produtoForm.controls.id_categoria.invalid">
+              <mat-error *ngIf="produtoForm.controls.nome_categoria.touched && produtoForm.controls.nome_categoria.invalid">
                 <span *ngIf="produtoForm.controls.nome_categoria.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="produtoForm.controls.nome_categoria.errors.pattern">Esse campo é inválido</span>
               </mat-error>

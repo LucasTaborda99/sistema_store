@@ -1,5 +1,5 @@
 <mat-card>
-    <b><span>Gerenciar Compras</span></b>
+    <b><span>Registrar Compra</span></b>
   </mat-card>
   <hr>
     <div class="container" class="dark-mode">
@@ -12,19 +12,19 @@
           </div>
           <div class="form-group">
             <label for="preco_unitario">Preço Unitário:</label>
-            <input type="number" id="preco_unitario" name="preco_unitario" pattern="[0-9]*" inputmode="numeric"
+            <input type="text" id="preco_unitario" name="preco_unitario" pattern="[0-9]*" inputmode="numeric"
             [(ngModel)]="compra.preco_unitario" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label for="quantidade_comprada">Quantidade Comprada:</label>
-            <input type="number" id="quantidade_comprada" name="quantidade_comprada" pattern="[0-9]*" inputmode="numeric"
+            <input type="text" id="quantidade_comprada" name="quantidade_comprada" pattern="[0-9]*" inputmode="numeric"
             [(ngModel)]="compra.quantidade_comprada" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
           </div>
           <div class="form-group">
             <label for="desconto_recebido">Desconto Recebido:</label>
-            <input type="number" id="desconto_recebido" name="desconto_recebido" pattern="[0-9]*" inputmode="numeric"
+            <input type="text" id="desconto_recebido" name="desconto_recebido" pattern="[0-9]*" inputmode="numeric"
             [(ngModel)]="compra.desconto_recebido" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
           </div>
         </div>

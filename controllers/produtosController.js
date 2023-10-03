@@ -46,6 +46,18 @@ async function adicionarProduto (req, res){
         return res.status(400).json({ message: "Categoria inválida" })
     }
 
+    // Validar se o preço é um número válido
+    const preco = parseFloat(produto.preco);
+    if (isNaN(preco) || preco <= 0) {
+      return res.status(400).json({ message: "O preço deve ser um número válido maior que zero" });
+    }
+
+    // Validar se a quantidade é um número válido
+    const quantidade = parseInt(produto.quantidade);
+    if (isNaN(quantidade) || quantidade <= 0) {
+      return res.status(400).json({ message: "A quantidade deve ser um número inteiro válido maior que zero" });
+    }
+
     const newProduto = await Produto.create({
       nome: produto.nome,
       descricao: produto.descricao,
@@ -110,6 +122,20 @@ async function updateProduto(req, res) {
           logger.warn(`Tentativa de adicionar produto com categoria inválida: ${produto.id_categoria}`);
           return res.status(400).json({ message: "Categoria inválida" })
       }
+
+    // Validar se o preço é um número válido
+    const preco = parseFloat(produto.preco);
+    if (isNaN(preco) || preco <= 0) {
+      connection.release();
+      return res.status(400).json({ message: 'O preço deve ser um número válido maior que zero' });
+    }
+
+    // Validar se a quantidade é um número válido
+    const quantidade = parseInt(produto.quantidade);
+    if (isNaN(quantidade) || quantidade <= 0) {
+      connection.release();
+      return res.status(400).json({ message: 'A quantidade deve ser um número inteiro válido maior que zero' });
+    }
 
       const [updateResult] = await connection.query(queryUpdate, [produto.nome, produto.descricao, produto.preco, produto.quantidade, produto.nome_categoria, updatedBy, produto.id]);
 

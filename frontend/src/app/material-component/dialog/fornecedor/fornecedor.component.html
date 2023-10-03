@@ -20,7 +20,7 @@
         <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Endereço</mat-label>
-              <input type="text" matInput formControlName="endereco" required />
+              <input type="email" matInput formControlName="endereco" required />
               <mat-error *ngIf="fornecedorForm.controls.endereco.touched && fornecedorForm.controls.endereco.invalid">
                 <span *ngIf="fornecedorForm.controls.endereco.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="fornecedorForm.controls.endereco.errors.pattern">Esse campo é inválido</span>
@@ -30,7 +30,7 @@
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Telefone</mat-label>
-              <input type="text" matInput formControlName="telefone" required />
+              <input type="text" matInput formControlName="telefone" required pattern="[0-9]+"/>
               <mat-error *ngIf="fornecedorForm.controls.telefone.touched && fornecedorForm.controls.telefone.invalid">
                 <span *ngIf="fornecedorForm.controls.telefone.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="fornecedorForm.controls.telefone.errors.pattern">Esse campo é inválido</span>
@@ -40,7 +40,7 @@
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>CNPJ</mat-label>
-              <input type="text" matInput formControlName="cnpj" required />
+              <input type="text" matInput formControlName="cnpj" required pattern="[0-9]+"/>
               <mat-error *ngIf="fornecedorForm.controls.cnpj.touched && fornecedorForm.controls.cnpj.invalid">
                 <span *ngIf="fornecedorForm.controls.cnpj.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="fornecedorForm.controls.cnpj.errors.pattern">Esse campo é inválido</span>

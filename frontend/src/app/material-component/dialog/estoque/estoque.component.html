@@ -20,7 +20,7 @@
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Quantidade Mínima</mat-label>
-              <input type="text" matInput formControlName="quantidade_minima" required />
+              <input type="text" matInput formControlName="quantidade_minima" required pattern="[0-9]+"/>
               <mat-error *ngIf="controleEstoqueForm.controls.quantidade_minima.touched && controleEstoqueForm.controls.quantidade_minima.invalid">
                 <span *ngIf="controleEstoqueForm.controls.quantidade_minima.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="controleEstoqueForm.controls.quantidade_minima.errors.pattern">Esse campo é inválido</span>
@@ -30,7 +30,7 @@
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Quantidade Máxima</mat-label>
-              <input type="text" matInput formControlName="quantidade_maxima" required />
+              <input type="text" matInput formControlName="quantidade_maxima" required pattern="[0-9]+"/>
               <mat-error *ngIf="controleEstoqueForm.controls.quantidade_maxima.touched && controleEstoqueForm.controls.quantidade_maxima.invalid">
                 <span *ngIf="controleEstoqueForm.controls.quantidade_maxima.errors.required">Esse campo é obrigatório</span>
                 <span *ngIf="controleEstoqueForm.controls.quantidade_maxima.errors.pattern">Esse campo é inválido</span>
