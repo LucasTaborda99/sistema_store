@@ -13,19 +13,19 @@
         <div class="form-group">
           <label for="quantidade_vendida">Preço Unitário:</label>
           <input type="text" id="preco_unitario" name="preco_unitario" pattern="[0-9]*\.?[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.preco_unitario" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
+          [(ngModel)]="venda.preco_unitario" (input)="preventInvalidCharacters($event)" (ngModelChange)="updateTotalValue()" required>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
           <label for="quantidade_vendida">Quantidade Vendida:</label>
           <input type="text" id="quantidade_vendida" name="quantidade_vendida" pattern="[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.quantidade_vendida" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
+          [(ngModel)]="venda.quantidade_vendida" (input)="preventInvalidCharacters($event)" (ngModelChange)="updateTotalValue()" required>
         </div>
         <div class="form-group">
           <label for="desconto_aplicado">Desconto Aplicado:</label>
           <input type="text" id="desconto_aplicado" name="desconto_aplicado" pattern="[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.desconto_aplicado" (input)="preventNegativeNumbers($event)" (ngModelChange)="updateTotalValue()" required>
+          [(ngModel)]="venda.desconto_aplicado" (input)="preventInvalidCharacters($event)" (ngModelChange)="updateTotalValue()" required>
         </div>
       </div>
       <div class="form-row">

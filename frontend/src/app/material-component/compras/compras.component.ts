@@ -15,25 +15,51 @@ import { ComprasService } from 'src/app/services/compras.service';
 export class ComprasComponent implements OnInit {
 
   compra = {
-    produto_nome: null,
-    preco_unitario: null,
-    quantidade_comprada: null,
-    desconto_recebido: null,
-    fornecedor_nome: null,
+    produto_nome: '',
+    preco_unitario: 0,
+    quantidade_comprada: 0,
+    desconto_recebido: 0,
+    fornecedor_nome: '',
     total_compra: 0
   }
 
-    // Método para não aceitar números negativos
-    preventNegativeNumbers(event: Event): void {
-      const inputElement = event.target as HTMLInputElement;
-      if (inputElement && inputElement.value) {
-        const value = parseInt(inputElement.value, 10);
-        if (value < 0) {
-          inputElement.value = '0';
-        }
+  preventInvalidCharacters(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.value) {
+      // Remova todos os caracteres que não são dígitos (0-9) ou o ponto decimal (.)
+      inputElement.value = inputElement.value.replace(/[^0-9.]/g, '');
+  
+      // Garantindo que há apenas um ponto decimal no valor (evite múltiplos pontos)
+      inputElement.value = inputElement.value.replace(/(\..*)\./g, '$1');
+  
+      // Verificando se o campo é nulo ou contém apenas um ponto decimal e defina o valor como '0'
+      if (inputElement.value === '' || inputElement.value === '.') {
+        inputElement.value = '0';
       }
-    }
 
+      // Verificando se o valor é válido e não é "NaN"
+      const parsedValue = parseFloat(inputElement.value);
+      if (isNaN(parsedValue)) {
+        inputElement.value = '0'; // Defina como zero se for inválido
+      } else {
+        inputElement.value = parsedValue.toString(); // Formate o valor corretamente
+      }
+
+      // Verificando se o campo é a quantidade comprada e se o valor é igual a 0
+      if (inputElement.id === 'quantidade_comprada' && parsedValue === 0) {
+
+      // Informando ao usuário que a quantidade comprada deve ser maior que 0
+      this.responseMessage = "A quantidade comprada deve ser maior que 0.";
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+      // Saindo da função se a quantidade comprada for igual a 0
+      return;
+    }
+  
+      // Log para verificar o valor após a verificação
+      console.log('Valor após a verificação:', inputElement.value);
+    }
+  }
+  
     dataSource: any
     responseMessage: any
 
@@ -74,6 +100,14 @@ export class ComprasComponent implements OnInit {
 
     registrarCompra() {
       this.calcularValorTotalCompra()
+
+      // Verifique se os campos nome_produto e nome_fornecedor não são nulos
+      if (!this.compra.produto_nome || !this.compra.fornecedor_nome) {
+        this.responseMessage = "Os campos 'Nome do Produto' e 'Nome do Fornecedor' são obrigatórios.";
+        this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+        // Saindo da função se os campos forem nulos
+        return;
+      }
   
       this.comprasService.registrar(this.compra).subscribe(
         (response: any) => {
@@ -87,7 +121,7 @@ export class ComprasComponent implements OnInit {
           } else if (error.status === 404) {
             this.responseMessage = "Fornecedor não encontrado";
           } else if (error.status === 400) {
-            this.responseMessage = "Quantidade insuficiente em estoque ou campo 'Nome do Produto' e 'Quantidade Comprada' devem ser maiores do que 0";
+            this.responseMessage = "'Quantidade Comprada' deve ser maior do que 0";
           } else {
             this.responseMessage = GlobalConstants.genericError;
           }

@@ -15,23 +15,48 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class VendasComponent implements OnInit {
 
   venda = {
-    produto_nome: null,
-    preco_unitario: null,
-    quantidade_vendida: null,
-    desconto_aplicado: null,
-    cliente_nome: null,
+    produto_nome: '',
+    preco_unitario: 0,
+    quantidade_vendida: 0,
+    desconto_aplicado: 0,
+    cliente_nome: '',
     total_venda: 0
   }
 
-  // Método para não aceitar números negativos
-  preventNegativeNumbers(event: Event): void {
+  preventInvalidCharacters(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     if (inputElement && inputElement.value) {
-      const value = parseInt(inputElement.value, 10);
-      if (value < 0) {
+      // Remova todos os caracteres que não são dígitos (0-9) ou o ponto decimal (.)
+      inputElement.value = inputElement.value.replace(/[^0-9.]/g, '');
+  
+      // Garantindo que há apenas um ponto decimal no valor (evite múltiplos pontos)
+      inputElement.value = inputElement.value.replace(/(\..*)\./g, '$1');
+  
+      // Verificando se o campo é nulo ou contém apenas um ponto decimal e defina o valor como '0'
+      if (inputElement.value === '' || inputElement.value === '.') {
         inputElement.value = '0';
       }
+
+      // Verificando se o valor é válido e não é "NaN"
+      const parsedValue = parseFloat(inputElement.value);
+      if (isNaN(parsedValue)) {
+        inputElement.value = '0'; // Defina como zero se for inválido
+      } else {
+        inputElement.value = parsedValue.toString(); // Formate o valor corretamente
+      }
+
+      // Verificando se o campo é a quantidade vendida e se o valor é igual a 0
+      if (inputElement.id === 'quantidade_vendida' && parsedValue === 0) {
+
+      // Informando ao usuário que a quantidade vendida deve ser maior que 0
+      this.responseMessage = "A quantidade vendida deve ser maior que 0.";
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+      // Saindo da função se a quantidade vendida for igual a 0
+      return;
     }
+  }
+    // Log para verificar o valor após a verificação
+    console.log('Valor após a verificação:', inputElement.value);
   }
 
   dataSource: any
@@ -74,6 +99,14 @@ export class VendasComponent implements OnInit {
 
   registrarVenda() {
     this.calcularValorTotalVenda()
+
+    // Verifique se os campos nome_produto e nome_cliente não são nulos
+    if (!this.venda.produto_nome || !this.venda.cliente_nome) {
+      this.responseMessage = "Os campos 'Nome do Produto' e 'Nome do Cliente' são obrigatórios.";
+      this.snackbarService.openSnackBar(this.responseMessage, GlobalConstants.error);
+      // Saindo da função se os campos forem nulos
+      return;
+    }
 
     this.vendasService.registrar(this.venda).subscribe(
       (response: any) => {
