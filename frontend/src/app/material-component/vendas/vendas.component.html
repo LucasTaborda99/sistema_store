@@ -2,46 +2,57 @@
   <b><span>Registrar Venda</span></b>
 </mat-card>
 <hr>
-  <div class="container" class="dark-mode">
-    <h2>Registrar Venda</h2>
-    <form (ngSubmit)="registrarVenda()">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="produto_nome">Nome do Produto:</label>
-          <input id="produto_nome" name="produto_nome" [(ngModel)]="venda.produto_nome" required>
-        </div>
-        <div class="form-group">
-          <label for="quantidade_vendida">Preço Unitário:</label>
-          <input type="text" id="preco_unitario" name="preco_unitario" pattern="[0-9]*\.?[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.preco_unitario" (input)="preventInvalidCharacters($event)" (ngModelChange)="updateTotalValue()" required>
-        </div>
+<div class="container" class="dark-mode">
+  <h2>Registrar Venda</h2>
+  <form [formGroup]="vendaForm" (ngSubmit)="registrarVenda()">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="produto_nome">Nome do Produto:</label>
+        <input id="produto_nome" formControlName="produto_nome" required>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="quantidade_vendida">Quantidade Vendida:</label>
-          <input type="text" id="quantidade_vendida" name="quantidade_vendida" pattern="[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.quantidade_vendida" (input)="preventInvalidCharacters($event)" (ngModelChange)="updateTotalValue()" required>
-        </div>
-        <div class="form-group">
-          <label for="desconto_aplicado">Desconto Aplicado:</label>
-          <input type="text" id="desconto_aplicado" name="desconto_aplicado" pattern="[0-9]*" inputmode="numeric"
-          [(ngModel)]="venda.desconto_aplicado" (input)="preventInvalidCharacters($event)" (ngModelChange)="updateTotalValue()" required>
-        </div>
+      <div class="form-group">
+        <label for="preco_unitario">Preço Unitário:</label>
+        <input type="text" id="preco_unitario" name="preco_unitario" formControlName="preco_unitario"
+               [class.invalid-negative-value]="vendaForm.get('preco_unitario')?.hasError('negativeValue')"
+               (input)="preventInvalidCharacters($event)"
+               [(ngModel)]="venda.preco_unitario" (ngModelChange)="updateTotalValue()">
+               <div *ngIf="vendaForm.get('preco_unitario')?.invalid && !vendaForm.get('preco_unitario')?.hasError('negativeValue')" class="error-message">
+                O preço unitário deve ser maior que 0.
+              </div>
+              <div *ngIf="vendaForm.get('preco_unitario')?.hasError('negativeValue')" class="error-message">
+                Não é permitido um valor negativo.
+              </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="cliente_nome">Nome do Cliente:</label>
-          <input id="cliente_nome" name="cliente_nome" [(ngModel)]="venda.cliente_nome" required>
-        </div>
-        <div class="form-group">
-          <label for="total_venda">Valor Total da Venda:</label>
-          <span> {{ venda.total_venda }}</span>
-        </div>
-      </div>
-      <div class="button-wrapper">
-        <button type="submit" class="btn-submit">Registrar Venda</button>
     </div>
-    </form>
-  </div>
-
-  
+    <div class="form-row">
+      <div class="form-group">
+        <label for="quantidade_vendida">Quantidade Vendida:</label>
+        <input type="text" id="quantidade_vendida" name="quantidade_vendida" pattern="[0-9]*" inputmode="numeric"
+               formControlName="quantidade_vendida" (input)="preventInvalidCharacters($event)"
+               [(ngModel)]="venda.quantidade_vendida" (ngModelChange)="updateTotalValue()">
+        <div *ngIf="vendaForm.get('quantidade_vendida')?.invalid && !vendaForm.get('quantidade_vendida')?.hasError('negativeValue')" class="error-message">
+          A quantidade vendida deve ser maior que 0.
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="desconto_recebido">Desconto Aplicado:</label>
+        <input type="text" id="desconto_aplicado" name="desconto_aplicado" pattern="[0-9]*" inputmode="numeric"
+               formControlName="desconto_aplicado" (input)="preventInvalidCharacters($event)"
+               [(ngModel)]="venda.desconto_aplicado" (ngModelChange)="updateTotalValue()">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="cliente_nome">Nome do Cliente:</label>
+        <input id="cliente_nome" formControlName="cliente_nome" required>
+      </div>
+      <div class="form-group">
+        <label for="total_venda">Valor Total da Venda:</label>
+        <span> {{ venda.total_venda }}</span>
+      </div>
+    </div>
+    <div class="button-wrapper">
+      <button type="submit" class="btn-submit">Registrar Venda</button>
+    </div>
+  </form>
+</div>
