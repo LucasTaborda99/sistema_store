@@ -46,12 +46,22 @@ export class VendasComponent implements OnInit {
     this.vendaForm = this.formBuilder.group({
       produto_nome: [null, Validators.required],
       preco_unitario: [0, [Validators.pattern('^[0-9]*\.?[0-9]*$')]],
-      quantidade_vendida: [0, [Validators.pattern('^[0-9]*$')]],
-      desconto_aplicado: [0, [Validators.pattern('^[0-9]*$')]],
+      quantidade_vendida: [0],
+      desconto_aplicado: [0],
       cliente_nome: [null, Validators.required],
       total_venda: []
     });
   }
+
+    // Função para preencher o campo "Valor Unitário" com base na seleção do produto
+    setValorUnitario(): void {
+      const selectedProduct = this.vendaForm.get('produto_nome')?.value;
+      const selectedProductData = this.produtos?.find((produto) => produto.nome === selectedProduct);
+  
+      if (selectedProductData) {
+        this.vendaForm.patchValue({ preco_unitario: selectedProductData.preco });
+      }
+    }
 
     // Função de validação personalizada para evitar números negativos
     noNegativeValues(control: AbstractControl): { [key: string]: any } | null {
@@ -138,23 +148,40 @@ export class VendasComponent implements OnInit {
     );
   }
 
-    // Função para prevenir caracteres inválidos
-    preventInvalidCharacters(event: Event): void {
-      const inputElement = event.target as HTMLInputElement;
-      if (inputElement && inputElement.value) {
-        // Remove todos os caracteres que não são dígitos (0-9) ou o ponto decimal (.)
-        inputElement.value = inputElement.value.replace(/[^0-9.]/g, '');
+  validateAndFormatDesconto(value: any): any {
+    if (value === null || value === undefined) {
+      return null;
+    }
+    
+    // Remove todos os caracteres que não são dígitos (0-9) e o ponto decimal (.)
+    const cleanedValue = value.toString().replace(/[^0-9.]/g, '');
   
-        // Garanta que há apenas um ponto decimal no valor (evite múltiplos pontos)
-        inputElement.value = inputElement.value.replace(/(\..*)\./g, '$1');
+    // Verifica se o valor é válido e não é "NaN"
+    const parsedValue = parseFloat(cleanedValue);
+    
+    if (!isNaN(parsedValue)) {
+      return parsedValue;
+    }
+    
+    return null;
+  }
   
-        // Verifique se o valor é válido e não é "NaN"
-        const parsedValue = parseFloat(inputElement.value);
-        if (isNaN(parsedValue)) {
-          inputElement.value = '0'; // Defina como zero se for inválido
-        } else {
-          inputElement.value = parsedValue.toString(); // Formate o valor corretamente
-        }
+
+  // Função para prevenir caracteres inválidos
+  preventInvalidCharacters(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    if (inputElement && inputElement.value) {
+      // Remove todos os caracteres que não são dígitos (0-9)
+      inputElement.value = inputElement.value.replace(/[^0-9]/g, '');
+
+      // Verificando se o valor é válido e não é "NaN"
+      const parsedValue = parseFloat(inputElement.value);
+      if (isNaN(parsedValue)) {
+        inputElement.value = '0'; // Defina como zero se for inválido
+      } else {
+        inputElement.value = parsedValue.toString(); // Formate o valor corretamente
       }
     }
+  }
+
 }

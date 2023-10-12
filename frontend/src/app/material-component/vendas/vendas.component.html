@@ -8,28 +8,37 @@
     <div class="form-row">
       <div class="form-group">
         <label for="produto_nome">Nome do Produto:</label>
-        <select id="produto_nome" formControlName="produto_nome" required [(ngModel)]="venda.produto_nome" class="custom-select">
+        <select
+          id="produto_nome"
+          formControlName="produto_nome"
+          required
+          [(ngModel)]="venda.produto_nome"
+          (ngModelChange)="setValorUnitario()"
+          class="custom-select"
+        >
           <option *ngFor="let produto of produtos" [ngValue]="produto.nome" class="custom-option">{{ produto.nome }}</option>
         </select>
       </div>
       <div class="form-group">
         <label for="preco_unitario">Preço Unitário:</label>
-        <input type="text" id="preco_unitario" name="preco_unitario" formControlName="preco_unitario"
-               [class.invalid-negative-value]="vendaForm.get('preco_unitario')?.hasError('negativeValue')"
-               (input)="preventInvalidCharacters($event)"
-               [(ngModel)]="venda.preco_unitario" (ngModelChange)="updateTotalValue()">
-               <div *ngIf="vendaForm.get('preco_unitario')?.invalid && !vendaForm.get('preco_unitario')?.hasError('negativeValue')" class="error-message">
-                O preço unitário deve ser maior que 0.
-              </div>
-              <div *ngIf="vendaForm.get('preco_unitario')?.hasError('negativeValue')" class="error-message">
-                Não é permitido um valor negativo.
-              </div>
+        <input
+          type="text"
+          id="preco_unitario"
+          name="preco_unitario"
+          formControlName="preco_unitario"
+          [class.invalid-negative-value]="vendaForm.get('preco_unitario')?.hasError('negativeValue')"
+          (input)="preventInvalidCharacters($event)"
+          [(ngModel)]="venda.preco_unitario"
+          (ngModelChange)="updateTotalValue()"
+          class="custom-input"
+          readonly
+        >
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
         <label for="quantidade_vendida">Quantidade Vendida:</label>
-        <input type="text" id="quantidade_vendida" name="quantidade_vendida" pattern="[0-9]*" inputmode="numeric"
+        <input type="number" id="quantidade_vendida" name="quantidade_vendida" pattern="[0-9]*" inputmode="numeric"
                formControlName="quantidade_vendida" (input)="preventInvalidCharacters($event)"
                [(ngModel)]="venda.quantidade_vendida" (ngModelChange)="updateTotalValue()">
         <div *ngIf="vendaForm.get('quantidade_vendida')?.invalid && !vendaForm.get('quantidade_vendida')?.hasError('negativeValue')" class="error-message">
@@ -38,10 +47,17 @@
       </div>
       <div class="form-group">
         <label for="desconto_recebido">Desconto Aplicado:</label>
-        <input type="text" id="desconto_aplicado" name="desconto_aplicado" pattern="[0-9]*" inputmode="numeric"
-               formControlName="desconto_aplicado" (input)="preventInvalidCharacters($event)"
-               [(ngModel)]="venda.desconto_aplicado" (ngModelChange)="updateTotalValue()">
+        <input
+          type="text"
+          id="desconto_aplicado"
+          name="desconto_aplicado"
+          formControlName="desconto_aplicado"
+          (input)="venda.desconto_aplicado = validateAndFormatDesconto(venda.desconto_aplicado)"
+          [(ngModel)]="venda.desconto_aplicado"
+          (ngModelChange)="updateTotalValue()"
+        />
       </div>
+      
     </div>
     <div class="form-row">
       <div class="form-group">
@@ -52,8 +68,8 @@
       </div>
       <div class="form-group">
         <label for="total_venda">Valor Total da Venda:</label>
-        <span> {{ venda.total_venda }}</span>
-      </div>
+        <span class="currency-value"> {{ venda.total_venda | currency:'BRL' }}</span>
+      </div>      
     </div>
     <div class="button-wrapper">
       <button type="submit" class="btn-submit">Registrar Venda</button>
