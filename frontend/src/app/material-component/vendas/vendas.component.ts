@@ -7,6 +7,8 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductService } from 'src/app/services/product.service';
+import { ClientesService } from 'src/app/services/clientes.service';
 
 @Component({
   selector: 'app-vendas',
@@ -16,6 +18,9 @@ import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/fo
 export class VendasComponent implements OnInit {
 
   vendaForm: FormGroup;
+  produtos: any[] | undefined;
+  clientes: any[] | undefined;
+
 
   venda = {
     produto_nome: null,
@@ -34,7 +39,9 @@ export class VendasComponent implements OnInit {
     private snackbarService: SnackbarService,
     private dialog: MatDialog,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private produtoService: ProductService,
+    private clientesService: ClientesService
   ) {
     this.vendaForm = this.formBuilder.group({
       produto_nome: [null, Validators.required],
@@ -56,6 +63,16 @@ export class VendasComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData();
+
+    // Buscando a lista de produtos
+    this.produtoService.get().subscribe((produtos: any) => {
+      this.produtos = produtos;
+    });
+
+    // Buscando a lista de clientes
+    this.clientesService.get().subscribe((clientes: any) => {
+      this.clientes = clientes;
+    });
   }
 
   tableData() {

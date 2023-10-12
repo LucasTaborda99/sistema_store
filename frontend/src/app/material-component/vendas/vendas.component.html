@@ -8,7 +8,9 @@
     <div class="form-row">
       <div class="form-group">
         <label for="produto_nome">Nome do Produto:</label>
-        <input id="produto_nome" formControlName="produto_nome" required>
+        <select id="produto_nome" formControlName="produto_nome" required [(ngModel)]="venda.produto_nome" class="custom-select">
+          <option *ngFor="let produto of produtos" [ngValue]="produto.nome" class="custom-option">{{ produto.nome }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="preco_unitario">Preço Unitário:</label>
@@ -44,7 +46,9 @@
     <div class="form-row">
       <div class="form-group">
         <label for="cliente_nome">Nome do Cliente:</label>
-        <input id="cliente_nome" formControlName="cliente_nome" required>
+        <select id="cliente_nome" formControlName="cliente_nome" required [(ngModel)]="venda.cliente_nome" class="custom-select">
+          <option *ngFor="let cliente of clientes" [ngValue]="cliente.nome" class="custom-option">{{ cliente.nome }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="total_venda">Valor Total da Venda:</label>
