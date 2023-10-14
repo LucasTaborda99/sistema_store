@@ -50,10 +50,25 @@ export class ClienteComponent implements OnInit {
     }
   }
 
+  removerAcentosECaracteresEspeciais(input: string): string {
+    // Normaliza a string para sua forma de composição (NFD), permitindo que caracteres acentuados sejam tratados separadamente.
+    return input
+      .normalize('NFD')
+      // Remove os caracteres acentuados da string, mantendo apenas suas formas não acentuadas.
+      .replace(/[\u0300-\u036f]/g, '')
+      // Remove todos os caracteres que não são letras (maiúsculas ou minúsculas) ou números e também não são espaços em branco.
+      .replace(/[^a-zA-Z0-9 ]/g, '')
+      // Converte toda a string para letras minúsculas.
+      .toLowerCase()
+      // Remove espaços em branco no início e no final da string.
+      .trim();
+  }
+
   adicionar() {
     let formData = this.clienteForm.value
+    let nomeCliente = this.removerAcentosECaracteresEspeciais(formData.nome)
     let data = {
-      nome: formData.nome,
+      nome: nomeCliente,
       endereco: formData.endereco,
       telefone: formData.telefone,
       email: formData.email,
@@ -79,9 +94,10 @@ export class ClienteComponent implements OnInit {
 
   editar() {
     let formData = this.clienteForm.value
+    let nomeCliente = this.removerAcentosECaracteresEspeciais(formData.nome)
     let data = {
       id: this.dialogData.data.id,
-      nome: formData.nome,
+      nome: nomeCliente,
       endereco: formData.endereco,
       telefone: formData.telefone,
       email: formData.email,
