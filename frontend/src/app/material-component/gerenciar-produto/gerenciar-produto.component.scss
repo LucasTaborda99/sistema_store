@@ -23,6 +23,16 @@
     margin-right: 185px;
 }
 
+.float-left-left {
+    position: absolute;
+    right: 0;
+    transform: translateY(-50%);
+    top: 50%;
+    background: #1F9EE7;
+    color: #FFFFFF;
+    margin-right: 376px;
+}
+
 .red-delete-button {
     color: rgb(216, 10, 10);
 }

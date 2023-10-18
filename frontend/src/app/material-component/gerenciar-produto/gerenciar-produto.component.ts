@@ -10,6 +10,7 @@ import { ConfirmationComponent } from '../dialog/confirmation/confirmation.compo
 import { HttpErrorResponse } from '@angular/common/http';
 import jsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-gerenciar-produto',
@@ -102,7 +103,34 @@ export class GerenciarProdutoComponent implements OnInit {
     // Salvando ou exibindo o PDF
     doc.save('relatorioProdutosSistemaStore.pdf');
   }
+
+  generateExcel() {
+    // Define o mapeamento das colunas para aparecer no relatório.
+    const columnMapping: { [key: string]: string } = {
+      nome: 'Nome',
+      descricao: 'Descrição',
+      preco: 'Preço',
+      quantidade: 'Quantidade',
+      nome_categoria: 'Categoria',
+    };
   
+    // Filtra os dados com base no mapeamento.
+    const filteredData = this.dataSource.data.map((element: any) => {
+      const filteredElement: any = {};
+      for (const key in columnMapping) {
+        filteredElement[columnMapping[key]] = element[key];
+      }
+      return filteredElement;
+    });
+  
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(filteredData);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Relatório de Produtos');
+  
+    // Salva o arquivo Excel
+    XLSX.writeFile(wb, 'relatorioProdutosSistemaStore.xlsx');
+  }
+
   aplicarFiltro(event: Event) {
     const valorFiltro = (event.target as HTMLInputElement).value
     
