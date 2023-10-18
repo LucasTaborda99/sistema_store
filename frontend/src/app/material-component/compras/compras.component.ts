@@ -7,6 +7,7 @@ import { GlobalConstants } from 'src/app/shared/global-constants';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ComprasService } from 'src/app/services/compras.service';
 import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FornecedorService } from 'src/app/services/fornecedor.service';
 
 @Component({
   selector: 'app-compras',
@@ -16,6 +17,7 @@ import { FormBuilder, FormGroup, Validators, ValidatorFn, AbstractControl } from
 export class ComprasComponent implements OnInit {
 
   compraForm: FormGroup;
+  fornecedores: any[] | undefined;
 
   compra = {
     produto_nome: null,
@@ -34,7 +36,8 @@ export class ComprasComponent implements OnInit {
     private snackbarService: SnackbarService,
     private dialog: MatDialog,
     private router: Router,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private fornecedoresService: FornecedorService
   ) { 
     this.compraForm = this.formBuilder.group({
       produto_nome: [null, Validators.required],
@@ -57,6 +60,12 @@ export class ComprasComponent implements OnInit {
 
   ngOnInit(): void {
     this.tableData()
+
+    // Buscando a lista de fornecedores
+    this.fornecedoresService.get().subscribe((fornecedores: any) => {
+      this.fornecedores = fornecedores;
+    });
+
   }
 
   tableData() {

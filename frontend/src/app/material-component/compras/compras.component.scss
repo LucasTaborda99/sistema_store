@@ -39,6 +39,11 @@
     }
   }
   
+  .currency-value {
+    font-size: 20px;
+    color: #007bff;
+  }
+
   .button-wrapper {
     display: flex;
     justify-content: center;
@@ -75,4 +80,38 @@
         margin-right: 0;
       }
     }
+  }
+
+  /* Estilização personalizada para o dropdown */
+  .custom-select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    background-color: #fff; /* Cor de fundo */
+    transition: border-color 0.2s; /* Transição de borda */
+
+    &:focus {
+      outline: none;
+      border-color: #007bff; /* Cor da borda quando focado */
+      box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+    }
+  }
+
+  /* Estilização personalizada para as opções do dropdown */
+  .custom-select option {
+    background-color: #fff; /* Cor de fundo das opções */
+    font-size: 16px;
+    padding: 8px;
+  }
+
+  /* Estilização para destacar o elemento selecionado no dropdown */
+  .custom-select option:checked {
+    background-color: #007bff; /* Cor de fundo do item selecionado */
+    color: #fff; /* Cor do texto do item selecionado */
+  }
+
+  /* Estilização para hover nas opções do dropdown */
+  .custom-select option:hover {
+    background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
   }

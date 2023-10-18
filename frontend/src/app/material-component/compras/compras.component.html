@@ -27,7 +27,7 @@
     <div class="form-row">
       <div class="form-group">
         <label for="quantidade_comprada">Quantidade Comprada:</label>
-        <input type="text" id="quantidade_comprada" name="quantidade_comprada" pattern="[0-9]*" inputmode="numeric"
+        <input type="number" id="quantidade_comprada" name="quantidade_comprada" pattern="[0-9]*" inputmode="numeric"
                formControlName="quantidade_comprada" (input)="preventInvalidCharacters($event)"
                [(ngModel)]="compra.quantidade_comprada" (ngModelChange)="updateTotalValue()">
         <div *ngIf="compraForm.get('quantidade_comprada')?.invalid && !compraForm.get('quantidade_comprada')?.hasError('negativeValue')" class="error-message">
@@ -44,11 +44,13 @@
     <div class="form-row">
       <div class="form-group">
         <label for="fornecedor_nome">Nome do Fornecedor:</label>
-        <input id="fornecedor_nome" formControlName="fornecedor_nome" required>
+        <select id="fornecedor_nome" formControlName="fornecedor_nome" required [(ngModel)]="compra.fornecedor_nome" class="custom-select">
+          <option *ngFor="let fornecedor of fornecedores" [ngValue]="fornecedor.nome" class="custom-option">{{ fornecedor.nome }}</option>
+        </select>
       </div>
       <div class="form-group">
         <label for="total_compra">Valor Total da Compra:</label>
-        <span> {{ compra.total_compra }}</span>
+        <span class="currency-value"> {{ compra.total_compra | currency:'BRL' }}</span>
       </div>
     </div>
     <div class="button-wrapper">
