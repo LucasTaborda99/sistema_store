@@ -74,8 +74,10 @@ export class ProdutoComponent implements OnInit {
       .replace(/[\u0300-\u036f]/g, '')
       // Remove todos os caracteres que não são letras (maiúsculas ou minúsculas) ou números e também não são espaços em branco.
       .replace(/[^a-zA-Z0-9 ]/g, '')
-      // Converte toda a string para letras minúsculas.
-      .toLowerCase()
+      // Converte toda a string para letras maiúsculas.
+      .toUpperCase()
+      // Remove espaços em branco no meio da string.
+      .replace(/\s+/g, ' ')
       // Remove espaços em branco no início e no final da string.
       .trim();
   }
