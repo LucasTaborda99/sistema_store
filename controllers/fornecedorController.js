@@ -19,14 +19,14 @@ require('dotenv').config()
 async function adicionarFornecedor (req, res){
   try {
     const fornecedor = req.body;
-    const nome = fornecedor.nome;
+    const cnpj = fornecedor.cnpj;
     const createdBy = res.locals.email;
     const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
-    const foundFornecedor = await Fornecedor.findOne({ where: { nome, deleted_by: null } });
+    const foundFornecedor = await Fornecedor.findOne({ where: { cnpj, deleted_by: null } });
     
     if (foundFornecedor) {
-        return res.status(400).json({ message: "Fornecedor já existente e não está marcado como deletado" });
+        return res.status(400).json({ message: "Fornecedor com o mesmo CNPJ já existe e não está marcado como deletado" });
     }
 
     const newFornecedor = await Fornecedor.create({
