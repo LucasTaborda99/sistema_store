@@ -64,7 +64,7 @@ async function updateFornecedor(req, res) {
   const fornecedor = req.body
   const updatedBy = res.locals.email;
   const querySelect = 'SELECT nome FROM fornecedor WHERE id = ?'
-  const queryUpdate = 'UPDATE fornecedor set nome = ?, endereco = ?, telefone = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
+  const queryUpdate = 'UPDATE fornecedor set nome = ?, endereco = ?, telefone = ?,  cnpj = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
   let connection
 
   try {
@@ -78,7 +78,7 @@ async function updateFornecedor(req, res) {
           return res.status(404).json({ message: 'Fornecedor não encontrado' })
       }
 
-      const [updateResult] = await connection.query(queryUpdate, [fornecedor.nome, fornecedor.endereco, fornecedor.telefone, updatedBy, fornecedor.id]);
+      const [updateResult] = await connection.query(queryUpdate, [fornecedor.nome, fornecedor.endereco, fornecedor.telefone,  fornecedor.cnpj, updatedBy, fornecedor.id]);
 
       if (updateResult.affectedRows === 0) {
           connection.release();
