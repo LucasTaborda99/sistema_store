@@ -48,14 +48,11 @@
             </mat-form-field>
           </div>
           <div fxLayout="row wrap">
-            <mat-form-field appearance="fill">
-              <mat-label>Categoria</mat-label>
-              <input type="text" matInput formControlName="nome_categoria" required />
-              <mat-error *ngIf="produtoForm.controls.nome_categoria.touched && produtoForm.controls.nome_categoria.invalid">
-                <span *ngIf="produtoForm.controls.nome_categoria.errors.required">Esse campo é obrigatório</span>
-                <span *ngIf="produtoForm.controls.nome_categoria.errors.pattern">Esse campo é inválido</span>
-              </mat-error>
-            </mat-form-field>
+            <label for="nome_categoria" class="title_categoria">Categoria *</label>
+            <select id="nome_categoria" formControlName="nome_categoria" [(ngModel)]="categorias.nome_categoria" required class="custom-select">
+              <option [ngValue]="null" class="custom-option">Selecione uma categoria</option>
+              <option *ngFor="let categoria of categorias" [ngValue]="categoria.nome" class="custom-option">{{ categoria.nome }}</option>
+            </select>
           </div>
       </div>
     </form>
@@ -67,7 +64,7 @@
       class="btnAtualizar"
       type="submit"
       (click)="submit()"
-      [disabled]="!(produtoForm.valid && produtoForm.dirty)"
+      [disabled]="!(produtoForm.valid && produtoForm.dirty && produtoForm.get('nome_categoria').value)"
     >
       {{ action }}
     </button>
