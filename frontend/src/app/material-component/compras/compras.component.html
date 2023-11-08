@@ -11,7 +11,7 @@
         <input id="produto_nome" formControlName="produto_nome" required>
       </div>
       <div class="form-group">
-        <label for="preco_unitario">Preço Unitário:</label>
+        <label for="preco_unitario">Preço Unitário (R$):</label>
         <input type="text" id="preco_unitario" name="preco_unitario" formControlName="preco_unitario"
                [class.invalid-negative-value]="compraForm.get('preco_unitario')?.hasError('negativeValue')"
                (input)="preventInvalidCharacters($event)"
@@ -35,7 +35,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="desconto_recebido">Desconto Recebido:</label>
+        <label for="desconto_recebido">Desconto Recebido (R$):</label>
         <input type="text" id="desconto_recebido" name="desconto_recebido" pattern="[0-9]*" inputmode="numeric"
                formControlName="desconto_recebido" (input)="preventInvalidCharacters($event)"
                [(ngModel)]="compra.desconto_recebido" (ngModelChange)="updateTotalValue()">

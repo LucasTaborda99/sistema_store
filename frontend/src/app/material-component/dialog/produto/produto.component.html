@@ -19,7 +19,7 @@
         </div>
         <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
-              <mat-label>Preço</mat-label>
+              <mat-label>Preço (R$)</mat-label>
               <input type="text" matInput formControlName="preco" required pattern="[0-9]+(\.[0-9]+)?"/>
               <mat-error *ngIf="produtoForm.controls.preco.touched && produtoForm.controls.preco.invalid">
                 <span *ngIf="produtoForm.controls.preco.errors.required">Esse campo é obrigatório</span>

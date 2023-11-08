@@ -52,7 +52,7 @@ export class GerenciarProdutoComponent implements OnInit {
     const doc = new jsPDF();
   
     // Definindo as informações do relatório
-    const columns = ['Nome', 'Descrição', 'Preço', 'Quantidade', 'Categoria'];
+    const columns = ['Nome', 'Descrição', 'Preço (R$)', 'Quantidade', 'Categoria'];
   
     // Obtendo os valores diretamente da tela
     const data = this.dataSource.data.map((element: any) => [
@@ -109,7 +109,7 @@ export class GerenciarProdutoComponent implements OnInit {
     const columnMapping: { [key: string]: string } = {
       nome: 'Nome',
       descricao: 'Descrição',
-      preco: 'Preço',
+      preco: 'Preço (R$)',
       quantidade: 'Quantidade',
       nome_categoria: 'Categoria',
     };
