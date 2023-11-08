@@ -12,6 +12,12 @@ const { Produto } = require('../models/index');
 // Importando a model Produto
 const { Clientes } = require('../models/index');
 
+// Importando a model Produto
+const { ControleEstoque } = require('../models/index');
+
+// Importando a função envioNotificacaoEstoqueBaixo do módulo notificacaoEstoqueController.js
+const { envioNotificacaoEstoqueBaixo } = require('./notificacaoEstoqueController');
+
 // Importando o módulo vendasService.js que está localizada na pasta services
 const { SequelizeVendasRepository } = require('../services/vendasService');
 
@@ -83,6 +89,23 @@ async function registrarVenda (req, res) {
         { quantidade: produto.quantidade - quantidade_vendida },
         { where: { nome: produto_nome } }
       );
+
+      // Atualize a quantidade do produto na tabela ControleEstoque
+      await ControleEstoque.update(
+        { quantidade_atual: produto.quantidade - quantidade_vendida },
+        { where: { nome_produto: produto_nome } });
+
+      // Buscando o registro da ControleEstoque com base no nome do produto
+      const controleEstoque = await ControleEstoque.findOne({ where: { nome_produto: produto_nome } });
+
+      // Verifica se a quantidade atual é menor ou igual à quantidade mínima
+      if (controleEstoque && controleEstoque.quantidade_atual <= controleEstoque.quantidade_minima) {
+        // Chama a função para enviar a notificação de estoque baixo
+        console.log("Valor de userEmail:", createdBy);
+        console.log("Valor de userEmail:", produto);
+        
+        await envioNotificacaoEstoqueBaixo(controleEstoque, createdBy);
+    }
 
       return res.status(201).json({ message: 'Venda registrada com sucesso' });
     } catch (error) {

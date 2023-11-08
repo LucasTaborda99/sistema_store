@@ -176,12 +176,7 @@ async function atualizarControleEstoque(req, res) {
           }
       );
 
-      // Verifica se a quantidade atual é menor ou igual à quantidade mínima
-      if (quantidade_atual <= quantidade_minima) {
-          // Chama a função para enviar a notificação de estoque baixo
-          console.log("Valor de userEmail:", createdBy);
-          await envioNotificacaoEstoqueBaixo(produto, createdBy);
-      }
+
 
       return res.status(200).json({ message: 'Controle estoque atualizado com sucesso' });
   } catch (error) {

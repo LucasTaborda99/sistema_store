@@ -63,7 +63,7 @@ async function envioNotificacaoEstoqueBaixo(produto, userEmail){
     <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
       <h2 style="color: #1f9ee7;">Notificação de Estoque Baixo</h2>
       <p style="font-size: 16px;">Olá, <strong>${foundUser.nome}</strong></p>
-      <p style="font-size: 16px;">O produto <strong>${produto.nome}</strong> está com estoque baixo. A quantidade atual é <strong>${produto.quantidade}</strong>. Por favor, reponha o estoque.</p>
+      <p style="font-size: 16px;">O produto <strong>${produto.nome_produto}</strong> está com estoque baixo. A quantidade atual é <strong>${produto.quantidade_atual}</strong>. Por favor, reponha o estoque.</p>
       <p style="font-size: 16px;">Atenciosamente,</p>
       <p style="font-size: 16px; font-weight: bold;">Equipe do SistemaStore</p>
     </div>
