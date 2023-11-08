@@ -19,14 +19,14 @@ require('dotenv').config()
 async function adicionarFornecedor (req, res){
   try {
     const fornecedor = req.body;
-    const nome = fornecedor.nome;
+    const cnpj = fornecedor.cnpj;
     const createdBy = res.locals.email;
     const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
-    const foundFornecedor = await Fornecedor.findOne({ where: { nome, deleted_by: null } });
+    const foundFornecedor = await Fornecedor.findOne({ where: { cnpj, deleted_by: null } });
     
     if (foundFornecedor) {
-        return res.status(400).json({ message: "Fornecedor já existente e não está marcado como deletado" });
+        return res.status(400).json({ message: "Fornecedor com o mesmo CNPJ já existe e não está marcado como deletado" });
     }
 
     const newFornecedor = await Fornecedor.create({
@@ -64,7 +64,7 @@ async function updateFornecedor(req, res) {
   const fornecedor = req.body
   const updatedBy = res.locals.email;
   const querySelect = 'SELECT nome FROM fornecedor WHERE id = ?'
-  const queryUpdate = 'UPDATE fornecedor set nome = ?, endereco = ?, telefone = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
+  const queryUpdate = 'UPDATE fornecedor set nome = ?, endereco = ?, telefone = ?,  cnpj = ?, updated_at = NOW(), updated_by = ? WHERE id = ?';
   let connection
 
   try {
@@ -78,7 +78,7 @@ async function updateFornecedor(req, res) {
           return res.status(404).json({ message: 'Fornecedor não encontrado' })
       }
 
-      const [updateResult] = await connection.query(queryUpdate, [fornecedor.nome, fornecedor.endereco, fornecedor.telefone, updatedBy, fornecedor.id]);
+      const [updateResult] = await connection.query(queryUpdate, [fornecedor.nome, fornecedor.endereco, fornecedor.telefone,  fornecedor.cnpj, updatedBy, fornecedor.id]);
 
       if (updateResult.affectedRows === 0) {
           connection.release();

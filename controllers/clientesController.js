@@ -19,14 +19,14 @@ require('dotenv').config()
 async function adicionarCliente (req, res){
   try {
     const cliente = req.body;
-    const nome = cliente.nome;
+    const cpf = cliente.cpf;
     const createdBy = res.locals.email;
     const createdAt = moment.utc().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
 
-    const foundCliente = await Clientes.findOne({ where: { nome, deleted_by: null } });
+    const foundCliente = await Clientes.findOne({ where: { cpf, deleted_by: null } });
     
     if (foundCliente) {
-        return res.status(400).json({ message: "Cliente já existente e não está marcado como deletado" });
+        return res.status(400).json({ message: "Cliente com o mesmo CPF já existe e não está marcado como deletado" });
     }
 
     const newCliente = await Clientes.create({
