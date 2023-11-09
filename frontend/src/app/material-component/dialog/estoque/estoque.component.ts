@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ControleEstoqueService } from 'src/app/services/controle-estoque.service';
+import { ProductService } from 'src/app/services/product.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { GlobalConstants } from 'src/app/shared/global-constants';
 
@@ -19,11 +20,14 @@ export class EstoqueComponent implements OnInit {
   action: any = "Adicionar"
   mensagemResposta: any
   categorias: any = []
+  produtos: any = []
+  controleEstoque: any = []
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: any,
   private formBuilder: FormBuilder,
   private controleEstoqueService: ControleEstoqueService,
   public dialogRef: MatDialogRef<EstoqueComponent>,
+  private produtoService: ProductService,
   private snackbarService: SnackbarService) { }
 
   ngOnInit(): void {
@@ -37,8 +41,15 @@ export class EstoqueComponent implements OnInit {
       this.dialogAcao = "Editar"
       this.action = "Atualizar"
       this.controleEstoqueForm.patchValue(this.dialogData.data)
-    }
-  }
+    };
+
+    // Buscando a lista de produtos
+    this.produtoService.get().subscribe((produtos: any) => {
+      console.log(produtos)
+      this.produtos = produtos;
+    });
+}
+
 
   submit() {
     if(this.dialogAcao === 'Editar') {

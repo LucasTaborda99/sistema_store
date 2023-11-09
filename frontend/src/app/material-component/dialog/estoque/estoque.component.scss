@@ -26,3 +26,42 @@ mat-form-field {
 .mat-error {
     color: #fd0202;
 }
+
+/* Removendo a borda superior da combo */
+.custom-select {
+    width: 100%;
+    padding: 10px;
+    border: none; /* Remove a borda padrão */
+    border-bottom: 2px solid #ccc; /* Adicione apenas a borda inferior */
+    border-radius: 0; /* Remova a borda arredondada */
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  /* Estilização da seta na combo (pode variar de acordo com o navegador) */
+  .custom-select::after {
+    content: "\25BC"; /* Seta para baixo */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+  
+  /* Estilização ao passar o mouse sobre as opções */
+  .custom-select option:hover {
+    background-color: #f0f0f0; /* Cor de fundo ao passar o mouse */
+  }
+  
+  /* Estilização da borda inferior da combo quando focada */
+  .custom-select:focus {
+    border-color: #2196F3;
+    outline: none;
+  }
+
+  .title_categoria {
+    margin-top: 15px;
+    margin-left: 15px;
+    color: #00000093;
+  }

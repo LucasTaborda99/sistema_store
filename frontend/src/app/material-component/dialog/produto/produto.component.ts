@@ -44,10 +44,10 @@ export class ProdutoComponent implements OnInit {
     }
     this.getCategorias()
 
-  // Buscando a lista de produtos
-  this.categoriaService.getCategoria().subscribe((categorias: any) => {
-    this.categorias = categorias;
-  });
+    // Buscando a lista de produtos
+    this.categoriaService.getCategoria().subscribe((categorias: any) => {
+      this.categorias = categorias;
+    });
   }
 
   getCategorias() {

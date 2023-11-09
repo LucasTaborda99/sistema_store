@@ -8,15 +8,12 @@
     <form [formGroup]="controleEstoqueForm">
       <div fxFlex fxLayout="column">
         <div fxLayout="row wrap">
-            <mat-form-field appearance="fill">
-              <mat-label>Nome do Produto</mat-label>
-              <input type="text" matInput formControlName="nome_produto" required />
-              <mat-error *ngIf="controleEstoqueForm.controls.nome_produto.touched && controleEstoqueForm.controls.nome_produto.invalid">
-                <span *ngIf="controleEstoqueForm.controls.nome_produto.errors.required">Esse campo é obrigatório</span>
-                <span *ngIf="controleEstoqueForm.controls.nome_produto.errors.pattern">Esse campo é inválido</span>
-              </mat-error>
-            </mat-form-field>
-          </div>
+          <label for="nome_produto" class="title_categoria">Produto *</label>
+          <select id="nome_produto" formControlName="nome_produto" [(ngModel)]="controleEstoque.nome_produto" required class="custom-select">
+            <option [ngValue]="null" class="custom-option">Selecione um produto</option>
+            <option *ngFor="let produto of produtos" [ngValue]="produto.nome" class="custom-option">{{ produto.nome }}</option>
+          </select>
+        </div>
           <div fxLayout="row wrap">
             <mat-form-field appearance="fill">
               <mat-label>Quantidade Mínima</mat-label>
